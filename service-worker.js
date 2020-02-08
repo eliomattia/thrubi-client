@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/thrubi-client/precache-manifest.82f9127568cd853c3871d3f854cce6b7.js"
+  "/thrubi-client/precache-manifest.4389e6ab6b2700fce7c7ab6f64d50549.js"
 );
 
 self.addEventListener('message', (event) => {

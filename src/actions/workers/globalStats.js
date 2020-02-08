@@ -1,0 +1,40 @@
+import {processRequest} from "../server";
+import {emitFlare} from "../flare";
+import {requestType} from "../config/http";
+import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../config/thrubi";
+import {flareBook} from "../config/flare";
+import actionType from "../../reducers/config/actionTypes";
+import {endpoint} from "../config/server";
+
+const fetchGlobalStats = () => async (dispatch,getState) => {
+    let globalStats = {};
+    return Promise.all([
+            dispatch(processRequest(requestType.GET,endpoint.STATS_NUSER,null)),
+            dispatch(processRequest(requestType.GET,endpoint.STATS_NCOUNTRY,null)),
+            dispatch(processRequest(requestType.GET,endpoint.STATS_NCCY,null))
+        ])
+        .then(results => {
+            for (let i=0;i<=2;i++) for (let key in results[i]) globalStats[key] = results[i][key];
+            return globalStats;
+        })
+        .catch(error => dispatch(emitFlare(flareBook.flareFallback(error,flareBook.flareBook.errorFlare.ERR_FETCH_GLOBAL_STATS))));
+};
+
+export const startGlobalStatsWorker = () => async (dispatch,getState) => {
+    let globalStatsWorker = setInterval((() => {
+        const activity = () => {
+            dispatch(fetchGlobalStats())
+                .then (globalStats      => {dispatch({type:actionType.RECEIVE_GLOBAL_STATS,payload:{globalStats}});})
+                .catch(error            => {dispatch(emitFlare(flareBook.flareFallback(error,flareBook.flareType.ERROR,flareBook.errorFlare.ERR_RECEIVE_GLOBAL_STATS)));});
+        };
+        activity();
+        return activity;
+    })(),INTERVAL_FETCH_GLOBAL_STATS_WORKER);
+    dispatch({type:actionType.RECEIVE_GLOBAL_STATS_WORKER,payload:{globalStatsWorker}});
+};
+
+export const stopGlobalStatsWorker = () => async (dispatch,getState) => {
+    let globalStatsWorker = getState().session.workers.globalStats;
+    clearInterval(globalStatsWorker);
+    dispatch({type:actionType.STOP_GLOBAL_STATS_WORKER,payload:{}});
+};

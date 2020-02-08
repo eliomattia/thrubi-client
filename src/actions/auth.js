@@ -1,0 +1,485 @@
+import Channel from "../classes/Channel";
+import {processRequest} from "./server";
+import {signMessage} from "./blockchain_ethereum";
+import {switchOptionUserMenu,fetchDetails,storeDetails} from "./user";
+import {emitFlare} from "./flare";
+import {deselectPopulation} from "./userMenu";
+import {requestType} from "./config/http";
+import actionType,{busyPayload} from "../reducers/config/actionTypes";
+import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/thrubi";
+import {endpoint} from "./config/server";
+import {facebook} from "./config/facebook";
+import {
+    googleAuthUri,
+    googleWindowName,
+    googleWindowParams,
+    linkedInAuthUri,
+    linkedInWindowName,
+    linkedInWindowParams
+} from "./config/auth";
+import {flareBook} from "./config/flare";
+import userOptions from "./config/user";
+import {
+    linkedInRedirectUri,
+    linkedInAppState,
+    linkedInAppClientId,
+    googleRedirectUri,
+    googleAppClientId,
+} from "./env/auth";
+import {REDIRECT_CLOSE_INTERVAL} from "./env/redirect";
+
+// ---------------
+// Auth menu items
+// ---------------
+
+export const switchOptionLoginCreate = () => async (dispatch,getState) => {
+    return dispatch({type:actionType.SWITCH_OPTION_LOGIN_CREATE,payload:{}});
+};
+
+// ------
+// Logout
+// ------
+
+export const logout = (payload) => async (dispatch,getState) => {
+    if (getState().client.userAccess.loggedIn) {
+        return await Promise.resolve()
+            .then   (()           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+            .then   (()           => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGOUT,{refreshJwt:(getState().client.userAccess.refreshJwt)})))
+            .then   (()           => dispatch({type:actionType.LOGOUT,payload}))
+            .then   (()           => dispatch(cancelRefreshTokens()))
+            .then   (()           => dispatch(fetchChannels()))
+            .then   (()           => dispatch(deselectPopulation()))
+            .then   (()           => dispatch(FBlogout()))
+            .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGOUT)})
+            .finally(()           => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+    }
+};
+
+// ------
+// Tokens
+// ------
+
+const cancelRefreshTokens = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()           => clearTimeout(getState().session.workers.refreshTokens))
+        .then   (()           => dispatch({type:actionType.STOP_REFRESH_TOKENS_WORKER,payload:{}}))
+        .catch  (()           => {throw flareBook.errorFlare.ERROR_STOP_TOKEN_REFRESH});
+};
+
+const scheduleRefreshTokens = (intervalTime) => async (dispatch,getState) => {
+    const refreshTokensWorker = setTimeout(async () => {
+        let tokens;
+        return await Promise.resolve()
+            .then   (()           => dispatch(processRequest(requestType.POST,endpoint.AUTH_REFRESH,{refreshJwt:(getState().client.userAccess.refreshJwt)})))
+            .then   (result       => {tokens=result;})
+            .then   (()           => dispatch({type:actionType.REFRESH_TOKENS,payload:tokens}))
+            .then   (()           => dispatch(scheduleRefreshTokens(tokens.accessJwtExpiry)))
+            .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN)})
+            .catch  (()           => dispatch(logout({autoLogin:true})));
+    },intervalTime/2);
+    dispatch({type:actionType.RECEIVE_REFRESH_TOKENS_WORKER,payload:{refreshTokensWorker}});
+};
+
+// --------
+// Channels
+// --------
+
+export const fetchChannels = () => async (dispatch,getState) => {
+    let channels = {};
+    return await Promise.resolve()
+        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.AUTH_LISTCHANNELS,null)))
+        .then   (result           => result.map((channel,i) => channels[channel.channelName]=channel.channelMode))
+        .then   (()               => dispatch({type:actionType.RECEIVE_CHANNELS,payload:channels}))
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_CHANNEL_FETCH)));
+};
+
+export const fetchUserChannels = () => async (dispatch,getState) => {
+    let channels = {};
+    return await Promise.resolve()
+        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.USERACCESS_LISTUSERCHANNELS,null)))
+        .then   (result           => result.map((channel,i) => channels[channel.channelName]=channel.channelMode))
+        .then   (()               => dispatch({type:actionType.RECEIVE_USER_CHANNELS,payload:channels}))
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_CHANNEL_FETCH)));
+};
+
+export const deleteChannel = (channelName) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()                           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()                           => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_DELETE+channelName,{})))
+        .then   (()                           => dispatch(fetchUserChannels()))
+        .catch  (error                        => dispatch(emitFlare(flareBook.flareType.ERROR,error)))
+        .finally(()                           => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const setPayChannel = (payChannel) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => {if (!Channel.channelIsOpen(getState().client.userAccess.channels[payChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_SETPAYCHANNEL,{payChannel})))
+        .then   (newPayChannel    => dispatch({type:actionType.RECEIVE_PAY_CHANNEL,payload:{payChannel:newPayChannel}}))
+        .catch  (error            => {if (error !== flareBook.errorFlare.CHANNEL_CLOSED) throw error;})
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_PAY_CHANNEL_UPDATE)));
+};
+
+// ----------------------
+// Login and verification
+// ----------------------
+
+const finalizeLogin = (loginData) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => {if (!loginData.userId) throw loginData.loginError;})
+        .then   (()               => dispatch({type:actionType.LOGIN,payload:loginData}))
+        .then   (()               => dispatch(scheduleRefreshTokens(loginData.accessJwtExpiry)))
+        .then   (()               => dispatch(fetchDetails()))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (()               => dispatch(logout({autoLogin:false})))
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+const verifyBlockchainEthereum = () => async (dispatch,getState) => {
+    let ethAddress = getState().client.userAccess.ethAddress;
+    let challengeTokens;
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.AUTH_CHALLENGE_BLOCKCHAINETHEREUM,{ethAddress})))
+        .then   (result           => {challengeTokens={challengeJwt:result.challengeJwt,hashedJwt:result.hashedJwt};})
+        .then   (()               => dispatch(signMessage(challengeTokens.hashedJwt)))
+        .then   (signedMessage    => ({ethAddress,challengeSolution:{challengeJwt:challengeTokens.challengeJwt,hashedJwt:challengeTokens.hashedJwt,signedMessage}}));
+};
+
+export const createBlockchainEthereum = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(verifyBlockchainEthereum()))
+        .then   (solvedChallenge  => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_BLOCKCHAINETHEREUM,solvedChallenge)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginBlockchainEthereum = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(verifyBlockchainEthereum()))
+        .then   (solvedChallenge  => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_BLOCKCHAINETHEREUM,solvedChallenge)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addBlockchainEthereum = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(verifyBlockchainEthereum()))
+        .then   (solvedChallenge  => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_BLOCKCHAINETHEREUM,solvedChallenge)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateBlockchainEthereum = () => async (dispatch, getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(verifyBlockchainEthereum()))
+        .then   (solvedChallenge  => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_BLOCKCHAINETHEREUM,solvedChallenge)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const createKeyboardForm = (username,password) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_KEYBOARD,{username,password})))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginKeyboardForm = (username,password) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_KEYBOARD,{username,password})))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addKeyboardForm = (username,password) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_KEYBOARD,{username,password})))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .then   (()               => dispatch(abandonKeyboard()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateKeyboardForm = (username,password) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_KEYBOARD,{username,password})))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .then   (()               => dispatch(abandonKeyboard()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const abandonKeyboard = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.ABANDON_KEYBOARD,payload:{}}));
+};
+
+export const chooseKeyboard = (payload) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.CHOOSE_KEYBOARD,payload}));
+};
+
+export const createKeyboard = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(chooseKeyboard({})));
+};
+
+export const loginKeyboard = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(chooseKeyboard({})));
+};
+
+export const addKeyboard = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(chooseKeyboard({optionKeyboardMode:userOptions.optionKeyboardMode.ADD})));
+};
+
+export const updateKeyboard = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(chooseKeyboard({optionKeyboardMode:userOptions.optionKeyboardMode.UPDATE})));
+};
+
+const receiveFacebookLoginStatus = (loginStatus,resolve) => async (dispatch,getState) => {
+    let facebookLoginStatus = {};
+    return await Promise.resolve()
+        .then   (()               => {
+            facebookLoginStatus.facebookStatus=loginStatus.status;
+            facebookLoginStatus.facebookUserId=loginStatus.authResponse?loginStatus.authResponse.userID:null;
+            facebookLoginStatus.facebookUserAccessToken=loginStatus.authResponse?loginStatus.authResponse.accessToken:null;
+        })
+        .then   (()               => dispatch({type:actionType.RECEIVE_FACEBOOK_LOGIN_STATUS,payload:facebookLoginStatus}))
+        .then   (()               => resolve(facebookLoginStatus.facebookStatus));
+};
+
+const FBgetLoginStatus = (resolveFBlogin) => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => {if (!window.FB) throw(flareBook.errorFlare.FB_NOT_FOUND);})
+        .then   (()               => new Promise((resolveFBgetLoginStatus) => {window.FB.getLoginStatus(loginStatus=>dispatch(receiveFacebookLoginStatus(loginStatus,resolveFBgetLoginStatus)))}))
+        .then   (facebookStatus   => {if (resolveFBlogin) resolveFBlogin(facebookStatus); return facebookStatus;});
+};
+
+const FBlogin = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => new Promise(resolveFBlogin => {window.FB.login(() => dispatch(FBgetLoginStatus(resolveFBlogin)),{scope:facebook.apiScope})}));
+};
+
+const FBlogout = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(FBgetLoginStatus(null)))
+        .then   (facebookStatus   => {if (facebookStatus===facebook.status.connected) return new Promise((resolveFBlogout) => {window.FB.logout(()=>{resolveFBlogout(); return false;})});});
+};
+
+const connectFacebook = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {if (!window.FB) {throw (flareBook.errorFlare.FB_NOT_FOUND);}})
+        .then   (()               => dispatch(FBgetLoginStatus(null)))
+        .then   (facebookStatus   => {if ((facebookStatus===facebook.status.unknown)||(facebookStatus===facebook.status.not_authorized)) return dispatch(FBlogin());})
+        .then   (()               => ({facebookUserId:getState().client.userAccess.facebookUserId,facebookUserAccessToken:getState().client.userAccess.facebookUserAccessToken}));
+};
+
+const fetchFacebookDetails = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(FBgetLoginStatus(null)))
+        .then   (facebookStatus   => new Promise((resolve) => {if (facebookStatus===facebook.status.connected) window.FB.api(facebook.apiQuery,(result=>resolve(result)));}))
+        .then   (facebookDetails  => ({name:facebookDetails.first_name,surname:facebookDetails.last_name,email:facebookDetails.email}))
+        .then   (facebookDetails  => dispatch(storeDetails(facebookDetails,{overwrite:false})))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.FB_NOT_FOUND));});
+};
+
+export const createFacebook = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(connectFacebook()))
+        .then   (fbLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_FACEBOOK,fbLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)))
+        .then   (()               => dispatch(fetchFacebookDetails()));
+};
+
+export const loginFacebook = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(connectFacebook()))
+        .then   (fbLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_FACEBOOK,fbLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)))
+        .then   (()               => dispatch(fetchFacebookDetails()));
+};
+
+export const addFacebook = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(connectFacebook()))
+        .then   (fbLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_FACEBOOK,fbLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (()               => dispatch(fetchFacebookDetails()))
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateFacebook = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(connectFacebook()))
+        .then   (fbLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_FACEBOOK,fbLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (()               => dispatch(fetchFacebookDetails()))
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+const processLinkedInLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
+    let linkedInListener = null;
+    return await Promise.resolve()
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_LINKEDIN_LOGIN,payload:pjRenamed});})
+        .then   (()               => {linkedInListener=getState().client.userAccess.linkedInListener;})
+        .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,linkedInListener);})
+        .then   (()               => getState().client.userAccess.linkedInWindow)
+        .then   (linkedInWindow   => {linkedInWindow.close();})
+        .then   (()               => dispatch({type:actionType.CLEAR_LINKEDIN_WINDOW_AND_LISTENER,payload:{}}))
+        .then   (()               => {waitingHandleResolve();})
+        .catch  (()               => null);
+};
+
+export const sendLinkedInLogin = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => window.location.search)
+        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
+        .then   (pJson            => ({linkedInCode:pJson.code,linkedInState:pJson.state,origin:EVENT_DATA_ORIGIN_THRUBI}))
+        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
+};
+
+const startupLinkedInLogin = () => async (dispatch,getState) => {
+    let linkedInWindow = null;
+    let linkedInListener = null;
+    let linkedInInterval = null;
+    let waitingHandleResolve = null;
+    let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {linkedInWindow = getState().client.userAccess.linkedInWindow;})
+        .then   (()               => ((linkedInWindow===null)||(linkedInWindow.closed)))
+        .then   (openNewWindow    => {if (openNewWindow) linkedInWindow = window.open(linkedInAuthUri(linkedInRedirectUri,linkedInAppState,linkedInAppClientId),linkedInWindowName,linkedInWindowParams);})
+        .then   (()               => linkedInWindow.focus())
+        .then   (()               => {linkedInInterval = setInterval(() => {if (linkedInWindow.closed) {waitingHandleResolve(); clearInterval(linkedInInterval);}},REDIRECT_CLOSE_INTERVAL);})
+        .then   (()               => {linkedInListener = event => dispatch(processLinkedInLogin(event,waitingHandleResolve));})
+        .then   (()               => {window.addEventListener(EVENT_TYPE_MESSAGE,linkedInListener);})
+        .then   (()               => dispatch({type:actionType.RECEIVE_LINKEDIN_WINDOW_AND_LISTENER,payload:{linkedInWindow,linkedInListener}}))
+        .then   (()               => waitingHandle)
+        .then   (()               => ({linkedInCode:getState().client.userAccess.linkedInCode,linkedInState:getState().client.userAccess.linkedInState}));
+};
+
+export const createLinkedIn = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupLinkedInLogin()))
+        .then   (liLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_LINKEDIN,liLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginLinkedIn = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupLinkedInLogin()))
+        .then   (liLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_LINKEDIN,liLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addLinkedIn = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupLinkedInLogin()))
+        .then   (liLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_LINKEDIN,liLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateLinkedIn = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupLinkedInLogin()))
+        .then   (liLoginPackage   => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_LINKEDIN,liLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+const processGoogleLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
+    let googleListener = null;
+    return await Promise.resolve()
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_GOOGLE_LOGIN,payload:pjRenamed});})
+        .then   (()               => {googleListener=getState().client.userAccess.googleListener;})
+        .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,googleListener);})
+        .then   (()               => getState().client.userAccess.googleWindow)
+        .then   (googleWindow     => {googleWindow.close();})
+        .then   (()               => dispatch({type:actionType.CLEAR_GOOGLE_WINDOW_AND_LISTENER,payload:{}}))
+        .then   (()               => {waitingHandleResolve();})
+        .catch  (()               => null);
+};
+
+export const sendGoogleLogin = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => window.location.search)
+        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
+        .then   (pJson            => ({googleCode:pJson.code,origin:EVENT_DATA_ORIGIN_THRUBI}))
+        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
+};
+
+const startupGoogleLogin = () => async (dispatch,getState) => {
+    let googleWindow = null;
+    let googleListener = null;
+    let googleInterval = null;
+    let waitingHandleResolve = null;
+    let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {googleWindow = getState().client.userAccess.googleWindow;})
+        .then   (()               => ((googleWindow===null)||(googleWindow.closed)))
+        .then   (openNewWindow    => {if (openNewWindow) googleWindow = window.open(googleAuthUri(googleRedirectUri,googleAppClientId),googleWindowName,googleWindowParams);})
+        .then   (()               => googleWindow.focus())
+        .then   (()               => {googleInterval = setInterval(() => {if (googleWindow.closed) {waitingHandleResolve(); clearInterval(googleInterval);}},REDIRECT_CLOSE_INTERVAL);})
+        .then   (()               => {googleListener = event => dispatch(processGoogleLogin(event,waitingHandleResolve));})
+        .then   (()               => {window.addEventListener(EVENT_TYPE_MESSAGE,googleListener);})
+        .then   (()               => dispatch({type:actionType.RECEIVE_GOOGLE_WINDOW_AND_LISTENER,payload:{googleWindow,googleListener}}))
+        .then   (()               => waitingHandle)
+        .then   (()               => ({googleCode:getState().client.userAccess.googleCode}));
+};
+
+export const createGoogle = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupGoogleLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_GOOGLE,gLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginGoogle = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupGoogleLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_GOOGLE,gLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addGoogle = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupGoogleLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_GOOGLE,gLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateGoogle = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupGoogleLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_GOOGLE,gLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};

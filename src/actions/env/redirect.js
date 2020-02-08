@@ -1,0 +1,1 @@
+export const REDIRECT_CLOSE_INTERVAL = 500;

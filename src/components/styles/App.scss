@@ -1,0 +1,80 @@
+@import '../../styles/thrubiColors';
+
+.verticalAlign {
+    vertical-align: bottom;
+    align-content: center;
+}
+
+.displayInlineBlock {
+    display: inline-block;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.population {
+    width: 800px;
+    margin: 0 50px;
+}
+
+.country {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.ccy {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.thrubiApp {
+    max-height: 100vh;
+    font-family: BentonSans, 'Helvetica Neue', helvetica, arial, sans-serif;
+}
+
+.thrubiGradient {
+    background: thrubiGradient("thrubi-gradient-r");
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.titleBar {
+    height: 43px;
+    min-width: 100%;
+    background: white;
+    border-bottom: solid 3px white;
+    border-image: thrubiGradient("thrubi-gradient-titlebar");
+}
+
+.ethBadges {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.topLeft {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.logoThrubi {
+    margin: 10px;
+}
+
+.alignBottom {
+    line-height: 40px;
+}
+
+.mainView {
+    margin: 43px 0 0 0;
+}
+
+.ccyRowElement {
+    margin: 0;
+    padding: 0 !important;
+}
+
+.ccyRowContainer {
+    margin: 0 15px;
+    padding: 0 !important;
+}

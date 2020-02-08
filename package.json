@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Thrubi App",
   "main": "truffle-config.js",
-  "homepage": "http://eliomattia.github.io/thrubi-client",
+  "homepage": "https://eliomattia.github.io/thrubi-client",
   "directories": {
     "test": "test"
   },

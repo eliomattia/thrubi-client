@@ -2,21 +2,18 @@
 
 .everybody {
     min-height: 450px;
-    background-image: url("/jpg/crowd.jpg");
     opacity: 0.2;
     filter: grayscale(100%) sepia(1) hue-rotate(160deg) blur(2px);
 }
 
 .wealthy {
     min-height: 450px;
-    background-image: url("/jpg/bloomberg.jpg");
     opacity: 0.2;
     filter: grayscale(100%) blur(2px);
 }
 
 .societies {
     min-height: 450px;
-    background-image: url("/jpg/futuristic.jpg");
     opacity: 0.2;
     filter: grayscale(100%) sepia(1) hue-rotate(10deg) blur(2px);
     overflow: hidden;

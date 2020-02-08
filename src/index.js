@@ -12,7 +12,7 @@ import "./styles/customBootstrap.scss";
 const store = thrubiApp();
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter basename="thrubi-client">
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
             <Route exact path="/" component={App} />
             <Route       path="/linkedInRedirect" component={LinkedInRedirect} />
             <Route       path="/googleRedirect" component={GoogleRedirect} />

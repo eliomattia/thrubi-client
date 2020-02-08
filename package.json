@@ -3,15 +3,18 @@
   "version": "0.1.0",
   "description": "Thrubi App",
   "main": "truffle-config.js",
+  "homepage": "http://eliomattia.github.io/thrubi-client",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "dev": "lite-server",
-    "test": "react-scripts test",
-    "start": "set HTTPS=true&&react-scripts start",
-    "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "dev":        "lite-server",
+    "test":       "react-scripts test",
+    "start":      "set HTTPS=true&&react-scripts start",
+    "build":      "react-scripts build",
+    "eject":      "react-scripts eject",
+    "predeploy":  "npm run build",
+    "deploy":     "gh-pages -d build"
   },
   "author": "elio.mattia@gmail.com",
   "license": "ISC",
@@ -37,6 +40,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^2.0.2",
+    "gh-pages": "^2.2.0",
     "lite-server": "^2.3.0",
     "nodemon": "^1.17.3",
     "truffle": "5.0.2",

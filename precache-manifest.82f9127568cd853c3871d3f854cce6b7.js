@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2a2ae40285df3e613051afdd8315df0e",
+    "revision": "c9a17a57efae33024151f01cb82c1acc",
     "url": "/thrubi-client/index.html"
   },
   {
-    "revision": "54125edd0f6a6b0d2f7d",
+    "revision": "7450f704b57b328b3727",
     "url": "/thrubi-client/static/css/main.cf24463d.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/thrubi-client/static/js/2.674afcba.chunk.js"
   },
   {
-    "revision": "54125edd0f6a6b0d2f7d",
-    "url": "/thrubi-client/static/js/main.04c50301.chunk.js"
+    "revision": "7450f704b57b328b3727",
+    "url": "/thrubi-client/static/js/main.3deda0cd.chunk.js"
   },
   {
     "revision": "47b1d2e5caf3aad1bd73",

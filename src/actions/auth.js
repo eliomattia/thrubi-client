@@ -483,3 +483,21 @@ export const updateGoogle = () => async (dispatch,getState) => {
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
+
+
+
+export const createPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const loginPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const addPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const updatePayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};

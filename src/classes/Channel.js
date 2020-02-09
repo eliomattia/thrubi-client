@@ -22,6 +22,7 @@ class Channel {
             case "FACEBOOK":            return "Facebook";
             case "LINKEDIN":            return "LinkedIn";
             case "GOOGLE":              return "Google";
+            case "PAYPAL":              return "PayPal";
             default:                    return "";
         }
     }

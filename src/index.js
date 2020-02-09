@@ -13,9 +13,9 @@ const store = thrubiApp();
 ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter basename={process.env.PUBLIC_URL}>
-            <Route exact path="/" component={App} />
-            <Route       path="/linkedInRedirect" component={LinkedInRedirect} />
-            <Route       path="/googleRedirect" component={GoogleRedirect} />
+            <Route exact path="/"                   component={App} />
+            <Route exact path="/linkedInRedirect"   component={LinkedInRedirect} />
+            <Route exact path="/googleRedirect"     component={GoogleRedirect} />
         </BrowserRouter>
     </Provider>,
     document.getElementById("root")

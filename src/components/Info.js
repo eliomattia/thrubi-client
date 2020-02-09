@@ -9,7 +9,7 @@ class _Info extends Component {
                 <div className="row py-2 rounded-bottom">
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mx-2 thrubiBlue">
-                            <div style={{"background-image": "url("+process.env.PUBLIC_URL+"/jpg/crowd.jpg)"}}
+                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/crowd.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 everybody" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-primary"><div className="opaque">
                                 <h3>Everybody</h3>
@@ -25,7 +25,7 @@ class _Info extends Component {
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mx-2 thrubiSilver">
-                            <div style={{"background-image": "url("+process.env.PUBLIC_URL+"/jpg/bloomberg.jpg)"}}
+                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/bloomberg.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 wealthy" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-secondary"><div className="opaque">
                                 <h3>Wealthy individuals</h3>
@@ -41,7 +41,7 @@ class _Info extends Component {
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mx-2 thrubiGold">
-                            <div style={{"background-image": "url("+process.env.PUBLIC_URL+"/jpg/futuristic.jpg)"}}
+                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/futuristic.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 societies" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-success"><div className="opaque">
                                 <h3>Thriving societies</h3>

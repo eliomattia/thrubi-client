@@ -92,8 +92,8 @@ const userAccess = (state = userAccessInit,action) => {
             });
         case actionType.RECEIVE_LINKEDIN_LOGIN:
             return Object.assign({},state,{
-                linkedInCode:           action.payload.linkedInCode,
-                linkedInState:          action.payload.linkedInState,
+                linkedInCode:           action.payload.code,
+                linkedInState:          action.payload.state,
             });
         case actionType.RECEIVE_GOOGLE_WINDOW_AND_LISTENER:
             return Object.assign({},state,{
@@ -107,7 +107,7 @@ const userAccess = (state = userAccessInit,action) => {
             });
         case actionType.RECEIVE_GOOGLE_LOGIN:
             return Object.assign({},state,{
-                googleCode:             action.payload.googleCode,
+                googleCode:             action.payload.code,
             });
         case actionType.LOGIN:
             return Object.assign({},state,{

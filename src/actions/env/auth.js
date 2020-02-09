@@ -2,11 +2,11 @@ let envLinkedInRedirectUri;
 let envGoogleRedirectUri;
 
 if (process.env.NODE_ENV === "production") {
-    envLinkedInRedirectUri    = "https://eliomattia.github.io/thrubi-client/linkedInRedirect";
-    envGoogleRedirectUri      = "https://eliomattia.github.io/thrubi-client/googleRedirect";
+    envLinkedInRedirectUri    = "https://eliomattia.github.io/thrubi-client";
+    envGoogleRedirectUri      = "https://eliomattia.github.io/thrubi-client";
 } else {
-    envLinkedInRedirectUri    = "https://localhost:3000/linkedInRedirect";
-    envGoogleRedirectUri      = "https://localhost:3000/googleRedirect";
+    envLinkedInRedirectUri    = "https://localhost:3000";
+    envGoogleRedirectUri      = "https://localhost:3000";
 }
 
 export const linkedInRedirectUri    = envLinkedInRedirectUri;

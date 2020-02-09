@@ -346,14 +346,6 @@ const processLinkedInLogin = (event,waitingHandleResolve) => async (dispatch,get
         .catch  (()               => null);
 };
 
-export const sendLinkedInLogin = () => async (dispatch,getState) => {
-    return await Promise.resolve()
-        .then   (()               => window.location.search)
-        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
-        .then   (pJson            => ({linkedInCode:pJson.code,linkedInState:pJson.state,origin:EVENT_DATA_ORIGIN_THRUBI}))
-        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
-};
-
 const startupLinkedInLogin = () => async (dispatch,getState) => {
     let linkedInWindow = null;
     let linkedInListener = null;
@@ -411,7 +403,7 @@ export const updateLinkedIn = () => async (dispatch,getState) => {
 const processGoogleLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
     let googleListener = null;
     return await Promise.resolve()
-        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) {console.error(event.data); return event.data;} else throw flareBook.errorFlare.MESSAGE_IGNORED;})
         .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_GOOGLE_LOGIN,payload:pjRenamed});})
         .then   (()               => {googleListener=getState().client.userAccess.googleListener;})
         .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,googleListener);})
@@ -420,14 +412,6 @@ const processGoogleLogin = (event,waitingHandleResolve) => async (dispatch,getSt
         .then   (()               => dispatch({type:actionType.CLEAR_GOOGLE_WINDOW_AND_LISTENER,payload:{}}))
         .then   (()               => {waitingHandleResolve();})
         .catch  (()               => null);
-};
-
-export const sendGoogleLogin = () => async (dispatch,getState) => {
-    return await Promise.resolve()
-        .then   (()               => window.location.search)
-        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
-        .then   (pJson            => ({googleCode:pJson.code,origin:EVENT_DATA_ORIGIN_THRUBI}))
-        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
 };
 
 const startupGoogleLogin = () => async (dispatch,getState) => {
@@ -484,8 +468,6 @@ export const updateGoogle = () => async (dispatch,getState) => {
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
 
-
-
 export const createPayPal = () => async (dispatch,getState) => {
     return await Promise.resolve();
 };
@@ -500,4 +482,12 @@ export const addPayPal = () => async (dispatch,getState) => {
 
 export const updatePayPal = () => async (dispatch,getState) => {
     return await Promise.resolve();
+};
+
+export const sendRedirect = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => window.location.search)
+        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}'))
+        .then   (pJson            => ({code:pJson.code,state:pJson.state,origin:EVENT_DATA_ORIGIN_THRUBI}))
+        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
 };

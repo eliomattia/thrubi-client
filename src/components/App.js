@@ -6,13 +6,18 @@ import Footer from "./Footer";
 import Flare from "./Flare";
 import {enableBlockchain} from "../actions/blockchain_ethereum";
 import {startGlobalStatsWorker,stopGlobalStatsWorker} from "../actions/workers/globalStats";
-import {fetchChannels} from "../actions/auth";
+import {fetchChannels,sendRedirect} from "../actions/auth";
 import "./styles/App.scss";
 
 
 class _App extends Component {
     componentDidMount() {
-        this.reload();
+        const {sendRedirect} = this.props;
+        if (window.location.search) {
+            sendRedirect();
+        } else {
+            this.reload();
+        }
     };
 
     componentWillUnmount() {
@@ -64,7 +69,7 @@ const mapStateToProps = (state) => ({
     loggedIn:           state.client.userAccess.loggedIn,
 });
 
-const App = connect(mapStateToProps,{startGlobalStatsWorker,stopGlobalStatsWorker,fetchChannels,enableBlockchain})(_App);
+const App = connect(mapStateToProps,{startGlobalStatsWorker,stopGlobalStatsWorker,fetchChannels,enableBlockchain,sendRedirect})(_App);
 
 export default App;
 

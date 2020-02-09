@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/thrubi-client/static/css/main.4770196d.chunk.css",
-    "main.js": "/thrubi-client/static/js/main.4167f462.chunk.js",
-    "main.js.map": "/thrubi-client/static/js/main.4167f462.chunk.js.map",
+    "main.js": "/thrubi-client/static/js/main.6655ef1e.chunk.js",
+    "main.js.map": "/thrubi-client/static/js/main.6655ef1e.chunk.js.map",
     "runtime~main.js": "/thrubi-client/static/js/runtime~main.0651016d.js",
     "runtime~main.js.map": "/thrubi-client/static/js/runtime~main.0651016d.js.map",
     "static/js/2.674afcba.chunk.js": "/thrubi-client/static/js/2.674afcba.chunk.js",
     "static/js/2.674afcba.chunk.js.map": "/thrubi-client/static/js/2.674afcba.chunk.js.map",
     "index.html": "/thrubi-client/index.html",
-    "precache-manifest.1f2d1ccc23109d64db13da430fb99b80.js": "/thrubi-client/precache-manifest.1f2d1ccc23109d64db13da430fb99b80.js",
+    "precache-manifest.4e7818c79a8266678fb52e0b5910d902.js": "/thrubi-client/precache-manifest.4e7818c79a8266678fb52e0b5910d902.js",
     "service-worker.js": "/thrubi-client/service-worker.js",
     "static/css/main.4770196d.chunk.css.map": "/thrubi-client/static/css/main.4770196d.chunk.css.map"
   }

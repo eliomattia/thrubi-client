@@ -5,6 +5,9 @@ const userInit = {
     id: -1,
     role: -1,
     deactivated: 1,
+    emailVerified: 0,
+    identityCertified: 0,
+    incomeApproved: 0,
     name: null,
     surname: null,
     email: null,
@@ -25,8 +28,14 @@ const user = (state = userInit,action) => {
             return Object.assign({},state,{
                 id:                     parseInt(action.payload.userId),
                 role:                   parseInt(action.payload.userRole),
-                deactivated:            parseInt(action.payload.deactivated),
                 optionKeyboardMode:     null,
+            });
+        case actionType.RECEIVE_USER_FLAGS:
+            return Object.assign({},state,{
+                deactivated:            parseInt(action.payload.deactivated)        === state.deactivated       ? state.deactivated         : parseInt(action.payload.deactivated),
+                emailVerified:          parseInt(action.payload.emailVerified)      === state.emailVerified     ? state.emailVerified       : parseInt(action.payload.emailVerified),
+                identityCertified:      parseInt(action.payload.identityCertified)  === state.identityCertified ? state.identityCertified   : parseInt(action.payload.identityCertified),
+                incomeApproved:         parseInt(action.payload.incomeApproved)     === state.incomeApproved    ? state.incomeApproved      : parseInt(action.payload.incomeApproved),
             });
         case actionType.UPDATE_USER_ACTIVATION:
             return Object.assign({},state, {

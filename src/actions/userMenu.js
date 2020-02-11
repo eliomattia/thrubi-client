@@ -1,11 +1,11 @@
 import {processRequest} from "./server";
 import {fetchExrate} from "./market";
 import {emitFlare} from "./flare";
-import {flareBook} from "./config/flare";
-import {INTERVAL_MARKET_WORKER,INTERVAL_MEMBER_WORKER,INTERVAL_POPULATION_WORKER} from "./config/thrubi";
+import flareBook from "./config/flare";
 import {requestType} from "./config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "./config/server";
+import {INTERVAL_MARKET_WORKER, INTERVAL_MEMBER_WORKER, INTERVAL_POPULATION_WORKER} from "./config/workers";
 
 export const fetchPopulations = () => async (dispatch,getState) => {
     //dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS});

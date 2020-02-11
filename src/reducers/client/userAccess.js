@@ -24,7 +24,7 @@ const userAccessInit = {
     linkedInState:          null,
     googleWindow:           null,
     googleListener:         null,
-    googleState:            null,
+    googleCode:             null,
     accessJwt:              null,
     refreshJwt:             null,
 };

@@ -2,7 +2,7 @@ import {processRequest} from "./server";
 import {deselectPopulation} from "./userMenu";
 import {emitFlare} from "./flare";
 import {requestType} from "./config/http";
-import {flareBook} from "./config/flare";
+import flareBook from "./config/flare";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "./config/server";
 

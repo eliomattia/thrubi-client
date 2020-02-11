@@ -1,6 +1,6 @@
 import request from "request";
 import {uri} from "./env/server";
-import {flareBook} from "./config/flare";
+import flareBook from "./config/flare";
 import {requestType,headers} from "./config/http";
 
 export const processRequest = (type,requestUri,json) => (dispatch,getState) => {

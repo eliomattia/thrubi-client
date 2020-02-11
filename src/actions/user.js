@@ -1,10 +1,12 @@
 import {processRequest} from "./server";
 import {emitFlare} from "./flare";
 import {logout} from "./auth";
-import {flareBook} from "./config/flare";
+import {userFlags,flagFlare} from "./config/user";
+import flareBook from "./config/flare";
 import {requestType} from "./config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "./config/server";
+import {INTERVAL_USER_WORKER} from "./config/workers";
 
 export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
     return dispatch({type:actionType.SWITCH_OPTION_USER_MENU,payload:{optionUserMenu}});
@@ -35,6 +37,35 @@ export const storeDetails = (userDetails,overwrite) => async (dispatch,getState)
         .then   (()               => dispatch(fetchDetails()))
         .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_DETAILS)))
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
+};
+
+const flareUserFlags = flags => async (dispatch,getState) => {
+        Object.keys(userFlags).map(async flag => {
+                if (flags[flag]!==getState().client.user[flag]) return await dispatch(emitFlare(flareBook.flareType.INFO,flagFlare(flags[flag],flag)));
+            }
+        );
+};
+
+export const activateUserWorker = () => async (dispatch,getState) => {
+    let userWorker = setInterval((() => {
+        let userFlags;
+        const activity = () => {
+            return Promise.resolve()
+                .then (()         => dispatch(processRequest(requestType.GET,endpoint.USER_GETFLAGS,null)))
+                .then (flags      => userFlags=flags)
+                .then (()         => dispatch(flareUserFlags(userFlags)))
+                .then (()         => dispatch({type:actionType.RECEIVE_USER_FLAGS,payload:userFlags}))
+                .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_FLAGS)));
+        };
+        activity();
+        return activity;
+    })(),INTERVAL_USER_WORKER);
+    dispatch({type:actionType.RECEIVE_USER_WORKER,payload:{userWorker}});
+};
+
+export const stopUserWorker = () => async (dispatch,getState) => {
+    clearInterval(getState().session.workers.user);
+    dispatch({type:actionType.STOP_USER_WORKER,payload:{}});
 };
 
 export const activateUser = () => async (dispatch,getState) => {

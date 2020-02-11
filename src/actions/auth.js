@@ -1,12 +1,12 @@
 import Channel from "../classes/Channel";
 import {processRequest} from "./server";
 import {signMessage} from "./blockchain_ethereum";
-import {switchOptionUserMenu,fetchDetails,storeDetails} from "./user";
+import {switchOptionUserMenu,fetchDetails,storeDetails,activateUserWorker,stopUserWorker} from "./user";
 import {emitFlare} from "./flare";
 import {deselectPopulation} from "./userMenu";
 import {requestType} from "./config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
-import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/thrubi";
+import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/redirect";
 import {endpoint} from "./config/server";
 import {facebook} from "./config/facebook";
 import {
@@ -17,7 +17,7 @@ import {
     linkedInWindowName,
     linkedInWindowParams
 } from "./config/auth";
-import {flareBook} from "./config/flare";
+import flareBook from "./config/flare";
 import userOptions from "./config/user";
 import {
     linkedInRedirectUri,
@@ -40,7 +40,7 @@ export const switchOptionLoginCreate = () => async (dispatch,getState) => {
 // Logout
 // ------
 
-export const logout = (payload) => async (dispatch,getState) => {
+export const logout = payload => async (dispatch,getState) => {
     if (getState().client.userAccess.loggedIn) {
         return await Promise.resolve()
             .then   (()           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
@@ -48,6 +48,7 @@ export const logout = (payload) => async (dispatch,getState) => {
             .then   (()           => dispatch({type:actionType.LOGOUT,payload}))
             .then   (()           => dispatch(cancelRefreshTokens()))
             .then   (()           => dispatch(fetchChannels()))
+            .then   (()           => dispatch(stopUserWorker()))
             .then   (()           => dispatch(deselectPopulation()))
             .then   (()           => dispatch(FBlogout()))
             .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGOUT)})
@@ -105,7 +106,7 @@ export const fetchUserChannels = () => async (dispatch,getState) => {
 export const deleteChannel = (channelName) => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()                           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
-        .then   (()                           => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_DELETE+channelName,{})))
+        .then   (()                           => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_DELETE+"/"+channelName,{})))
         .then   (()                           => dispatch(fetchUserChannels()))
         .catch  (error                        => dispatch(emitFlare(flareBook.flareType.ERROR,error)))
         .finally(()                           => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
@@ -130,6 +131,7 @@ const finalizeLogin = (loginData) => async (dispatch,getState) => {
         .then   (()               => dispatch({type:actionType.LOGIN,payload:loginData}))
         .then   (()               => dispatch(scheduleRefreshTokens(loginData.accessJwtExpiry)))
         .then   (()               => dispatch(fetchDetails()))
+        .then   (()               => dispatch(activateUserWorker()))
         .then   (()               => dispatch(fetchUserChannels()))
         .catch  (()               => dispatch(logout({autoLogin:false})))
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));

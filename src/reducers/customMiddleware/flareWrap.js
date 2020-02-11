@@ -1,4 +1,4 @@
-import {flareBook} from "../../actions/config/flare";
+import flareBook from "../../actions/config/flare";
 import {emitFlare} from "../../actions/flare";
 
 const flareWrap = ({dispatch,getState}) => next => action => {

@@ -9,10 +9,7 @@ const _UserActivation = ({deactivated,activateUserBusy,activateUser,deactivateUs
             {
                 activateUserBusy ? "Please wait, activation request in progress..." :
                     deactivated ?
-                        <div className="small">
-                            Account currently deactivated<br/>
-                            <_ActionButton text="Request activation" action={activateUser} buttonType="btn-primary" />
-                        </div>
+                        <_ActionButton text="Request activation" action={activateUser} buttonType="btn-primary" />
                         :
                         <_ActionButton text="Deactivate my account" action={deactivateUser} buttonType="btn-secondary" />
             }

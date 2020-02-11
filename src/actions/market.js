@@ -1,6 +1,6 @@
 import request from "request";
 import {uri,spotApi} from "./config/market";
-import {flareBook} from "./config/flare";
+import flareBook from "./config/flare";
 import actionType from "../reducers/config/actionTypes";
 
 export const fetchExrate = ccyId => async (dispatch,getState) => {

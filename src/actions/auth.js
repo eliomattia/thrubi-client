@@ -67,7 +67,7 @@ const cancelRefreshTokens = () => async (dispatch,getState) => {
         .catch  (()           => {throw flareBook.errorFlare.ERROR_STOP_TOKEN_REFRESH});
 };
 
-const scheduleRefreshTokens = (intervalTime) => async (dispatch,getState) => {
+const scheduleRefreshTokens = intervalTime => async (dispatch,getState) => {
     const refreshTokensWorker = setTimeout(async () => {
         let tokens;
         return await Promise.resolve()
@@ -76,7 +76,7 @@ const scheduleRefreshTokens = (intervalTime) => async (dispatch,getState) => {
             .then   (()           => dispatch({type:actionType.REFRESH_TOKENS,payload:tokens}))
             .then   (()           => dispatch(scheduleRefreshTokens(tokens.accessJwtExpiry)))
             .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN)})
-            .catch  (()           => dispatch(logout({autoLogin:true})));
+            .catch  (error        => {console.error(error);dispatch(logout({autoLogin:true}));});
     },intervalTime/2);
     dispatch({type:actionType.RECEIVE_REFRESH_TOKENS_WORKER,payload:{refreshTokensWorker}});
 };

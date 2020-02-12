@@ -4,14 +4,14 @@ import userOptions from "../../actions/config/user";
 const userInit = {
     id: -1,
     role: -1,
-    deactivated: 1,
-    emailVerified: 0,
-    identityCertified: 0,
-    incomeApproved: 0,
+    deactivated: null,
+    emailVerified: null,
+    identityCertified: null,
+    incomeApproved: null,
     name: null,
     surname: null,
     email: null,
-    passport: null,
+    document: null,
     optionKeyboardMode: null,
     optionLoginCreate: userOptions.optionLoginCreate.LOGIN,
     optionUserMenu: userOptions.optionUserMenu.ADD,
@@ -37,23 +37,27 @@ const user = (state = userInit,action) => {
                 identityCertified:      parseInt(action.payload.identityCertified)  === state.identityCertified ? state.identityCertified   : parseInt(action.payload.identityCertified),
                 incomeApproved:         parseInt(action.payload.incomeApproved)     === state.incomeApproved    ? state.incomeApproved      : parseInt(action.payload.incomeApproved),
             });
-        case actionType.UPDATE_USER_ACTIVATION:
+        case actionType.SET_USER_ACTIVATED:
             return Object.assign({},state, {
-                deactivated:            parseInt(action.payload.deactivated),
+                deactivated:            0,
+            });
+        case actionType.SET_USER_DEACTIVATED:
+            return Object.assign({},state, {
+                deactivated:            1,
             });
         case actionType.RECEIVE_USER_DETAILS:
             return Object.assign({},state,{
                 name:                   action.payload.name         ? action.payload.name       : state.name,
                 surname:                action.payload.surname      ? action.payload.surname    : state.surname,
                 email:                  action.payload.email        ? action.payload.email      : state.email,
-                passport:               action.payload.passport     ? action.payload.passport   : state.passport,
+                document:               action.payload.document     ? action.payload.document   : state.document,
             });
         case actionType.DELETE_USER_DETAILS:
             return Object.assign({},state,{
                 name:                   null,
                 surname:                null,
                 email:                  null,
-                passport:               null,
+                document:               null,
             });
         case actionType.ABANDON_KEYBOARD:
             return Object.assign({},state,{

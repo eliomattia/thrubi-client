@@ -15,7 +15,7 @@ const flareBook = {
     infoFlare: {
         DETECTED_ETH_NETWORK_CHANGE:{thrubiFlareId:"I001",message:"Detected Ethereum network change"},
         DETECTED_ETH_ADDRESS_CHANGE:{thrubiFlareId:"I002",message:"Detected Ethereum address change"},
-        DEACTIVATED_ON:             {thrubiFlareId:"I003",message:"User has been deactivated"},
+        DEACTIVATED_ON:             {thrubiFlareId:"I003",message:"User account is deactivated"},
         DEACTIVATED_OFF:            {thrubiFlareId:"I004",message:"User account is now active"},
         EMAIL_VERIFIED_ON:          {thrubiFlareId:"I005",message:"Email address has been verified"},
         EMAIL_VERIFIED_OFF:         {thrubiFlareId:"I006",message:"Unverified email address detected. Please verify."},
@@ -25,6 +25,7 @@ const flareBook = {
         INCOME_APPROVED_OFF:        {thrubiFlareId:"I010",message:"Newly declared income is not approved, please check."},
     },
     errorFlare: {
+        USER_ACTIVATION:            {thrubiFlareId:"0021",message:"User activation module error"},
         UNEXPECTED_FLARE:           {thrubiFlareId:"0009",message:"Flares must have an ID to be dispatched"},
         THRUBI_SERVER_ERROR:        {thrubiFlareId:"0001",message:"Thrubi server returned an error"},
         THRUBI_CONNECTION_FAILED:   {thrubiFlareId:"0002",message:"Thrubi server not available, please check your connection"},

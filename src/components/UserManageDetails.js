@@ -3,8 +3,8 @@ import {connect} from "react-redux";
 import _ActionButton from "./_ActionButton";
 import {storeDetails,deleteDetails} from "../actions/user";
 
-const _UserManageDetails = ({updateUserBusy,name,surname,email,passport,storeDetails,deleteDetails}) => {
-    let refs = {name,surname,email,passport};
+const _UserManageDetails = ({updateUserBusy,name,surname,email,document,storeDetails,deleteDetails}) => {
+    let refs = {name,surname,email};
     let fieldClassName = "form-control form-control-sm rounded-0";
     return(
         <Fragment>
@@ -13,16 +13,15 @@ const _UserManageDetails = ({updateUserBusy,name,surname,email,passport,storeDet
                     "Updating user data..."
                     :
                     <Fragment>
-                        <input id="newUserName"     ref={(input) => refs.name = input}      type="text" className={fieldClassName} placeholder={name?name:"Enter name"} />
-                        <input id="newUserSurname"  ref={(input) => refs.surname = input}   type="text" className={fieldClassName} placeholder={surname?surname:"Enter surname"} />
-                        <input id="newUserEmail"    ref={(input) => refs.email = input}     type="text" className={fieldClassName} placeholder={email?email:"Enter email address"} />
-                        <input id="newUserPassport" ref={(input) => refs.passport = input}  type="text" className={fieldClassName} placeholder={passport?passport:"Enter passport number"} />
+                        <input id="inputUserName"     ref={(input) => refs.name = input}      type="text" className={fieldClassName} placeholder={name?name:"Enter name"} />
+                        <input id="inputUserSurname"  ref={(input) => refs.surname = input}   type="text" className={fieldClassName} placeholder={surname?surname:"Enter surname"} />
+                        <input id="inputUserEmail"    ref={(input) => refs.email = input}     type="text" className={fieldClassName} placeholder={email?email:"Enter email address"} />
+                        <input id="inputUserDocument" disabled                                                     type="text" className={fieldClassName} placeholder={document?document:"Identity not verified"} />
                         <_ActionButton text="Update my personal data"  buttonType="btn-primary" action={() => {
                             let userDetails = {};
                             if (refs.name.value)        userDetails["name"]=refs.name.value;
                             if (refs.surname.value)     userDetails["surname"]=refs.surname.value;
                             if (refs.email.value)       userDetails["email"]=refs.email.value;
-                            if (refs.passport.value)    userDetails["passport"]=refs.passport.value;
                             storeDetails(userDetails,{overwrite:true});
                         }}/>
                         <_ActionButton text="Delete my personal data" action={deleteDetails} buttonType="btn-secondary"  />
@@ -37,7 +36,7 @@ const mapStateToProps = (state) => ({
     name:           state.client.user.name,
     surname:        state.client.user.surname,
     email:          state.client.user.email,
-    passport:       state.client.user.passport,
+    document:       state.client.user.document,
 });
 
 const UserManageDetails = connect(mapStateToProps,{storeDetails,deleteDetails})(_UserManageDetails);

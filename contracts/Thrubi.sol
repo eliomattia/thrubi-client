@@ -17,8 +17,8 @@ contract Thrubi {
     struct UserDetails {
         bytes6 country;
         bytes6 currency;
-        bytes32 passport;
-        bool passportEndorsed;
+        bytes32 document;
+        bool documentEndorsed;
         bytes32 taxNumber;
         bool taxNumberEndorsed;
         uint income;
@@ -193,8 +193,8 @@ contract Thrubi {
 
         bytes6 _country = "XEU";
         bytes6 _currency = "EUR";
-        bytes32 _passport = "00000";
-        //bool _passportEndorsed = false;
+        bytes32 _document = "00000";
+        //bool _documentEndorsed = false;
         bytes32 _taxNumber = "00000";
         //bool _taxNumberEndorsed = false;
         uint _income = 1000000;
@@ -203,7 +203,7 @@ contract Thrubi {
         usersDetails[_ethAddress] = UserDetails(
             _country
             ,_currency
-            ,_passport
+            ,_document
             ,false
             ,_taxNumber
             ,false

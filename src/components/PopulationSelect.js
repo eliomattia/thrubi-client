@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import Populations from "./Populations";
 import {fetchPopulations} from "../actions/userMenu";
 
-class _SelectPopulation extends Component {
+class _PopulationSelect extends Component {
     componentDidMount() {
         this.reload();
     };
@@ -25,11 +25,10 @@ class _SelectPopulation extends Component {
             <div className="populationTable">
                 {
                     busy ? <div className="text-center">Loading...</div> :
-                        deactivated ? "User deactivated, please activate user to select population" :
-                            populationsBusy ? <div>User populations loading...</div> :
-                                populationsNotAvailable ? "No populations found, we are working on this..."
-                                    :
-                                    <Populations />
+                        populationsBusy ? <div>User populations loading...</div> :
+                            populationsNotAvailable ? "No populations found, we are working on this..."
+                                :
+                                <Populations />
                 }
             </div>
         );
@@ -44,6 +43,6 @@ const mapStateToProps = (state) => ({
     populationsNotAvailable:    (!state.client.population.populations || !state.client.population.populations.length),
 });
 
-const SelectPopulation = connect(mapStateToProps,{fetchPopulations})(_SelectPopulation);
+const PopulationSelect = connect(mapStateToProps,{fetchPopulations})(_PopulationSelect);
 
-export default SelectPopulation;
+export default PopulationSelect;

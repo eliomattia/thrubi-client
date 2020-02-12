@@ -5,7 +5,7 @@ import {ethEventType} from "./config/blockchain_ethereum";
 import actionType from "../reducers/config/actionTypes";
 import flareBook from "./config/flare";
 import {THRUBI_ABI,THRUBI_ADDRESS} from "./env/blockchain_ethereum";
-import {INTERVAL_ETH_ADDRESS_WORKER, INTERVAL_ETH_NETWORK_WORKER} from "./config/workers";
+import {INTERVAL_ETH_ADDRESS_WORKER, INTERVAL_ETH_NETWORK_WORKER} from "./env/workers";
 
 export const signMessage = hash => async (dispatch,getState) =>  {
     const web3 = new Web3(Web3.givenProvider);

@@ -10,7 +10,7 @@ import DeclareIncome from "./DeclareIncome";
 import ThrubiBlue from "./ThrubiBlue";
 import ThrubiSilver from "./ThrubiSilver";
 import ThrubiGold from "./ThrubiGold";
-import SelectPopulation from "./SelectPopulation";
+import PopulationSelect from "./PopulationSelect";
 import AddPopulation from "./AddPopulation";
 import _ActionButton from "./_ActionButton";
 import _DeletePopulation from "./_DeletePopulation";
@@ -47,7 +47,7 @@ class _User extends Component {
                                         :
                                         populationId===-1 ?
                                             <Fragment>
-                                                <SelectPopulation />
+                                                <PopulationSelect />
                                                 {
                                                     auth!==1 ? "" : <AddPopulation />
                                                 }

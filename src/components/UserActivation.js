@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {connect} from "react-redux";
 import _ActionButton from "./_ActionButton";
-import * as userMenu from "../actions/userMenu";
+import {activateUser,deactivateUser} from "../actions/user";
 
 const _UserActivation = ({deactivated,activateUserBusy,activateUser,deactivateUser}) => {
     return(
@@ -22,6 +22,6 @@ const mapStateToProps = (state) => ({
     activateUserBusy: state.session.busy.action.activateUser,
 });
 
-const UserActivation = connect(mapStateToProps,userMenu)(_UserActivation);
+const UserActivation = connect(mapStateToProps,{activateUser,deactivateUser})(_UserActivation);
 
 export default UserActivation;

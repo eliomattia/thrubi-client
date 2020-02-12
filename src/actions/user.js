@@ -1,12 +1,12 @@
 import {processRequest} from "./server";
 import {emitFlare} from "./flare";
 import {logout} from "./auth";
-import {userFlags,flagFlare} from "./config/user";
+import {userFlags, flagFlare, activationState} from "./config/user";
 import flareBook from "./config/flare";
 import {requestType} from "./config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "./config/server";
-import {INTERVAL_USER_WORKER} from "./config/workers";
+import {INTERVAL_USER_WORKER} from "./env/workers";
 
 export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
     return dispatch({type:actionType.SWITCH_OPTION_USER_MENU,payload:{optionUserMenu}});
@@ -40,10 +40,11 @@ export const storeDetails = (userDetails,overwrite) => async (dispatch,getState)
 };
 
 const flareUserFlags = flags => async (dispatch,getState) => {
-        Object.keys(userFlags).map(async flag => {
-                if (flags[flag]!==getState().client.user[flag]) return await dispatch(emitFlare(flareBook.flareType.INFO,flagFlare(flags[flag],flag)));
-            }
-        );
+    Object.keys(userFlags).map(async flag => {
+            if ((getState().client.user[flag])&&(flags[flag]!==getState().client.user[flag]))
+                return await dispatch(emitFlare(flareBook.flareType.INFO,flagFlare(flags[flag],flag)));
+        }
+    );
 };
 
 export const activateUserWorker = () => async (dispatch,getState) => {
@@ -69,24 +70,23 @@ export const stopUserWorker = () => async (dispatch,getState) => {
 };
 
 export const activateUser = () => async (dispatch,getState) => {
-    dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER});
-    processRequest(requestType.POST,endpoint.USER_ACTIVATE,null)(dispatch,getState)
-        .then(result => {
-            dispatch({type:actionType.UPDATE_USER_ACTIVATION,payload:{deactivated:0}});
-        })
-        .catch(error => dispatch(emitFlare(flareBook.flareType.ERROR,error)))
-        .then(() => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}));
+    return await Promise.resolve()
+        .then   (()              => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}))
+        .then   (()              => dispatch({type:actionType.CLEAR_POPULATION,payload:{}}))
+        .then   (()              => dispatch(processRequest(requestType.POST,endpoint.USER_ACTIVATE,null)))
+        .then   (()              => dispatch({type:actionType.SET_USER_ACTIVATED,payload:{}}))
+        .catch  (error           => {throw flareBook.flareFallback(error,flareBook.errorFlare.USER_ACTIVATION);})
+        .finally(()              => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}));
 };
 
 export const deactivateUser = () => async (dispatch,getState) => {
-    dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER});
-    dispatch({type:actionType.CLEAR_POPULATION,payload:{}});
-    processRequest(requestType.POST,endpoint.USER_DEACTIVATE,null)(dispatch,getState)
-        .then(result => {
-            dispatch({type:actionType.UPDATE_USER_ACTIVATION,payload:{deactivated:1}});
-        })
-        .catch(error => dispatch(emitFlare(flareBook.flareType.ERROR,error)))
-        .finally(() => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}));
+    return await Promise.resolve()
+        .then   (()              => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}))
+        .then   (()              => dispatch({type:actionType.CLEAR_POPULATION,payload:{}}))
+        .then   (()              => dispatch(processRequest(requestType.POST,endpoint.USER_DEACTIVATE,{activationState:activationState.userRequestDeactivated})))
+        .then   (()              => dispatch({type:actionType.SET_USER_DEACTIVATED,payload:{}}))
+        .catch  (error           => {throw flareBook.flareFallback(error,flareBook.errorFlare.USER_ACTIVATION);})
+        .finally(()              => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}));
 };
 
 export const close = () => async (dispatch,getState) => {
@@ -95,5 +95,5 @@ export const close = () => async (dispatch,getState) => {
         .then   (()             => dispatch(processRequest(requestType.POST,endpoint.USER_CLOSE,{})))
         .then   (()             => dispatch(logout({autoLogin:false})))
         .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_ACCOUNT_CLOSE)))
-        .finally(()             => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+        .finally(()              => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };

@@ -48,4 +48,9 @@ export const flagFlare = (newState,flag) => {
     }
 };
 
+export const activationState = {
+    activated:              0,
+    userRequestDeactivated: 1,
+};
+
 export default userOptions;

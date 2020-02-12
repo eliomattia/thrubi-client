@@ -4,7 +4,7 @@ import {requestType} from "../config/http";
 import flareBook from "../config/flare";
 import actionType from "../../reducers/config/actionTypes";
 import {endpoint} from "../config/server";
-import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../config/workers";
+import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../env/workers";
 
 const fetchGlobalStats = () => async (dispatch,getState) => {
     let globalStats = {};
@@ -26,7 +26,7 @@ export const startGlobalStatsWorker = () => async (dispatch,getState) => {
             return Promise.resolve()
                 .then (()               => dispatch(fetchGlobalStats()))
                 .then (globalStats      => {dispatch({type:actionType.RECEIVE_GLOBAL_STATS,payload:{globalStats}});})
-                .catch(error            => {dispatch(emitFlare(flareBook.flareFallback(error,flareBook.flareType.ERROR,flareBook.errorFlare.ERR_RECEIVE_GLOBAL_STATS)));});
+                .catch(error            => {dispatch(emitFlare(flareBook.flareFallback(error,flareBook.errorFlare.ERR_RECEIVE_GLOBAL_STATS)));});
         };
         activity();
         return activity;

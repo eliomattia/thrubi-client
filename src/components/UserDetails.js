@@ -10,11 +10,11 @@ class _UserDetails extends Component {
                     <b>{(name || surname) ? (name ? name : "") + " " + (surname ? surname : "") : "No user data"}</b>&nbsp;
                 </div>
                 <div className="text-secondary displayInlineBlock small">uid#{id}&nbsp;<span
-                    className={"badge "+(deactivated?"badge-danger":"badge-info")}>{deactivated?"Deactivated":"Active"}</span></div>
+                    className={"badge "+(deactivated?"badge-danger":"badge-info")}>{deactivated?"Deactivated":"Active account"}</span></div>
                 <div className="text-secondary small">email: {email ? email : "not found"}&nbsp;<span
-                    className={"badge "+(emailVerified?"badge-info":"badge-danger")}>{emailVerified?"Verified":"Pending verification"}</span></div>
+                    className={"badge "+(emailVerified?"badge-info":"badge-danger")}>{emailVerified?"Email verified":"Pending verification"}</span></div>
                 <div className="text-secondary small">document#{document ? document : "not found"}&nbsp;<span
-                    className={"badge "+(identityCertified?"badge-info":"badge-danger")}>{identityCertified?"Certified":"Pending certification"}</span></div>
+                    className={"badge "+(identityCertified>0?"badge-info":"badge-danger")}>{identityCertified>0?"Identity certified":(identityCertified<0?"Pending certification":"Not certified")}</span></div>
             </div>
         );
     }

@@ -4,7 +4,7 @@ import Countries from "./Countries";
 import Ccys from "./Ccys";
 import {populationExists,createPopulation} from "../actions/adminMenu";
 
-class _AddPopulation extends Component {
+class _PopulationAdd extends Component {
     componentDidMount() {
         this.verifyExists();
     }
@@ -54,6 +54,6 @@ const mapStateToProps = (state) => ({
     exists: state.client.population.exists,
 });
 
-const AddPopulation = connect(mapStateToProps,{populationExists,createPopulation})(_AddPopulation);
+const PopulationAdd = connect(mapStateToProps,{populationExists,createPopulation})(_PopulationAdd);
 
-export default AddPopulation;
+export default PopulationAdd;

@@ -1,10 +1,10 @@
 import {processRequest} from "./server";
 import {emitFlare} from "./flare";
 import {logout} from "./auth";
-import {userFlags, flagFlare, activationState} from "./config/user";
+import {activationState,detailName,flagFlare,userFlags} from "./config/user";
 import flareBook from "./config/flare";
 import {requestType} from "./config/http";
-import actionType,{busyPayload} from "../reducers/config/actionTypes";
+import actionType, {busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "./config/server";
 import {INTERVAL_USER_WORKER} from "./env/workers";
 
@@ -39,6 +39,12 @@ export const storeDetails = (userDetails,overwrite) => async (dispatch,getState)
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
 };
 
+export const uploadDocument = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(storeDetails({[detailName.submittedDocument]:true},{overwrite:true})))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_CERTIFY,{})));
+};
+
 const flareUserFlags = flags => async (dispatch,getState) => {
     Object.keys(userFlags).map(async flag => {
             if ((getState().client.user[flag])&&(flags[flag]!==getState().client.user[flag]))
@@ -56,7 +62,7 @@ export const activateUserWorker = () => async (dispatch,getState) => {
                 .then (flags      => userFlags=flags)
                 .then (()         => dispatch(flareUserFlags(userFlags)))
                 .then (()         => dispatch({type:actionType.RECEIVE_USER_FLAGS,payload:userFlags}))
-                .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_FLAGS)));
+                .catch(error      => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_FLAGS)));
         };
         activity();
         return activity;
@@ -87,6 +93,14 @@ export const deactivateUser = () => async (dispatch,getState) => {
         .then   (()              => dispatch({type:actionType.SET_USER_DEACTIVATED,payload:{}}))
         .catch  (error           => {throw flareBook.flareFallback(error,flareBook.errorFlare.USER_ACTIVATION);})
         .finally(()              => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_ACTIVATEUSER}));
+};
+
+export const declareIncome = mDeclared => async (dispatch,getState) => {
+    return Promise.resolve()
+        .then  (() => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}))
+        .then  (() => dispatch(processRequest(requestType.POST,endpoint.MEMBER_REQUEST_DECLAREINCOME+"/"+getState().client.population.id+"/"+mDeclared,null)))
+        .catch (error => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
+        .finally(() => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}));
 };
 
 export const close = () => async (dispatch,getState) => {

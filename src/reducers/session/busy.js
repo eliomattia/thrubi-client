@@ -15,7 +15,6 @@ const busyInit = {
         adminMenu:          false,
     },
     action: {
-        switchPopulation:   true,
         fetchPopulations:   false,
         activation:         false,
         claim:              false,

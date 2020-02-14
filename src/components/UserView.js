@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import _UserIcon from './_UserIcon';
+import UserIcon from './UserIcon';
 import UserDetails from './UserDetails';
 
 class _UserView extends Component {
     render() {
-        const {busy,role,deactivated,loggedIn,user} = this.props;
+        const {busy,loggedIn} = this.props;
 
         return(
             <div className="text-center">
@@ -13,8 +13,8 @@ class _UserView extends Component {
                     busy ? <div>Dashboard loading...</div> :
                         !loggedIn ? <div>User not logged in</div> :
                             <div>
-                                <_UserIcon role={role?"admin":"user"} deactivated={deactivated?"_deactivated":"" } />
-                                <UserDetails user={user} />
+                                <UserIcon />
+                                <UserDetails />
                             </div>
                 }
             </div>

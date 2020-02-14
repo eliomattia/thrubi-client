@@ -1,7 +1,9 @@
-import React, { Component } from "react";
+import React, {Component,Fragment} from "react";
 import {connect} from "react-redux";
 import Populations from "./Populations";
-import {fetchPopulations} from "../actions/userMenu";
+import {fetchPopulations} from "../actions/population";
+import _ActionButton from "./_ActionButton";
+import {createMember} from "../actions/member";
 
 class _PopulationSelect extends Component {
     componentDidMount() {
@@ -13,13 +15,14 @@ class _PopulationSelect extends Component {
     };
 
     reload() {
-        const {userId,populationsBusy} = this.props;
+        const {userId,populationsBusy,populationsNotAvailable} = this.props;
         const {fetchPopulations} = this.props;
-        if (!populationsBusy) fetchPopulations(userId);
+        if ((!populationsBusy)&&(populationsNotAvailable)) fetchPopulations(userId);
     }
 
     render() {
-        const {busy,populationsBusy,deactivated,populationsNotAvailable} = this.props;
+        const {busy,populationsBusy,populationsNotAvailable,populationId} = this.props;
+        const {createMember} = this.props;
 
         return (
             <div className="populationTable">
@@ -28,7 +31,11 @@ class _PopulationSelect extends Component {
                         populationsBusy ? <div>User populations loading...</div> :
                             populationsNotAvailable ? "No populations found, we are working on this..."
                                 :
-                                <Populations />
+                                <Fragment>
+                                    <div className="my-3">Please select your country and currency from the list below and confirm:</div>
+                                    <Populations />
+                                    <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" buttonType="btn-primary" />
+                                </Fragment>
                 }
             </div>
         );
@@ -37,12 +44,12 @@ class _PopulationSelect extends Component {
 
 const mapStateToProps = (state) => ({
     busy:                       state.session.busy.component.userMenu,
-    userId:                     state.client.user.id,
-    deactivated:                state.client.user.deactivated,
     populationsBusy:            state.session.busy.action.populations,
     populationsNotAvailable:    (!state.client.population.populations || !state.client.population.populations.length),
+    userId:                     state.client.user.id,
+    populationId:               state.client.population.id,
 });
 
-const PopulationSelect = connect(mapStateToProps,{fetchPopulations})(_PopulationSelect);
+const PopulationSelect = connect(mapStateToProps,{fetchPopulations,createMember})(_PopulationSelect);
 
 export default PopulationSelect;

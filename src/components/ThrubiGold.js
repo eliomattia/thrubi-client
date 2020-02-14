@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import _MemberGold from './_MemberGold';
+import _ActionButton from "./_ActionButton";
 
 class _ThrubiGold extends Component {
     constructor(props) {
@@ -20,19 +21,9 @@ class _ThrubiGold extends Component {
         const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,thrubiPriceGold} = this.props;
 
         return(
-            <div className="text-center">
-                <form onSubmit={(event) => {
-                    event.preventDefault();
-                    this.setState({manualPanel: true});
-                    this.setState({showPanel: !this.state.showPanel});
-                }}>
-                    <b>
-                        <input id="showPanel"
-                               className={"btn btn-sm p-0 btn-block btn-"+((!!member.thrubiGold)?(this.state.showPanel?"primary":"secondary"):"light")}
-                               type="submit"
-                               value="Gold Thrubi" />
-                    </b>
-                </form>
+            <div className="text-center text-success">
+                <_ActionButton text="Gold Thrubi" buttonType={"btn-outline-success"+(this.state.showPanel?" active":"")} disabled={!!member.thrubiGold}
+                               action={() => { this.setState({manualPanel: true}); this.setState({showPanel: !this.state.showPanel});}} />
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :

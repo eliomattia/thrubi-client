@@ -3,7 +3,7 @@ import {processRequest} from "./server";
 import {signMessage} from "./blockchain_ethereum";
 import {switchOptionUserMenu,fetchDetails,storeDetails,activateUserWorker,stopUserWorker} from "./user";
 import {emitFlare} from "./flare";
-import {deselectPopulation} from "./userMenu";
+import {deselectPopulation} from "./population";
 import {requestType} from "./config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
 import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/redirect";

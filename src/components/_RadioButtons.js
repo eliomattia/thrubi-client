@@ -1,7 +1,7 @@
 import React from 'react';
 import Channel from "../classes/Channel";
 
-const _ActionButton = ({columnSize,color,activeFilter,checkedFilter,action,elements}) =>
+const _RadioButtons = ({columnSize,color,activeFilter,checkedFilter,action,elements}) =>
     <div data-toggle="buttons" className="btn btn-block btn-group btn-group-toggle border-0 row p-0 m-0 my-2">
         {
             elements.map((element,key) =>
@@ -28,5 +28,5 @@ const _ActionButton = ({columnSize,color,activeFilter,checkedFilter,action,eleme
     </div>
 ;
 
-export default _ActionButton;
+export default _RadioButtons;
 

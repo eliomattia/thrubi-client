@@ -2,8 +2,8 @@ import actionType from "../config/actionTypes";
 import userOptions from "../../actions/config/user";
 
 const userInit = {
-    id: -1,
-    role: -1,
+    id: null,
+    role: null,
     deactivated: null,
     emailVerified: null,
     identityCertified: null,

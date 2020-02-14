@@ -1,5 +1,5 @@
 import {processRequest} from "./server";
-import {deselectPopulation} from "./userMenu";
+import {deselectPopulation} from "./population";
 import {emitFlare} from "./flare";
 import {requestType} from "./config/http";
 import flareBook from "./config/flare";

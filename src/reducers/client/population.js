@@ -1,24 +1,23 @@
 import actionType from "../config/actionTypes";
 
 const populationInit = {
-    populations: [],
-    exists: 0,
-    id: -1,
-    lastId: -1,
-    countryId: '',
-    countryName: '',
-    ccyId: '',
-    ccyName: '',
-    ccySymbol: '',
-    thrubiPriceSilver: 0,
-    thrubiPriceSilverNext: 0,
-    thrubiPriceGold: 1.5,
-    brake: 0,
-    mincome: 0,
-    equality: 0,
-    warperMincome: 0,
-    warperEquality: 0,
-    thrubiFees: 0.005, // 0.5%
+    populations:    [],
+    exists:         null,
+    id:             null,
+    countryId:      null,
+    countryName:    null,
+    ccyId:          null,
+    ccyName:        null,
+    ccySymbol:      null,
+    thrubiPriceSilver:      0,
+    thrubiPriceSilverNext:  0,
+    thrubiPriceGold:        1.5,
+    brake:                  0,
+    mincome:                0,
+    equality:               0,
+    warperMincome:          0,
+    warperEquality:         0,
+    thrubiFees:             0.005, // 0.5%
 };
 
 const population = (state = populationInit,action) => {
@@ -28,47 +27,43 @@ const population = (state = populationInit,action) => {
             return populationInit;
         case actionType.CLEAR_POPULATION:
             return Object.assign({},populationInit,{
-                lastId: state.lastId,
-            });
-        case actionType.CHANGE_POPULATION:
-            return Object.assign({},state,{
-                lastId: state.id,
+                populations:            state.populations,
             });
         case actionType.RECEIVE_POPULATIONS:
             return Object.assign({},state,{
-                populations:             action.payload.populations,
-            });
-        case actionType.RECEIVE_THRUBI_PRICE_SILVER:
-            return Object.assign({},state,{
-                thrubiPriceSilver: action.payload.thrubiPriceSilver,
-            });
-        case actionType.RECEIVE_THRUBI_PRICE_SILVER_NEXT:
-            return Object.assign({},state,{
-                thrubiPriceSilverNext: action.payload.thrubiPriceSilverNext,
-            });
-        case actionType.RECEIVE_STATS:
-            return Object.assign({},state,{
-                mincome:                 parseFloat(action.payload.stats.mincome),
-                equality:                parseFloat(action.payload.stats.equality),
-            });
-        case actionType.RECEIVE_CONFIG:
-            return Object.assign({},state,{
-                brake:                   parseFloat(action.payload.config.brake),
-                warperMincome:           parseFloat(action.payload.config.warperMincome),
-                warperEquality:          parseFloat(action.payload.config.warperEquality),
+                populations:            action.payload.populations,
             });
         case actionType.SELECT_POPULATION:
             return Object.assign({},state,{
-                id:                      parseInt(action.payload.population.populationId),
-                countryId:               action.payload.population.countryId,
-                countryName:             action.payload.population.countryName,
-                ccyId:                   action.payload.population.ccyId,
-                ccyName:                 action.payload.population.ccyName,
-                ccySymbol:               action.payload.population.ccySymbol,
+                id:                     parseInt(action.payload.population.populationId),
+                countryId:              action.payload.population.countryId,
+                countryName:            action.payload.population.countryName,
+                ccyId:                  action.payload.population.ccyId,
+                ccyName:                action.payload.population.ccyName,
+                ccySymbol:              action.payload.population.ccySymbol,
+            });
+        case actionType.RECEIVE_THRUBI_PRICE_SILVER:
+            return Object.assign({},state,{
+                thrubiPriceSilver:      action.payload.thrubiPriceSilver,
+            });
+        case actionType.RECEIVE_THRUBI_PRICE_SILVER_NEXT:
+            return Object.assign({},state,{
+                thrubiPriceSilverNext:  action.payload.thrubiPriceSilverNext,
+            });
+        case actionType.RECEIVE_STATS:
+            return Object.assign({},state,{
+                mincome:                parseFloat(action.payload.stats.mincome),
+                equality:               parseFloat(action.payload.stats.equality),
+            });
+        case actionType.RECEIVE_CONFIG:
+            return Object.assign({},state,{
+                brake:                  parseFloat(action.payload.config.brake),
+                warperMincome:          parseFloat(action.payload.config.warperMincome),
+                warperEquality:         parseFloat(action.payload.config.warperEquality),
             });
         case actionType.POPULATION_EXISTS:
             return Object.assign({},state,{
-                exists:                  action.payload.exists,
+                exists:                 action.payload.exists,
             });
         default:
             return state;

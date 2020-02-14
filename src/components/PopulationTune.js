@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import _CcyRow from "./_CcyRow";
 import {tunePopulation} from "../actions/adminMenu";
 
-class _TunePopulation extends Component {
+class _PopulationTune extends Component {
 
     render() {
         let newBrake;
@@ -15,11 +15,11 @@ class _TunePopulation extends Component {
         return (
             <Fragment>
                 <div className="container">
-                    <_CcyRow text="mincome" muted={false} bold={false} value={mincome} ccySymbol={""}/>
-                    <_CcyRow text="equality" muted={false} bold={false} value={equality} ccySymbol={""}/>
-                    <_CcyRow text="brake" muted={false} bold={false} value={brake} ccySymbol={""}/>
-                    <_CcyRow text="warperMincome" muted={false} bold={false} value={warperMincome} ccySymbol={""}/>
-                    <_CcyRow text="warperEquality" muted={false} bold={false} value={warperEquality} ccySymbol={""}/>
+                    <_CcyRow text="mincome" bold={false} value={mincome} ccySymbol={""}/>
+                    <_CcyRow text="equality" bold={false} value={equality} ccySymbol={""}/>
+                    <_CcyRow text="brake" bold={false} value={brake} ccySymbol={""}/>
+                    <_CcyRow text="warperMincome" bold={false} value={warperMincome} ccySymbol={""}/>
+                    <_CcyRow text="warperEquality" bold={false} value={warperEquality} ccySymbol={""}/>
                 </div>
                 <form onSubmit={async (event) => {
                     event.preventDefault();
@@ -50,6 +50,6 @@ const mapStateToProps = (state) => ({
     warperEquality: state.client.population.warperEquality,
 });
 
-const TunePopulation = connect(mapStateToProps,{tunePopulation})(_TunePopulation);
+const PopulationTune = connect(mapStateToProps,{tunePopulation})(_PopulationTune);
 
-export default TunePopulation;
+export default PopulationTune;

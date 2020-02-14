@@ -1,26 +1,21 @@
 import React, {Component,Fragment} from 'react';
 import { connect } from 'react-redux';
 import _ActionButton from "./_ActionButton";
-import * as userMenu from "../actions/userMenu";
+import {advancedMode,viewHistory} from "../actions/member";
+import MemberDelete from "./MemberDelete";
 
 class _MemberOptions extends Component {
 
     render() {
         const {optionAdvancedMode,optionViewHistory} = this.props;
-        const {advancedMode,viewHistory,changePopulation} = this.props;
+        const {advancedMode,viewHistory} = this.props;
 
         return (
-            <Fragment>
-                <div className="col-lg-1 userPanel">
-                    <_ActionButton buttonType="p-0 btn-primary" action={() => advancedMode(!optionAdvancedMode)} text={optionAdvancedMode?"Advanced":"Basic"}/>
-                </div>
-                <div className="col-lg-1 userPanel">
-                    <_ActionButton buttonType={"p-0 btn-"+(optionViewHistory?"primary":"light")} disabled={!optionAdvancedMode} action={() => viewHistory(!optionViewHistory)}  text={optionViewHistory?"History":"History"} />
-                </div>
-                <div className="col-lg-1 userPanel">
-                    <_ActionButton buttonType="p-0 btn-primary" action={changePopulation} text="Back" />
-                </div>
-            </Fragment>
+            <div className="navbar-light col-lg-4">
+                <_ActionButton buttonType={"p-0 btn-outline-primary"+(optionAdvancedMode?" active":"")} action={() => advancedMode(!optionAdvancedMode)} text={optionAdvancedMode?"Advanced":"Basic"}/>
+                <_ActionButton buttonType={"p-0 btn-outline-primary"+(optionViewHistory?" active":"")} disabled={!optionAdvancedMode} action={() => viewHistory(!optionViewHistory)}  text={optionViewHistory?"History":"History"} />
+                <MemberDelete />
+            </div>
         );
     }
 }
@@ -31,6 +26,6 @@ const mapStateToProps = (state) => ({
     populationId: state.client.population.id,
 });
 
-const MemberOptions = connect(mapStateToProps,userMenu)(_MemberOptions);
+const MemberOptions = connect(mapStateToProps,{advancedMode,viewHistory})(_MemberOptions);
 
 export default MemberOptions;

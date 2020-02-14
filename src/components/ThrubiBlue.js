@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
+import _ActionButton from "./_ActionButton";
 import Claim from "./Claim";
 import _MemberBlue from './_MemberBlue';
 
@@ -21,24 +22,14 @@ class _ThrubiBlue extends Component {
         const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,optionViewHistory,optionAdvancedMode} = this.props;
 
         return(
-            <div className="text-center">
-                <form onSubmit={(event) => {
-                    event.preventDefault();
-                    this.setState({manualPanel: true});
-                    this.setState({showPanel: !this.state.showPanel});
-                }}>
-                    <b>
-                        <input id="showPanel"
-                               className={"btn btn-sm p-0 btn-block btn-"+((!!member.thrubiBlue)?(this.state.showPanel?"primary":"secondary"):"light")}
-                               type="submit"
-                               value="Blue Thrubi" />
-                    </b>
-                </form>
+            <div className="text-center text-primary">
+                <_ActionButton text="Blue Thrubi" buttonType={"btn-outline-primary"+(this.state.showPanel?" active":"")} disabled={!!member.thrubiBlue}
+                               action={() => { this.setState({manualPanel: true}); this.setState({showPanel: !this.state.showPanel});}} />
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
                             !userLoggedIn ? "User not logged in" :
-                                populationId <0 ? "No population selected" :
+                                !populationId ? "No population selected" :
                                     <Fragment>
                                         <_MemberBlue
                                             member={member}

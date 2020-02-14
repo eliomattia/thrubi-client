@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import { connect } from "react-redux";
 import _CcyRow from "./_CcyRow";
 import {transform} from "../actions/blockchain_ethereum";
+import _ActionButton from "./_ActionButton";
 
 class _Transform extends Component {
     constructor(props) {
@@ -30,25 +31,25 @@ class _Transform extends Component {
                                                     Final transformed $₮ will depend upon Ξ exchange rates and $₮ price when your transaction is accepted.
                                                     Any excess Ξ that you transform will be credited on the account and used whenever $₮ becomes available.
                                                 </div>
-                                                <div className="container">
+                                                <div className="text-secondary container">
                                                     <_CcyRow text="Your Ξ balance"
-                                                             muted={false} bold={false}
+                                                             bold={false}
                                                              value={0 /* add a worker that constantly checks Ξ balance from blockchain for account */ }
                                                              ccySymbol="Ξ" />
                                                     <_CcyRow text="Ξ to spend to transform"
-                                                             muted={false} bold={false}
+                                                             bold={false}
                                                              value={this.state.transformEthValue}
                                                              ccySymbol="Ξ" />
                                                     <_CcyRow text={"Current value in "+ccySymbol}
-                                                             muted={false} bold={false}
+                                                             bold={false}
                                                              value={(this.state.transformEthValue * exrate)}
                                                              ccySymbol={ccySymbol} />
                                                     <_CcyRow text={"Thrubi fees ("+(thrubiFees * 100).toFixed(1)+"%)"}
-                                                             muted={false} bold={false}
+                                                             bold={false}
                                                              value={((this.state.transformEthValue * exrate) * thrubiFees)}
                                                              ccySymbol={ccySymbol} />
                                                     <_CcyRow text="You can transform"
-                                                             muted={false} bold={false}
+                                                             bold={false}
                                                              value={((this.state.transformEthValue * exrate) * (1-thrubiFees) / thrubiPriceSilver)}
                                                              ccySymbol="$₮" />
                                                 </div>
@@ -56,7 +57,7 @@ class _Transform extends Component {
                                                     event.preventDefault();
                                                     transform(this.state.transformEthValue);
                                                 }}>
-                                                    <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm"
+                                                    <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
                                                            placeholder={this.transformEthValue} required
                                                            onChange={(action) => {
                                                                action.preventDefault();
@@ -64,23 +65,17 @@ class _Transform extends Component {
                                                                if (!newValue) newValue=0;
                                                                this.setState({transformEthValue: newValue});
                                                            }}/>
-                                                    <input className={"btn btn-sm p-0 btn-block btn-"+(this.state.transformEthValue?"primary":"light")}
+                                                    <input className={"btn btn-sm p-0 rounded-0 btn-block btn-"+(this.state.transformEthValue?"primary":"light")}
                                                            type="submit"
                                                            disabled={!this.state.transformEthValue}
                                                            value={this.state.transformEthValue?"Transform "+this.state.transformEthValue.toFixed(2)+" Ξ":"Insert an Ξ amount"} />
                                                 </form>
                                             </Fragment>
                                     }
-                                    <form onSubmit={(event) => {
-                                        event.preventDefault();
-                                        this.setState({transformProcedureActive: !this.state.transformProcedureActive});
-                                    }}>
-                                        <input id="activateTransformProcedure"
-                                               className={"btn btn-sm p-0 btn-block btn-"+(this.state.transformProcedureActive?"secondary":(thrubiSilver?"primary":"light"))}
-                                               type="submit"
-                                               disabled={((!thrubiSilver)&&(!this.state.transformProcedureActive))}
-                                               value={(this.state.transformProcedureActive?"Close":(thrubiSilver?"Activate transform procedure":"Nothing to transform"))} />
-                                    </form>
+                                    <_ActionButton disabled={((!thrubiSilver)&&(!this.state.transformProcedureActive))}
+                                                   buttonType={"btn-"+(this.state.transformProcedureActive?"":"outline-")+"secondary"+(thrubiSilver?" active":"")}
+                                                   text={(this.state.transformProcedureActive?"Close":(thrubiSilver?"Activate transform procedure":"Nothing to transform"))}
+                                                   action={() => this.setState({transformProcedureActive: !this.state.transformProcedureActive})} />
                                 </Fragment>
                 }
             </div>

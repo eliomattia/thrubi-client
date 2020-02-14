@@ -43,7 +43,7 @@ class _App extends Component {
                         {
                             loggedIn ? "" :
                                 <div className="w-100 py-2 pt-4 pb-1 text-center">
-                                    <h3 className="displayInlineBlock">Rising inequality is toxic to growth</h3>
+                                    <h4 className="display-4 displayInlineBlock">Rising inequality is toxic to growth</h4>
                                     <i className="displayInlineBlock">&nbsp;(Nick Hanauer)</i>
                                 </div>
                         }

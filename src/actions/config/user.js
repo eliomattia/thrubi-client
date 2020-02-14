@@ -53,4 +53,13 @@ export const activationState = {
     userRequestDeactivated: 1,
 };
 
+
+export const detailName = {
+    name:               "name",
+    surname:            "surname",
+    email:              "email",
+    document:           "document",
+    submittedDocument:  "submittedDocument",
+};
+
 export default userOptions;

@@ -18,7 +18,7 @@ class _ThrubiGold extends Component {
     }
 
     render() {
-        const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,thrubiPriceGold} = this.props;
+        const {busy,member,ccySymbol,exrate,thrubiPriceGold} = this.props;
 
         return(
             <div className="text-center text-success">
@@ -27,16 +27,14 @@ class _ThrubiGold extends Component {
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
-                            !userLoggedIn ? "User not logged in" :
-                                populationId <0 ? "No population selected" :
-                                    <Fragment>
-                                        <_MemberGold
-                                            member={member}
-                                            ccySymbol={ccySymbol}
-                                            exrate={exrate}
-                                            thrubiPriceGold={thrubiPriceGold}
-                                        />
-                                    </Fragment>
+                            <Fragment>
+                                <_MemberGold
+                                    member={member}
+                                    ccySymbol={ccySymbol}
+                                    exrate={exrate}
+                                    thrubiPriceGold={thrubiPriceGold}
+                                />
+                            </Fragment>
                 }
             </div>
         );
@@ -45,8 +43,6 @@ class _ThrubiGold extends Component {
 
 const mapStateToProps = (state) => ({
     busy: state.session.busy.component.dashboard,
-    userLoggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,

@@ -10,7 +10,7 @@ const _Titlebar = ({ethNetwork,ethAddress}) => (
             <span className="d-none d-xl-block mr-2 alignBottom text-dark navbar-nav">Welcome to Thrubi!</span>
             <div className="d-none d-lg-inline-block alignBottom"><GlobalStats/></div>
         </div>
-        <div className="col-lg-3 d-none d-lg-block float-right mr-0 my-2 text-right ethBadges">
+        <div className="col-lg-3 d-none d-lg-block float-right mr-0 my-2 text-right consoleFont">
             <div className="navbar-nav small alignBottom">
                 {ethNetwork&&ethAddress?(
                     <div>

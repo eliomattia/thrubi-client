@@ -25,7 +25,7 @@ const _MemberInfo = ({
             <div className="col-5 container-fluid p-0 m-0 text-left">
                 <div className="col-sm-12 p-0">{exrate.toFixed(2)}{ccySymbol}</div>
                 <div className="col-sm-12 p-0">{thrubiPriceSilver.toFixed(2)}{ccySymbol}</div>
-                <div className="col-sm-12 p-0">{thrubiPriceSilverNext.toFixed(2)}{ccySymbol} (next)</div>
+                <div className="col-sm-12 p-0">{thrubiPriceSilverNext.toFixed(2)}{ccySymbol} (next month)</div>
                 <div className="col-sm-12 p-0">{thrubiPriceGold.toFixed(2)}{ccySymbol}</div>
             </div>
         </div>

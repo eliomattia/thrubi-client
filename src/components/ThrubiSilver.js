@@ -19,7 +19,7 @@ class _ThrubiSilver extends Component {
     }
 
     render() {
-        const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,thrubiPriceSilver,thrubiPriceGold,optionViewHistory,optionAdvancedMode} = this.props;
+        const {busy,member,ccySymbol,exrate,thrubiPriceSilver,thrubiPriceGold,optionViewHistory,optionAdvancedMode} = this.props;
 
         return(
             <div className="text-center text-secondary">
@@ -28,20 +28,18 @@ class _ThrubiSilver extends Component {
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
-                            !userLoggedIn ? "User not logged in" :
-                                populationId <0 ? "No population selected" :
-                                    <Fragment>
-                                        <_MemberSilver
-                                            member={member}
-                                            ccySymbol={ccySymbol}
-                                            exrate={exrate}
-                                            thrubiPriceSilver={thrubiPriceSilver}
-                                            thrubiPriceGold={thrubiPriceGold}
-                                            optionViewHistory={optionViewHistory}
-                                            optionAdvancedMode={optionAdvancedMode}
-                                        />
-                                        <Transform />
-                                    </Fragment>
+                            <Fragment>
+                                <_MemberSilver
+                                    member={member}
+                                    ccySymbol={ccySymbol}
+                                    exrate={exrate}
+                                    thrubiPriceSilver={thrubiPriceSilver}
+                                    thrubiPriceGold={thrubiPriceGold}
+                                    optionViewHistory={optionViewHistory}
+                                    optionAdvancedMode={optionAdvancedMode}
+                                />
+                                <Transform />
+                            </Fragment>
                 }
             </div>
         );
@@ -50,8 +48,6 @@ class _ThrubiSilver extends Component {
 
 const mapStateToProps = (state) => ({
     busy: state.session.busy.component.dashboard,
-    userLoggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,

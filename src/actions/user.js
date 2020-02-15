@@ -47,8 +47,10 @@ export const uploadDocument = () => async (dispatch,getState) => {
 
 const flareUserFlags = flags => async (dispatch,getState) => {
     Object.keys(userFlags).map(async flag => {
-            if ((getState().client.user[flag])&&(flags[flag]!==getState().client.user[flag]))
-                return await dispatch(emitFlare(flareBook.flareType.INFO,flagFlare(flags[flag],flag)));
+            const currentFlag = getState().client.user[flag];
+            const incomingFlag = flags[flag];
+            if ((currentFlag!==null)&&(((currentFlag===0)^(incomingFlag===0))||(Math.sign(currentFlag)>0)^(Math.sign(incomingFlag)>0)))
+                return await dispatch(emitFlare(flareBook.flareType.INFO,flagFlare(incomingFlag,flag)));
         }
     );
 };
@@ -97,10 +99,10 @@ export const deactivateUser = () => async (dispatch,getState) => {
 
 export const declareIncome = mDeclared => async (dispatch,getState) => {
     return Promise.resolve()
-        .then  (() => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}))
-        .then  (() => dispatch(processRequest(requestType.POST,endpoint.MEMBER_REQUEST_DECLAREINCOME+"/"+getState().client.population.id+"/"+mDeclared,null)))
-        .catch (error => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
-        .finally(() => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}));
+        .then  (()              => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}))
+        .then  (()              => dispatch(processRequest(requestType.POST,endpoint.MEMBER_REQUEST_DECLAREINCOME+"/"+getState().client.population.id+"/"+mDeclared,null)))
+        .catch (error           => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
+        .finally(()              => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_DECLAREINCOME}));
 };
 
 export const close = () => async (dispatch,getState) => {

@@ -13,7 +13,7 @@ class _UserDetails extends Component {
                     className={"badge "+(deactivated?"badge-danger":"badge-info")}>{deactivated?"Deactivated":"Active account"}</span></div>
                 <div className="text-secondary small">email: {email ? email : "not found"}&nbsp;<span
                     className={"badge "+(emailVerified?"badge-info":"badge-danger")}>{emailVerified?"Email verified":"Pending verification"}</span></div>
-                <div className="text-secondary small">document#{document ? document : "not found"}&nbsp;<span
+                <div className="text-secondary small">document: {document ? document : "not found"}&nbsp;<span
                     className={"badge "+(identityCertified>0?"badge-info":"badge-danger")}>{identityCertified>0?"Identity certified":(identityCertified<0?"Pending certification":"Not certified")}</span></div>
             </div>
         );

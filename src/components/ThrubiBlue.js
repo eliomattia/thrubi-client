@@ -19,7 +19,7 @@ class _ThrubiBlue extends Component {
     }
 
     render() {
-        const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,optionViewHistory,optionAdvancedMode} = this.props;
+        const {busy,member,ccySymbol,exrate,optionViewHistory,optionAdvancedMode} = this.props;
 
         return(
             <div className="text-center text-primary">
@@ -28,18 +28,16 @@ class _ThrubiBlue extends Component {
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
-                            !userLoggedIn ? "User not logged in" :
-                                !populationId ? "No population selected" :
-                                    <Fragment>
-                                        <_MemberBlue
-                                            member={member}
-                                            ccySymbol={ccySymbol}
-                                            exrate={exrate}
-                                            optionViewHistory={optionViewHistory}
-                                            optionAdvancedMode={optionAdvancedMode}
-                                        />
-                                        <Claim />
-                                    </Fragment>
+                            <Fragment>
+                                <_MemberBlue
+                                    member={member}
+                                    ccySymbol={ccySymbol}
+                                    exrate={exrate}
+                                    optionViewHistory={optionViewHistory}
+                                    optionAdvancedMode={optionAdvancedMode}
+                                />
+                                <Claim />
+                            </Fragment>
                 }
             </div>
         );
@@ -48,8 +46,6 @@ class _ThrubiBlue extends Component {
 
 const mapStateToProps = (state) => ({
     busy: state.session.busy.component.dashboard,
-    userLoggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,

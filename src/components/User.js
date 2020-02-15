@@ -27,7 +27,7 @@ class _User extends Component {
         const {close} = this.props;
 
         return(
-            <div className="container-fluid row p-0 m-0">
+            <div className="container-fluid row p-0 m-0 mb-5">
                 {
                     busy ? "User loading..." :
                         <Fragment>
@@ -59,7 +59,7 @@ class _User extends Component {
                                                     <MemberDelete />
                                                 </Fragment>
                                                 :
-                                                <div className="bg-light">
+                                                <div className="bg-light mr-2">
                                                     <MemberBar />
                                                     {
                                                         !auth ?

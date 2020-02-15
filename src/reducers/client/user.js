@@ -1,5 +1,5 @@
 import actionType from "../config/actionTypes";
-import userOptions from "../../actions/config/user";
+import userOptions from "../../config/user";
 
 const userInit = {
     id: null,

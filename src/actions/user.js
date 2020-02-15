@@ -1,12 +1,12 @@
 import {processRequest} from "./server";
 import {emitFlare} from "./flare";
 import {logout} from "./auth";
-import {activationState,detailName,flagFlare,userFlags} from "./config/user";
-import flareBook from "./config/flare";
-import {requestType} from "./config/http";
+import {activationState,detailName,flagFlare,userFlags} from "../config/user";
+import flareBook from "../config/flare";
+import {requestType} from "../config/http";
 import actionType, {busyPayload} from "../reducers/config/actionTypes";
-import {endpoint} from "./config/server";
-import {INTERVAL_USER_WORKER} from "./env/workers";
+import {endpoint} from "../config/server";
+import {INTERVAL_USER_WORKER} from "../env/workers";
 
 export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
     return dispatch({type:actionType.SWITCH_OPTION_USER_MENU,payload:{optionUserMenu}});

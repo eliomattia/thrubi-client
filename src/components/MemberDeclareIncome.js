@@ -40,11 +40,11 @@ class _MemberDeclareIncome extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
-    ccySymbol: state.client.population.ccySymbol,
-    mCurrent: state.client.member.mCurrent,
-    incomeApproved: state.client.user.incomeApproved,
-    declareIncomeBusy: state.session.busy.action.declareIncome,
+const mapStateToProps = state => ({
+    ccySymbol:          state.client.population.ccySymbol,
+    mCurrent:           state.client.member.mCurrent,
+    incomeApproved:     state.client.user.incomeApproved,
+    declareIncomeBusy:  state.session.busy.action.declareIncome,
 });
 
 const MemberDeclareIncome = connect(mapStateToProps,{declareIncome})(_MemberDeclareIncome);

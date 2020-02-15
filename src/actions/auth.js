@@ -4,11 +4,11 @@ import {signMessage} from "./blockchain_ethereum";
 import {switchOptionUserMenu,fetchDetails,storeDetails,activateUserWorker,stopUserWorker} from "./user";
 import {emitFlare} from "./flare";
 import {deselectPopulation} from "./population";
-import {requestType} from "./config/http";
+import {requestType} from "../config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
-import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/redirect";
-import {endpoint} from "./config/server";
-import {facebook} from "./config/facebook";
+import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "../config/redirect";
+import {endpoint} from "../config/server";
+import {facebook} from "../config/facebook";
 import {
     googleAuthUri,
     googleWindowName,
@@ -16,17 +16,17 @@ import {
     linkedInAuthUri,
     linkedInWindowName,
     linkedInWindowParams
-} from "./config/auth";
-import flareBook from "./config/flare";
-import userOptions from "./config/user";
+} from "../config/auth";
+import flareBook from "../config/flare";
+import userOptions from "../config/user";
 import {
     linkedInRedirectUri,
     linkedInAppState,
     linkedInAppClientId,
     googleRedirectUri,
     googleAppClientId,
-} from "./env/auth";
-import {REDIRECT_CLOSE_INTERVAL} from "./env/redirect";
+} from "../env/auth";
+import {REDIRECT_CLOSE_INTERVAL} from "../env/redirect";
 
 // ---------------
 // Auth menu items

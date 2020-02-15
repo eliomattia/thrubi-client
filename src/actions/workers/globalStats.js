@@ -1,10 +1,10 @@
 import {processRequest} from "../server";
 import {emitFlare} from "../flare";
-import {requestType} from "../config/http";
-import flareBook from "../config/flare";
+import {requestType} from "../../config/http";
+import flareBook from "../../config/flare";
 import actionType from "../../reducers/config/actionTypes";
-import {endpoint} from "../config/server";
-import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../env/workers";
+import {endpoint} from "../../config/server";
+import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../../env/workers";
 
 const fetchGlobalStats = () => async (dispatch,getState) => {
     let globalStats = {};

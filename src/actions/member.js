@@ -1,12 +1,12 @@
 import {processRequest} from "./server";
 import {emitFlare} from "./flare";
-import flareBook from "./config/flare";
+import flareBook from "../config/flare";
 import {startPopulationWorker,stopPopulationWorker} from "./population";
 import {startMarketWorker,stopMarketWorker} from "./market";
-import {requestType} from "./config/http";
+import {requestType} from "../config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
-import {endpoint} from "./config/server";
-import {INTERVAL_MEMBER_WORKER} from "./env/workers";
+import {endpoint} from "../config/server";
+import {INTERVAL_MEMBER_WORKER} from "../env/workers";
 
 export const createMember = populationId => async (dispatch,getState) => {
     return Promise.resolve()

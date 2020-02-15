@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Thrubi App",
   "main": "truffle-config.js",
-  "homepage": "/thrubi-client/",
+  "homepage": "/",
   "directories": {
     "test": "test"
   },

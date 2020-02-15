@@ -1,7 +1,7 @@
 import React, {Component,Fragment} from 'react';
 import {connect} from "react-redux";
 import {deleteFlare,refreshFlare} from "../actions/flare";
-import flareBook from "../actions/config/flare";
+import flareBook from "../config/flare";
 import './styles/Flare.scss';
 
 class _Flare extends Component {

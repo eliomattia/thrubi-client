@@ -1,8 +1,8 @@
 import request from "request";
-import {uri,spotApi} from "./config/market";
-import flareBook from "./config/flare";
+import {uri,spotApi} from "../config/market";
+import flareBook from "../config/flare";
 import actionType from "../reducers/config/actionTypes";
-import {INTERVAL_MARKET_WORKER} from "./env/workers";
+import {INTERVAL_MARKET_WORKER} from "../env/workers";
 
 export const fetchExrate = ccyId => async (dispatch,getState) => {
     if (ccyId) {

@@ -6,7 +6,7 @@ import _RadioButtons from "./_RadioButtons";
 import _KeyboardChannel from "./_KeyboardChannel";
 import * as auth from "../actions/auth";
 import {switchOptionUserMenu} from "../actions/user";
-import userOptions from "../actions/config/user";
+import userOptions from "../config/user";
 
 class _Auth extends Component {
     componentDidUpdate() {

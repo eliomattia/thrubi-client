@@ -1,5 +1,5 @@
 import FlareQueue from "../classes/FlareQueue";
-import flareBook,{TIMEOUT_FLARE_DELETE,TIMEOUT_FLARE_DELETE_LONG} from "./config/flare";
+import flareBook,{TIMEOUT_FLARE_DELETE,TIMEOUT_FLARE_DELETE_LONG} from "../config/flare";
 import actionType from "../reducers/config/actionTypes";
 
 export const getFlareNext = () => async (dispatch,getState) => {

@@ -23,7 +23,7 @@ class _ThrubiBlue extends Component {
 
         return(
             <div className="text-center text-primary">
-                <_ActionButton text="Thrubi Blue" buttonType={"btn-outline-primary"+(this.state.showPanel?" active":"")} disabled={!!member.thrubiBlue}
+                <_ActionButton text="Thrubi Blue" buttonType={"btn-outline-primary"+(this.state.showPanel?" active":"")}
                                action={() => { this.setState({manualPanel: true}); this.setState({showPanel: !this.state.showPanel});}} />
                 {
                     !this.state.showPanel ? "" :

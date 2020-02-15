@@ -7,7 +7,7 @@ const _GlobalStats = ({
     nCountry,
 }) => (
     <span className="text-primary d-none d-lg-inline-block text-center small mr-2 alignBottom">
-        {nUser} {nUser===1?"user":"users"} using Thrubi in {nCountry} {nCountry===1?"country":"countries"} and {nCcy} {nCcy===1?"currency":"currencies"}
+        A community {nUser}-strong. Available in {nCountry} {nCountry===1?"country":"countries"} and {nCcy} {nCcy===1?"currency":"currencies"}.
     </span>
 );
 

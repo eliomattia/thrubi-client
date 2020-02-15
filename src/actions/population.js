@@ -2,11 +2,11 @@ import {processRequest} from "./server";
 import {startMemberWorker,stopMemberWorker} from "./member";
 import {emitFlare} from "./flare";
 import {startMarketWorker,stopMarketWorker} from "./market";
-import flareBook from "./config/flare";
-import {requestType} from "./config/http";
+import flareBook from "../config/flare";
+import {requestType} from "../config/http";
 import actionType, {busyPayload} from "../reducers/config/actionTypes";
-import {endpoint} from "./config/server";
-import {INTERVAL_POPULATION_WORKER} from "./env/workers";
+import {endpoint} from "../config/server";
+import {INTERVAL_POPULATION_WORKER} from "../env/workers";
 
 export const fetchPopulations = () => async (dispatch,getState) => {
     let populations;

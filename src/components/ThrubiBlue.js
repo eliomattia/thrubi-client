@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import _ActionButton from "./_ActionButton";
 import Claim from "./Claim";
-import _MemberBlue from './_MemberBlue';
+import _MemberBlue from "./_MemberBlue";
 
 class _ThrubiBlue extends Component {
     constructor(props) {

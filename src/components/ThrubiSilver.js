@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import Transform from "./Transform";
-import _MemberSilver from './_MemberSilver';
+import _MemberSilver from "./_MemberSilver";
 import _ActionButton from "./_ActionButton";
 
 class _ThrubiSilver extends Component {

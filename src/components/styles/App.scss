@@ -35,10 +35,17 @@
 }
 
 .titleBar {
-    height: 43px;
+     height: 43px;
+     min-width: 100%;
+     background: white;
+     border-bottom: solid 3px white;
+     border-image: thrubiGradient("thrubi-gradient-titlebar");
+ }
+
+.footer {
     min-width: 100%;
     background: white;
-    border-bottom: solid 3px white;
+    border-top: solid 3px white;
     border-image: thrubiGradient("thrubi-gradient-titlebar");
 }
 

@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
-import _MemberGold from './_MemberGold';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
+import _MemberGold from "./_MemberGold";
 import _ActionButton from "./_ActionButton";
 
 class _ThrubiGold extends Component {

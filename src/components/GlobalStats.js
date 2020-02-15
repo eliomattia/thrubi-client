@@ -1,13 +1,13 @@
 import React from 'react';
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 const _GlobalStats = ({
     nUser,
     nCcy,
     nCountry,
 }) => (
-    <span className="text-primary d-none d-lg-inline-block text-center small mr-2 alignBottom">
-        A community {nUser}-strong. Available in {nCountry} {nCountry===1?"country":"countries"} and {nCcy} {nCcy===1?"currency":"currencies"}.
+    <span className="text-primary text-center small mr-2">
+        A {nUser}-strong community for worldwide income redistribution. Available in {nCountry} {nCountry===1?"country":"countries"} and {nCcy} {nCcy===1?"currency":"currencies"}.
     </span>
 );
 

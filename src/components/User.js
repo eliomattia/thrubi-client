@@ -42,7 +42,7 @@ class _User extends Component {
                                     </div>
                                     : ""}
                             </div>
-                            <div className="col-lg-9 navbar-light">
+                            <div className="col-lg-9 navbar-light p-0">
                                 {
                                     !loggedIn ?
                                         <Info />

@@ -3,14 +3,12 @@ import { connect } from "react-redux";
 import GlobalStats from "./GlobalStats";
 
 const _Footer = ({ethNetwork,ethAddress}) => (
-    <div className="d-none container-fluid navbar fixed-top flex-md-nowrap p-0 titleBar bg-light">
-        <div className="col-lg-7 d-flex justify-content-center justify-content-md-center justify-content-lg-start fullWidth text-left">
-            <img  className="mr-2 logoThrubi" src={process.env.PUBLIC_URL+"/logo.png"} alt="Thrubi logo" height="20px" width="20px" />
-            <span className="mr-2 alignBottom navbar-brand thrubiGradient"><b>Thrubi App</b></span>
-            <span className="d-none d-xl-block mr-2 alignBottom text-dark navbar-nav">Welcome to Thrubi!</span>
+    <div className="d-block d-lg-none container-fluid flex-md-nowrap p-0 footer bg-light">
+        <div className="col-lg-12 float-right mx-0 my-0 pt-2 text-center">
+            <div className="text-dark navbar-nav">Welcome to Thrubi!</div>
             <GlobalStats/>
         </div>
-        <div className="col-lg-5 d-none d-lg-block float-right mr-0 my-2 text-right">
+        <div className="col-lg-12 float-right mx-0 my-0 text-center">
             <div className="navbar-nav small">
                 {ethNetwork&&ethAddress?(
                     <div>

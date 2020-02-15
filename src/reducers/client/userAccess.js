@@ -8,12 +8,12 @@ const userAccessInit = {
     loginChannel:               null,
     payChannel:                 null,
     channels: {
-        BLOCKCHAIN_ETHEREUM:    0,
-        KEYBOARD:               0,
         FACEBOOK:               0,
-        LINKEDIN:               0,
         GOOGLE:                 0,
+        LINKEDIN:               0,
+        BLOCKCHAIN_ETHEREUM:    0,
         PAYPAL:                 0,
+        KEYBOARD:               0,
     },
     facebookStatus:         null,
     facebookUserId:         null,
@@ -59,12 +59,12 @@ const userAccess = (state = userAccessInit,action) => {
         case actionType.RECEIVE_CHANNELS:
         case actionType.RECEIVE_USER_CHANNELS:
             return Object.assign({},state,{channels:{
-                BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
-                KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
                 FACEBOOK:               action.payload.FACEBOOK             ? action.payload.FACEBOOK               : state.channels.FACEBOOK,
-                LINKEDIN:               action.payload.LINKEDIN             ? action.payload.LINKEDIN               : state.channels.LINKEDIN,
                 GOOGLE:                 action.payload.GOOGLE               ? action.payload.GOOGLE                 : state.channels.GOOGLE,
+                LINKEDIN:               action.payload.LINKEDIN             ? action.payload.LINKEDIN               : state.channels.LINKEDIN,
+                BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
                 PAYPAL:                 action.payload.PAYPAL               ? action.payload.PAYPAL                 : state.channels.PAYPAL,
+                KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
             }});
         case actionType.RECEIVE_LOGIN_CHANNEL:
             return Object.assign({},state,{

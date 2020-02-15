@@ -18,10 +18,9 @@ class _Flare extends Component {
                                 Object.keys(flares).map((key,i) =>
                                     <div key={key} role={"alert"} onMouseOver={() => refreshFlare(key,true)} onMouseOut={() => refreshFlare(key)}
                                          className={"alert alert-dismissible fade show "
-                                                        +(flares[key].type===flareBook.flareType.ERROR?"alert-red"
-                                                        :(flares[key].type===flareBook.flareType.WARNING?"alert-danger"
+                                                        +(flares[key].flareType===flareBook.flareType.ERROR?"alert-red"
+                                                        :(flares[key].flareType===flareBook.flareType.WARNING?"alert-danger"
                                                         :"alert-secondary"))}>
-                                        <b>{flares[key].type}</b>&nbsp;
                                         <span>{flares[key].message?flares[key].message.slice(0,200):"Internal error"}</span>&nbsp;
                                         <i>{flares[key].details?flares[key].details.slice(0,200):""}</i>
                                         <button className="close paddingX" type="button" onClick={() => deleteFlare(key)} data-dismiss="alert"><span>&times;</span></button>

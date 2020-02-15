@@ -8,11 +8,11 @@ class _Info extends Component {
             <div className="container-fluid">
                 <div className="row py-2 rounded-bottom">
                     <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiBlue">
+                        <div className="mx-0 my-2 my-sm-0 thrubiBlue">
                             <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/crowd.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 everybody" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-primary"><div className="opaque">
-                                <h3>Everybody</h3>
+                                <h3>Vision</h3>
                                 <p>
                                     Be part of the sustainable societies of the future. If your country has adhered to a Thrubi plan,
                                     you will be awarded Thrubi Blue each month, based on your current income.
@@ -24,7 +24,7 @@ class _Info extends Component {
                         </div>
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiSilver">
+                        <div className="mx-0 my-2 my-sm-0 thrubiSilver">
                             <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/bloomberg.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 wealthy" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-secondary"><div className="opaque">
@@ -40,7 +40,7 @@ class _Info extends Component {
                         </div>
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiGold">
+                        <div className="mx-0 my-2 my-sm-0 thrubiGold">
                             <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/futuristic.jpg)"}}
                                  className="border-0 container-fluid align-top m-0 societies" />
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-success"><div className="opaque">

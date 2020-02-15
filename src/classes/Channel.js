@@ -3,7 +3,7 @@ class Channel {
     static channelIsForLogin      (channelMode) {return  Math.abs(channelMode)     %2;} //last bit
     static channelIsForPay        (channelMode) {return (Math.abs(channelMode)>>1) %2;} //second-to-last bit
 
-    static channelColor (channelName) {
+    static channelColor(channelName) {
         switch (channelName) {
             case "BLOCKCHAIN_ETHEREUM": return "blockchain-ethereum";
             case "KEYBOARD":            return "keyboard";
@@ -15,7 +15,7 @@ class Channel {
         }
     }
 
-    static channelAuthFunctionName (channelName) {
+    static channelAuthFunctionName(channelName) {
         switch (channelName) {
             case "BLOCKCHAIN_ETHEREUM": return "BlockchainEthereum";
             case "KEYBOARD":            return "Keyboard";
@@ -37,7 +37,7 @@ class Channel {
         }
     }
 
-    static channelUserFriendlyName (channelName,actionType) {
+    static channelUserFriendlyName(channelName,actionType) {
         switch (actionType) {
             case "USE": switch (channelName) {
                 case "BLOCKCHAIN_ETHEREUM": return "Use my Ethereum wallet";

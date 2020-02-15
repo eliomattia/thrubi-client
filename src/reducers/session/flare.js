@@ -17,7 +17,7 @@ const flare = (state = flareInit, action) => {
                 deactivated:    false,
                 flares:         Object.assign({},state.flares,{
                     [action.payload.index]:{
-                        type:           action.payload.type,
+                        flareType:      action.payload.flareType,
                         message:        action.payload.message,
                         details:        action.payload.details,
                         deleteTimeout:  action.payload.deleteTimeout,
@@ -37,7 +37,7 @@ const flare = (state = flareInit, action) => {
                 deactivated:    state.deactivated,
                 flares:         Object.assign({},state.flares,{
                     [action.payload.index]:{
-                        type:           state.flares[action.payload.index].type,
+                        flareType:      state.flares[action.payload.index].flareType,
                         message:        state.flares[action.payload.index].message,
                         details:        state.flares[action.payload.index].details,
                         deleteTimeout:  action.payload.deleteTimeout,

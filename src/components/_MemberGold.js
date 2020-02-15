@@ -9,8 +9,8 @@ const _MemberGold = ({
 }) => (
     <Fragment>
         <div className="container-fluid">
-            <_CcyRow text="Gold ₲₮"         bold={true}  value={ member.thrubiGold} ccySymbol={"₲₮"} />
-            <_CcyRow text="Market value"    bold={false} value={(member.thrubiGold*thrubiPriceGold)} ccySymbol={ccySymbol} />
+            <_CcyRow text="My Thrubi Gold"      bold={true}  value={ member.thrubiGold} ccySymbol={"₮₲"} />
+            <_CcyRow text="Market value"        bold={false} value={(member.thrubiGold*thrubiPriceGold)} ccySymbol={ccySymbol} />
         </div>
         <_ActionButton action={() => {}} text="Find gold Thrubi marketplace" buttonType="btn-outline-success" />
     </Fragment>

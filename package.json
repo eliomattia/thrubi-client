@@ -16,8 +16,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "author": "elio.mattia@gmail.com",
-  "license": "ISC",
+  "author": "Elio Mattia",
+  "license": "GNU GPL v3.0",
   "dependencies": {
     "bootstrap-react": "^0.3.1",
     "node-sass": "^4.13.1",

@@ -23,7 +23,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
         </div>
         <div className="d-none d-lg-block container-fluid flex-md-nowrap p-0 footer bg-light">
             <div className="col-lg-12 float-right m-0 text-center">
-                <div className="my-2 text-center consoleFont">Contact us: info@thrubi.com</div>
+                <div className="my-2 text-center consoleFont">Contact us: info@thrubi.com</div> {/* • */}
             </div>
         </div>
     </Fragment>

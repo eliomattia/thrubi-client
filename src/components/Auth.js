@@ -66,7 +66,7 @@ class _Auth extends Component {
                         {
                             loggedIn ? "" :
                                 <_ActionButton
-                                    text={optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "I am new to Thrubi" : "I already have a Thrubi account"}
+                                    text={optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "Create a new Thrubi account" : "I already have a Thrubi account"}
                                     action={switchOptionLoginCreate}
                                     buttonType="nav-link border-0 text-small text-primary"/>
                         }

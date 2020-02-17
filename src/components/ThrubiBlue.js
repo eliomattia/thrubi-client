@@ -15,7 +15,7 @@ class _ThrubiBlue extends Component {
 
     componentWillUpdate() {
         const {member} = this.props;
-        if (this.state.showPanel===(!member.thrubiBlue)&&!this.state.manualPanel) this.setState({showPanel: (!!member.thrubiBlue)});
+        if (this.state.showPanel===(!member.thrubiBlue)&&!this.state.manualPanel) this.setState({showPanel: (member.thrubiBlue)});
     }
 
     render() {

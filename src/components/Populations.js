@@ -31,7 +31,7 @@ class _Populations extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     deactivated:        state.client.user.deactivated,
     populationId:       state.client.population.id,
     populations:        state.client.population.populations,

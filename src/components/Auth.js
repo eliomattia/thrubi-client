@@ -154,7 +154,7 @@ class _Auth extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:               state.session.busy.component.auth,
     ethAddress:         state.client.userAccess.ethAddress,
     optionLoginCreate:  state.client.user.optionLoginCreate,

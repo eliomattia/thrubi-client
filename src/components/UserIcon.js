@@ -10,7 +10,7 @@ class _UserIcon extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     role:               state.client.user.role ? "admin" : "user",
     deactivated:        state.client.user.deactivated ? "_deactivated" : "",
 });

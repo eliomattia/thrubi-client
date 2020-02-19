@@ -64,7 +64,7 @@ class _App extends Component {
     };
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:               state.session.busy.component.app,
     loggedIn:           state.client.userAccess.loggedIn,
 });

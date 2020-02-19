@@ -18,7 +18,7 @@ class _UserIdentity extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     identityCertified:  state.client.user.identityCertified,
     countryName:        state.client.population.countryName,
 });

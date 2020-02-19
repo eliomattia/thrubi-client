@@ -17,7 +17,7 @@ const _UserActivation = ({deactivated,activateUserBusy,activateUser,deactivateUs
     );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     deactivated: state.client.user.deactivated,
     activateUserBusy: state.session.busy.action.activateUser,
 });

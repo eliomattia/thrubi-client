@@ -42,7 +42,7 @@ class _PopulationSelect extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:                       state.session.busy.component.userMenu,
     populationsBusy:            state.session.busy.action.populations,
     populationsNotAvailable:    (!state.client.population.populations || !state.client.population.populations.length),

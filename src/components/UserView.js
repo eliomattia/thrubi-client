@@ -22,7 +22,7 @@ class _UserView extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.dashboard,
     loggedIn:  state.client.userAccess.loggedIn,
     role: state.client.user.role,

@@ -46,7 +46,7 @@ class _Countries extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     countries: state.global.country.countries,
     countryId: state.global.country.id,
 });

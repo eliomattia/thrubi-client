@@ -31,7 +31,7 @@ const _UserManageDetails = ({updateUserBusy,name,surname,email,document,storeDet
     );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     updateUserBusy: state.session.busy.action.userDetails,
     name:           state.client.user.name,
     surname:        state.client.user.surname,

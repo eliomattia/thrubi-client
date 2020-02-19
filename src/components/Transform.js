@@ -83,7 +83,7 @@ class _Transform extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.transform,
     transformBusy: state.session.busy.action.transform,
     populationId: state.client.population.id,

@@ -51,7 +51,7 @@ class _Claim extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.claim,
     populationId: state.client.population.id,
     claimBusy: state.session.busy.action.claim,

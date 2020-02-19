@@ -62,7 +62,7 @@ class _Info extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
 });
 
 const Info = connect(mapStateToProps,{})(_Info);

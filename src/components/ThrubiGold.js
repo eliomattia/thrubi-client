@@ -41,7 +41,7 @@ class _ThrubiGold extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.dashboard,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,

@@ -14,7 +14,7 @@ class _MemberDelete extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     identityCertified:  state.client.user.identityCertified,
 });
 

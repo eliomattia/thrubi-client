@@ -48,7 +48,7 @@ class _PopulationAdd extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     countryId: state.global.country.id,
     ccyId: state.global.ccy.id,
     exists: state.client.population.exists,

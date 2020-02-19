@@ -42,7 +42,7 @@ class _PopulationTune extends Component {
 
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     mincome: state.client.population.mincome,
     equality: state.client.population.equality,
     brake: state.client.population.brake,

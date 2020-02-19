@@ -23,7 +23,7 @@ const _Titlebar = ({ethNetwork,ethAddress}) => (
     </div>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     ethNetwork: state.client.userAccess.ethNetwork,
     ethAddress: state.client.userAccess.ethAddress,
 });

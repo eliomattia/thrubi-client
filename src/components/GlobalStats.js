@@ -11,7 +11,7 @@ const _GlobalStats = ({
     </span>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     nUser: state.global.stats.nUser,
     nCountry: state.global.stats.nCountry,
     nCcy: state.global.stats.nCcy,

@@ -11,7 +11,7 @@ class _PopulationDelete extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
 });
 
 const PopulationDelete = connect(mapStateToProps,{deletePopulation})(_PopulationDelete);

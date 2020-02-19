@@ -34,7 +34,7 @@ class _Flare extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     deactivated:state.session.flare.deactivated,
     flares:     state.session.flare.flares,
 });

@@ -20,7 +20,7 @@ class _UserDetails extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     id:                 state.client.user.id,
     name:               state.client.user.name,
     surname:            state.client.user.surname,

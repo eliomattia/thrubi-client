@@ -8,13 +8,13 @@ const _MemberInfo = ({
     thrubiPriceSilverNext,
     thrubiPriceGold,
 }) => (
-    <div className="col-sm-4 container-fluid p-0 m-0 small">
+    <div className="container-fluid p-0 m-0 small consoleFont">
         <div className="col-sm-12 container-fluid row p-0 m-0">
             <div className="col-5 container-fluid p-0 m-0 text-right">
                 <div className="col-sm-12 p-0">1.00Ξ</div>
-                <div className="col-sm-12 p-0">1.00$₮</div>
-                <div className="col-sm-12 p-0">1.00$₮</div>
-                <div className="col-sm-12 p-0">1.00₲₮</div>
+                <div className="col-sm-12 p-0">1.00₮S</div>
+                <div className="col-sm-12 p-0">1.00₮S</div>
+                <div className="col-sm-12 p-0">1.00₮G</div>
             </div>
             <div className="col-2 container-fluid p-0 m-0 text-center">
                 <div className="col-sm-12 p-0">=</div>
@@ -32,7 +32,7 @@ const _MemberInfo = ({
     </div>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,
     thrubiPriceSilver: state.client.population.thrubiPriceSilver,

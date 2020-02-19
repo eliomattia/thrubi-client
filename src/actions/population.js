@@ -57,31 +57,35 @@ export const stopPopulationWorker = () => async (dispatch,getState) => {
     dispatch({type:actionType.STOP_POPULATION_WORKER,payload:{}});
 };
 
-const fetchThrubiPriceSilver = (populationId) => async (dispatch,getState) => {
+const fetchThrubiPriceSilver = populationId => async (dispatch,getState) => {
     return Promise.resolve()
         .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_THRUBIPRICE_SILVER+"/"+populationId,null)))
         .then   (result         => dispatch({type:actionType.RECEIVE_THRUBI_PRICE_SILVER,payload:{thrubiPriceSilver:parseFloat(result.thrubiPriceSilver)}}))
         .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
 };
 
-const fetchThrubiPriceSilverNext = (populationId) => async (dispatch,getState) => {
+const fetchThrubiPriceSilverNext = populationId => async (dispatch,getState) => {
     return Promise.resolve()
         .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_THRUBIPRICE_SILVER_NEXT+"/"+populationId,null)))
         .then   (result         => dispatch({type:actionType.RECEIVE_THRUBI_PRICE_SILVER_NEXT,payload:{thrubiPriceSilverNext:parseFloat(result.thrubiPriceSilverNext)}}))
         .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
 };
 
-const fetchStats = (populationId) => async (dispatch,getState) => {
+const fetchStats = populationId => async (dispatch,getState) => {
     return Promise.resolve()
         .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_STATS_READ+"/"+populationId,null)))
         .then   (stats          => dispatch({type:actionType.RECEIVE_STATS,payload:{stats}}))
         .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
 };
 
-const fetchConfig = (populationId) => async (dispatch,getState) => {
+const fetchConfig = populationId => async (dispatch,getState) => {
     return Promise.resolve()
-        .then   (()                 => dispatch(processRequest(requestType.GET,endpoint.POPULATION_CONFIG_READ+"/"+populationId,null)))
-        .then   (config             => dispatch({type:actionType.RECEIVE_CONFIG,payload:{config}}))
-        .catch  (error              => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
+        .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_CONFIG_READ+"/"+populationId,null)))
+        .then   (config         => dispatch({type:actionType.RECEIVE_CONFIG,payload:{config}}))
+        .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
 };
 
+export const changeCountryFilter = countryFilter => async (dispatch,getState) => {
+    return Promise.resolve()
+        .then   (()             => dispatch({type:actionType.RECEIVE_COUNTRY_FILTER,payload:{countryFilter}}));
+};

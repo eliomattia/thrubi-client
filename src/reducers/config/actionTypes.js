@@ -44,6 +44,7 @@ let actionType = {
     DESELECT_CCY: null,
     RECEIVE_COUNTRIES: null,
     SELECT_COUNTRY: null,
+    RECEIVE_COUNTRY_FILTER: null,
     DESELECT_COUNTRY: null,
     RECEIVE_EXRATE: null,
     RECEIVE_GLOBAL_STATS: null,

@@ -18,18 +18,18 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                         </div>
                     ):("Accessing blockchain data")}
                 </div>
-                <div className="my-2 text-center">Contact us: info@thrubi.com</div>
+                <div className="my-2 text-center">Contact: info@thrubi.com</div>
             </div>
         </div>
         <div className="d-none d-lg-block container-fluid flex-md-nowrap p-0 footer bg-light">
             <div className="col-lg-12 float-right m-0 text-center">
-                <div className="my-2 text-center consoleFont">Contact us: info@thrubi.com</div> {/* • */}
+                <div className="my-2 text-center consoleFont">Contact: info@thrubi.com</div> {/* • */}
             </div>
         </div>
     </Fragment>
 );
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     ethNetwork: state.client.userAccess.ethNetwork,
     ethAddress: state.client.userAccess.ethAddress,
 });

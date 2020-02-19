@@ -9,6 +9,7 @@ const populationInit = {
     ccyId:          null,
     ccyName:        null,
     ccySymbol:      null,
+    countryFilter:  null,
     thrubiPriceSilver:      0,
     thrubiPriceSilverNext:  0,
     thrubiPriceGold:        1.5,
@@ -64,6 +65,10 @@ const population = (state = populationInit,action) => {
         case actionType.POPULATION_EXISTS:
             return Object.assign({},state,{
                 exists:                 action.payload.exists,
+            });
+        case actionType.RECEIVE_COUNTRY_FILTER:
+            return Object.assign({},state,{
+                countryFilter:          action.payload.countryFilter,
             });
         default:
             return state;

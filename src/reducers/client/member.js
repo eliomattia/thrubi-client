@@ -37,7 +37,6 @@ const member = (state = memberInit,action) => {
                 thrubiSilver:               parseFloat(action.payload.member.thrubiSilver),
                 thrubiSilverNext:           parseFloat(action.payload.member.thrubiSilverNext),
                 thrubiSilverEth:            parseFloat(action.payload.member.thrubiSilverEth),
-                thrubiSilverRedeem:         parseFloat(action.payload.member.thrubiSilverRedeem),
                 thrubiSilverTransformTotal: parseFloat(action.payload.member.thrubiSilverTransformTotal),
                 thrubiGold:                 parseFloat(action.payload.member.thrubiGold),
             });

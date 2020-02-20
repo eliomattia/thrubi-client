@@ -53,7 +53,7 @@ class _User extends Component {
                                                 { !auth ? "" : <PopulationAdd /> }
                                             </Fragment>
                                             :
-                                            <div className="bg-light mr-2">
+                                            <div className="bg-light mr-2 ml-2 ml-lg-0">
                                                 <MemberBar />
                                                 {
                                                     identityCertified<=0 ?

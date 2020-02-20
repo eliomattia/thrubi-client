@@ -72,7 +72,7 @@ class Channel {
             }
             case "ADD": switch (channelName) {
                 case "BLOCKCHAIN_ETHEREUM": return "Connect an Ethereum wallet";
-                case "KEYBOARD":            return "Enable credentials (username/password)";
+                case "KEYBOARD":            return "Enable username/password";
                 case "FACEBOOK":            return "Connect a Facebook account";
                 case "LINKEDIN":            return "Connect a LinkedIn account";
                 case "GOOGLE":              return "Connect a Google account";
@@ -80,8 +80,8 @@ class Channel {
                 default:                    return "";
             }
             case "DELETE": switch (channelName) {
-                case "BLOCKCHAIN_ETHEREUM": return "Disable access via my Ethereum wallet";
-                case "KEYBOARD":            return "Disable credentials (username/password)";
+                case "BLOCKCHAIN_ETHEREUM": return "Disconnect my Ethereum wallet";
+                case "KEYBOARD":            return "Disable username/password";
                 case "FACEBOOK":            return "Disconnect my Facebook account";
                 case "LINKEDIN":            return "Disconnect my LinkedIn account";
                 case "GOOGLE":              return "Disconnect my Google account";

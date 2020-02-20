@@ -133,7 +133,7 @@ class _Auth extends Component {
                                                                         if (actions.filter(channels[key])) return (
                                                                             <_ActionButton
                                                                                 channel={key}
-                                                                                text={Channel.channelUserFriendlyName(key, actions.mode)}
+                                                                                text={Channel.channelUserFriendlyName(key,actions.mode)}
                                                                                 action={actions.action(key)}
                                                                                 key={actions.mode + key}
                                                                                 buttonType={"btn btn-sm p-0 btn-" + actions.color}/>

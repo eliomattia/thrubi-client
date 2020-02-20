@@ -11,12 +11,13 @@ const _Footer = ({ethNetwork,ethAddress}) => (
             </div>
             <div className="col-lg-12 float-right mx-0 my-0 mb-1 text-center">
                 <div className="navbar-nav small consoleFont">
-                    {ethNetwork&&ethAddress?(
-                        <div>
-                            <span className="badge badge-warning">network/{ethNetwork}</span>
-                            <span className="badge badge-info">{ethAddress}</span>
-                        </div>
-                    ):("Accessing blockchain data")}
+                    {
+                        !ethNetwork || !ethAddress ? "" :
+                            <div>
+                                <span className="badge badge-warning d-none d-xl-inline"><span className="">network/</span>{ethNetwork}</span>
+                                <span className="badge badge-info">{ethAddress}</span>
+                            </div>
+                    }
                 </div>
                 <div className="my-2 text-center"><a className="nav-link text-primary" href="mailto:info@thrubi.com">Contact: info@thrubi.com</a></div>
             </div>

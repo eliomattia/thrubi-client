@@ -12,12 +12,13 @@ const _Titlebar = ({ethNetwork,ethAddress}) => (
         </div>
         <div className="col-lg-3 d-none d-lg-block float-right mr-0 my-2 text-right consoleFont">
             <div className="navbar-nav small alignBottom">
-                {ethNetwork&&ethAddress?(
+                {
+                    !ethNetwork || !ethAddress ? "" :
                     <div>
                         <span className="badge badge-warning d-none d-xl-inline"><span className="">network/</span>{ethNetwork}</span>
                         <span className="badge badge-info">{ethAddress}</span>
                     </div>
-                ):("Accessing blockchain data")}
+                }
             </div>
         </div>
     </div>

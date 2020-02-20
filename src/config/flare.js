@@ -39,6 +39,7 @@ const flareBook = {
         FB_NOT_FOUND:               {thrubiFlareId:"0004",message:"Unable to connect to Facebook"},
         ERR_FETCH_GLOBAL_STATS:     {thrubiFlareId:"0011",message:"Error while receiving global stats"},
         ERR_RECEIVE_GLOBAL_STATS:   {thrubiFlareId:"0012",message:"Error while processing global stats"},
+        NO_ETHEREUM_CONFIG:         {thrubiFlareId:"0022",message:"Ethereum wallet not found, please configure or enable MetaMask"},
         CANNOT_ENABLE_ETHEREUM:     {thrubiFlareId:"0013",message:"Could not enable Ethereum"},
         ERR_USER_DETAILS:           {thrubiFlareId:"0014",message:"Error processing user details"},
         ERR_ACCOUNT_CLOSE:          {thrubiFlareId:"0015",message:"Could not close user account"},

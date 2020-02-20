@@ -138,10 +138,12 @@ const finalizeLogin = (loginData) => async (dispatch,getState) => {
 };
 
 const verifyBlockchainEthereum = () => async (dispatch,getState) => {
+    let ethNetwork = getState().client.userAccess.ethNetwork;
     let ethAddress = getState().client.userAccess.ethAddress;
     let challengeTokens;
     return await Promise.resolve()
         .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {if (!ethNetwork || !ethAddress) throw flareBook.errorFlare.NO_ETHEREUM_CONFIG;})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.AUTH_CHALLENGE_BLOCKCHAINETHEREUM,{ethAddress})))
         .then   (result           => {challengeTokens={challengeJwt:result.challengeJwt,hashedJwt:result.hashedJwt};})
         .then   (()               => dispatch(signMessage(challengeTokens.hashedJwt)))

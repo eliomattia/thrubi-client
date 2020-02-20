@@ -9,8 +9,8 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 <div className="text-dark navbar-nav">Welcome to Thrubi!</div>
                 <GlobalStats/>
             </div>
-            <div className="col-lg-12 float-right mx-0 my-0 mb-1 text-center consoleFont">
-                <div className="navbar-nav small">
+            <div className="col-lg-12 float-right mx-0 my-0 mb-1 text-center">
+                <div className="navbar-nav small consoleFont">
                     {ethNetwork&&ethAddress?(
                         <div>
                             <span className="badge badge-warning">network/{ethNetwork}</span>
@@ -18,12 +18,12 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                         </div>
                     ):("Accessing blockchain data")}
                 </div>
-                <div className="my-2 text-center">Contact: info@thrubi.com</div>
+                <div className="my-2 text-center"><a className="nav-link text-primary" href="mailto:info@thrubi.com">Contact: info@thrubi.com</a></div>
             </div>
         </div>
         <div className="d-none d-lg-block container-fluid flex-md-nowrap p-0 footer bg-light">
             <div className="col-lg-12 float-right m-0 text-center">
-                <div className="my-2 text-center consoleFont">Contact: info@thrubi.com</div> {/* • */}
+                <div className="my-2 text-center"><a className="nav-link text-primary" href="mailto:info@thrubi.com">Contact: info@thrubi.com</a></div> {/* • */}
             </div>
         </div>
     </Fragment>

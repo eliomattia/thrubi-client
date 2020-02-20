@@ -14,10 +14,8 @@ class _Info extends Component {
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-primary"><div className="opaque">
                                 <h3>Vision</h3>
                                 <p>
-                                    Be part of the sustainable societies of the future.
-                                    You will be awarded Thrubi Blue each month, based on your current income.
+                                    As a Thrubi member, you will receive Thrubi Blue each month, based on your current income.
                                     Your Thrubi Blue will in turn give you the rights to regular payments.
-                                    Nobody can be extremely poor or extremely rich with Thrubi.
                                 </p>
                                 <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-primary" />
                             </div></div>
@@ -30,10 +28,8 @@ class _Info extends Component {
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-secondary"><div className="opaque">
                                 <h3>Wealthy individuals</h3>
                                 <p>
-                                    If you are an investor, choose a sustainable future. As a wealthy individual,
-                                    you will have access to purchasing Thrubi Gold, the investment tool of sustainable societies,
-                                    only by redeeming Thrubi Silver, which you will be awarded according
-                                    to your current income. Governments will be accepting Thrubi Gold to pay tax duties.
+                                    As a wealthy individual, you will have access to purchasing Thrubi Gold.
+                                    The purchase costs will be awarded to Thrubi members in your country according to their income.
                                 </p>
                                 <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-secondary" />
                             </div></div>
@@ -46,11 +42,10 @@ class _Info extends Component {
                             <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-success"><div className="opaque">
                                 <h3>Thriving societies</h3>
                                 <p>
-                                    If you are a sovereign government, you want your people to thrive.
-                                    Thrubi stabilizes a country's income distribution.
-                                    Growth is shared non-equally amongst all participants of a society:
-                                    people with a higher net worth will stay richer.
-                                    Thrubi, however, will ensure that societies become richer as a whole.
+                                    Thrubi is powered by internal social models and public <a
+                                    target="_blank" rel="noopener noreferrer" href="https://www.irs.gov">IRS</a> and <a
+                                    target="_blank" rel="noopener noreferrer" href="https://wid.world">wid.world</a> income inequality data.
+                                    Start accepting Thrubi Gold to fulfill tax duties for your country.
                                 </p>
                                 <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-success" />
                             </div></div>

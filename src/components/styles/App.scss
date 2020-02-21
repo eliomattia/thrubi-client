@@ -28,8 +28,8 @@
 }
 
 .thrubiApp {
-    max-height: 100vh;
-    font-family: BentonSans, "Helvetica Neue", helvetica, arial, sans-serif;
+    height: 100%;
+    // font-family: BentonSans, "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 .thrubiGradient {
@@ -42,15 +42,13 @@
      height: 43px;
      min-width: 100%;
      background: white;
-     border-bottom: solid 3px white;
-     border-image: thrubiGradient("thrubi-gradient-titlebar");
+     // border-bottom: solid 3px white;
+     // border-image: thrubiGradient("thrubi-gradient-titlebar");
  }
 
 .footer {
     min-width: 100%;
     background: white;
-    border-top: solid 3px white;
-    border-image: thrubiGradient("thrubi-gradient-titlebar");
 }
 
 .consoleFont {

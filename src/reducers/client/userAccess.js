@@ -14,6 +14,7 @@ const userAccessInit = {
         BLOCKCHAIN_ETHEREUM:    0,
         PAYPAL:                 0,
         KEYBOARD:               0,
+        TWITTER:                0,
     },
     facebookStatus:         null,
     facebookUserId:         null,
@@ -65,6 +66,7 @@ const userAccess = (state = userAccessInit,action) => {
                 BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
                 PAYPAL:                 action.payload.PAYPAL               ? action.payload.PAYPAL                 : state.channels.PAYPAL,
                 KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
+                TWITTER:                action.payload.TWITTER              ? action.payload.TWITTER                : state.channels.TWITTER,
             }});
         case actionType.RECEIVE_LOGIN_CHANNEL:
             return Object.assign({},state,{

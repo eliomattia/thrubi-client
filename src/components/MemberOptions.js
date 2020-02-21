@@ -11,10 +11,10 @@ class _MemberOptions extends Component {
 
         return (
             <div>
-                <_ActionButton noMargin={"m-0 mt-2 p-0"} buttonType={"nav-link border-0 text-"+color} action={() => advancedMode(!optionAdvancedMode)} text={optionAdvancedMode?"Show less details":"Show more details..."}/>
+                <_ActionButton noMargin={"small m-0 mt-2 p-0"} buttonType={"nav-link border-0 text-"+color} action={() => advancedMode(!optionAdvancedMode)} text={optionAdvancedMode?"Show less details":"Show more details..."}/>
                 {
                     !optionAdvancedMode ? ""
-                    : <_ActionButton noMargin={"m-0 p-0"} buttonType={"nav-link border-0 text-"+color} action={() => viewHistory(!optionViewHistory)}  text={optionViewHistory?"Hide history":"View history..."} />
+                    : <_ActionButton noMargin={"small m-0 p-0"} buttonType={"nav-link border-0 text-"+color} action={() => viewHistory(!optionViewHistory)}  text={optionViewHistory?"Hide history":"View history..."} />
                 }
             </div>
         );

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import Titlebar from "./Titlebar";
+import Header from "./Header";
 import User from "./User";
 import Footer from "./Footer";
 import Flare from "./Flare";
@@ -36,14 +36,14 @@ class _App extends Component {
     render() {
         const {busy,loggedIn} = this.props;
         return (
-            <div className="thrubiApp text-primary">
-                <Titlebar />
+            <div className="thrubiApp text-primary d-flex flex-column align-items-stretch">
+                <Header />
                 {
                     <div className="mainView">
                         {
                             loggedIn ? "" :
                                 <div className="w-100 py-2 pt-4 pb-1 text-center">
-                                    <h4 className="display-4 displayInlineBlock">Rising inequality is toxic to growth</h4>
+                                    <h4 className="display-4 displayInlineBlock p-2">Rising inequality is toxic to growth</h4>
                                     <i className="displayInlineBlock">&nbsp;(Nick Hanauer)</i>
                                 </div>
                         }

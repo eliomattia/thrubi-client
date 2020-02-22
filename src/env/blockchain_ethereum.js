@@ -1,4 +1,4 @@
-export const THRUBI_ADDRESS = '0xf1549fc52999034400b6c225D9d380F3340aD31d';
+export const THRUBI_ADDRESS = "0xeC6020cd56349ED60512c9985BdC5F3B7098315d";
 
 export const THRUBI_ABI = [
     {
@@ -175,8 +175,8 @@ export const THRUBI_ABI = [
         "inputs": [
             {
                 "indexed": false,
-                "name": "ethAddress",
-                "type": "address"
+                "name": "userId",
+                "type": "uint256"
             },
             {
                 "indexed": false,
@@ -185,8 +185,8 @@ export const THRUBI_ABI = [
             },
             {
                 "indexed": false,
-                "name": "userId",
-                "type": "uint256"
+                "name": "ethAddress",
+                "type": "address"
             },
             {
                 "indexed": false,
@@ -196,15 +196,15 @@ export const THRUBI_ABI = [
         ],
         "name": "ClaimSubmitted",
         "type": "event",
-        "signature": "0x199cf6ad2e6ce4f20f4f77bf95042862858fe7b5fb2240b17ec190107e6b41e8"
+        "signature": "0x3a30d1c4069e097873e77443df9683e8de5c7ba3674315b8670a0211e3130195"
     },
     {
         "anonymous": false,
         "inputs": [
             {
                 "indexed": false,
-                "name": "ethAddress",
-                "type": "address"
+                "name": "userId",
+                "type": "uint256"
             },
             {
                 "indexed": false,
@@ -213,8 +213,8 @@ export const THRUBI_ABI = [
             },
             {
                 "indexed": false,
-                "name": "userId",
-                "type": "uint256"
+                "name": "ethAddress",
+                "type": "address"
             },
             {
                 "indexed": false,
@@ -224,22 +224,22 @@ export const THRUBI_ABI = [
         ],
         "name": "TransformSubmitted",
         "type": "event",
-        "signature": "0x6b8d5104af05a3749790a02190abe69665e450a2af5f4dd52ac361f9a8a22bd5"
+        "signature": "0xd7d9057eeb8d77c85b055fd0a383e2cbb00c462d8d90a53f7dea6493d376661d"
     },
     {
         "constant": false,
         "inputs": [
             {
-                "name": "_ethAddress",
-                "type": "address"
+                "name": "_userId",
+                "type": "uint256"
             },
             {
                 "name": "_populationId",
                 "type": "uint256"
             },
             {
-                "name": "_userId",
-                "type": "uint256"
+                "name": "_ethAddress",
+                "type": "address"
             }
         ],
         "name": "transform",
@@ -247,7 +247,7 @@ export const THRUBI_ABI = [
         "payable": true,
         "stateMutability": "payable",
         "type": "function",
-        "signature": "0x3259af21"
+        "signature": "0x723ed1db"
     },
     {
         "constant": true,
@@ -290,16 +290,16 @@ export const THRUBI_ABI = [
         "name": "getTransform",
         "outputs": [
             {
-                "name": "_ethAddress",
-                "type": "address"
+                "name": "_userId",
+                "type": "uint256"
             },
             {
                 "name": "_populationId",
                 "type": "uint256"
             },
             {
-                "name": "_userId",
-                "type": "uint256"
+                "name": "_ethAddress",
+                "type": "address"
             },
             {
                 "name": "_weiAmount",
@@ -325,16 +325,16 @@ export const THRUBI_ABI = [
         "constant": false,
         "inputs": [
             {
-                "name": "_ethAddress",
-                "type": "address"
+                "name": "_userId",
+                "type": "uint256"
             },
             {
                 "name": "_populationId",
                 "type": "uint256"
             },
             {
-                "name": "_userId",
-                "type": "uint256"
+                "name": "_ethAddress",
+                "type": "address"
             },
             {
                 "name": "_weiAmount",
@@ -346,7 +346,7 @@ export const THRUBI_ABI = [
         "payable": true,
         "stateMutability": "payable",
         "type": "function",
-        "signature": "0xf92b929f"
+        "signature": "0xd8875079"
     },
     {
         "constant": true,
@@ -389,16 +389,16 @@ export const THRUBI_ABI = [
         "name": "getClaim",
         "outputs": [
             {
-                "name": "_address",
-                "type": "address"
+                "name": "_userId",
+                "type": "uint256"
             },
             {
                 "name": "_populationId",
                 "type": "uint256"
             },
             {
-                "name": "_userId",
-                "type": "uint256"
+                "name": "_address",
+                "type": "address"
             },
             {
                 "name": "_weiAmount",

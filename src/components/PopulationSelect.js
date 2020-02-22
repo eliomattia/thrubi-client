@@ -27,23 +27,25 @@ class _PopulationSelect extends Component {
         let countryFilter;
 
         return (
-            <Fragment>
+            <div className="d-flex flex-column flex-grow-1 align-items-center wMin800">
                 {
-                    busy ? <div className="text-center">Loading...</div> :
-                        populationsBusy ? <div>User populations loading...</div> :
-                            populationsNotAvailable ? "No populations found, we are working on this..."
+                    busy ? "Loading..." :
+                        populationsBusy ? "User populations loading..." :
+                            populationsNotAvailable ? "No populations found..."
                                 :
-                                <Fragment>
-                                    <div className="text-center m-3">Please select your country and currency from the list below and confirm:</div>
-                                    <input ref={(input) => countryFilter = input}
-                                           onChange={() => changeCountryFilter(countryFilter.value)}
-                                           type="text" className="form-control form-control-sm rounded-0 m-3 p-3"
-                                           placeholder="Search countries"/>
-                                    <Populations />
-                                    <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" buttonType="btn-primary" />
-                                </Fragment>
+                                <div className="m-3 d-flex flex-column flex-grow-1 align-items-center wMin800 bg-light">
+                                    <div className="d-flex flex-column flex-grow-1 wMin800">
+                                        <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
+                                        <input ref={(input) => countryFilter = input}
+                                               onChange={() => changeCountryFilter(countryFilter.value)}
+                                               type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
+                                               placeholder="Search country"/>
+                                        <Populations />
+                                        <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
+                                    </div>
+                                </div>
                 }
-            </Fragment>
+            </div>
         );
     }
 }

@@ -25,15 +25,15 @@ contract Thrubi {
         bool incomeEndorsed;
     }
     struct Transform {
-        address ethAddress;
         uint userId;
         uint populationId;
+        address ethAddress;
         uint weiAmount;
     }
     struct Claim {
-        address ethAddress;
         uint userId;
         uint populationId;
+        address ethAddress;
         uint weiAmount;
     }
 
@@ -73,16 +73,16 @@ contract Thrubi {
 	);
 
     event ClaimSubmitted(
-        address ethAddress,
-        uint populationId,
         uint userId,
+        uint populationId,
+        address ethAddress,
         uint weiAmount
     );
 
     event TransformSubmitted(
-        address ethAddress,
-        uint populationId,
         uint userId,
+        uint populationId,
+        address ethAddress,
         uint weiAmount
     );
 
@@ -97,7 +97,7 @@ contract Thrubi {
         updateUser(msg.sender,"ownerName","ownerSurname");
     }
 
-    function transform(address _ethAddress,uint _populationId,uint _userId) onlySender(_ethAddress) public payable {
+    function transform(uint _userId,uint _populationId,address _ethAddress) onlySender(_ethAddress) public payable {
         lastTransform++;
         transforms[lastTransform].ethAddress = msg.sender;
         transforms[lastTransform].populationId = _populationId;
@@ -113,11 +113,11 @@ contract Thrubi {
         return lastProcessedTransform;
     }
 
-    function getTransform(uint _i) public view returns(address _ethAddress,uint _populationId,uint _userId,uint _weiAmount) {
+    function getTransform(uint _i) public view returns(uint _userId,uint _populationId,address _ethAddress,uint _weiAmount) {
         return (
-            transforms[_i].ethAddress,
-            transforms[_i].populationId,
             transforms[_i].userId,
+            transforms[_i].populationId,
+            transforms[_i].ethAddress,
             transforms[_i].weiAmount
         );
     }
@@ -126,11 +126,11 @@ contract Thrubi {
         lastProcessedTransform = lastTransform;
     }
 
-    function claimEth(address payable _ethAddress,uint _populationId,uint _userId,uint _weiAmount) onlyOwner public payable {
+    function claimEth(uint _userId,uint _populationId,address payable _ethAddress,uint _weiAmount) onlyOwner public payable {
         lastClaim++;
-        claims[lastClaim].ethAddress = _ethAddress;
-        claims[lastClaim].populationId = _populationId;
         claims[lastClaim].userId = _userId;
+        claims[lastClaim].populationId = _populationId;
+        claims[lastClaim].ethAddress = _ethAddress;
         claims[lastClaim].weiAmount = _weiAmount;
         _ethAddress.transfer(_weiAmount);
     }
@@ -143,11 +143,11 @@ contract Thrubi {
         return lastProcessedClaim;
     }
 
-    function getClaim(uint _i) public view returns(address _address,uint _populationId,uint _userId,uint _weiAmount) {
+    function getClaim(uint _i) public view returns(uint _userId,uint _populationId,address _address,uint _weiAmount) {
         return (
-            claims[_i].ethAddress,
-            claims[_i].populationId,
             claims[_i].userId,
+            claims[_i].populationId,
+            claims[_i].ethAddress,
             claims[_i].weiAmount
         );
     }

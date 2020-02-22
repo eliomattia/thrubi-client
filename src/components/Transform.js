@@ -53,11 +53,7 @@ class _Transform extends Component {
                                                              value={((this.state.transformEthValue * exrate) * (1-thrubiFees) / thrubiPriceSilver)}
                                                              ccySymbol="$₮" />
                                                 </div>
-                                                <form onSubmit={async (event) => {
-                                                    event.preventDefault();
-                                                    transform(this.state.transformEthValue);
-                                                }}>
-                                                    <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
+                                                <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
                                                            placeholder={this.transformEthValue} required
                                                            onChange={(action) => {
                                                                action.preventDefault();
@@ -65,11 +61,11 @@ class _Transform extends Component {
                                                                if (!newValue) newValue=0;
                                                                this.setState({transformEthValue: newValue});
                                                            }}/>
-                                                    <input className={"btn btn-sm p-0 rounded-0 btn-block btn-"+(this.state.transformEthValue?"primary":"light")}
-                                                           type="submit"
-                                                           disabled={!this.state.transformEthValue}
-                                                           value={this.state.transformEthValue?"Transform "+this.state.transformEthValue.toFixed(2)+" Ξ":"Insert an Ξ amount"} />
-                                                </form>
+                                                <_ActionButton buttonType={"btn-"+(this.state.transformEthValue?"primary":"light")}
+                                                               disabled={!this.state.transformEthValue}
+                                                               action={transform}
+                                                               payload={this.state.transformEthValue}
+                                                               text={this.state.transformEthValue?"Transform "+this.state.transformEthValue.toFixed(2)+" Ξ":"Insert an Ξ amount"} />
                                             </Fragment>
                                     }
                                     <_ActionButton disabled={((!thrubiSilver)&&(!this.state.transformProcedureActive))}

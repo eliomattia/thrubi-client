@@ -114,7 +114,6 @@ const userAccess = (state = userAccessInit,action) => {
         case actionType.LOGIN:
             return Object.assign({},state,{
                 loggedIn:               true,
-                autoLogin:              true,
                 accessJwt:              action.payload.accessJwt,
                 refreshJwt:             action.payload.refreshJwt,
                 payChannel:             action.payload.payChannel,

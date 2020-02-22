@@ -34,20 +34,20 @@ export const enableBlockchain = () => async (dispatch,getState) => {
             .catch(error        => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.CANNOT_ENABLE_ETHEREUM)))
             .then (accounts     => accounts[0])
             .then (ethAddress   => ({ethAddress,changed:ethAddress !== getState().client.userAccess.ethAddress}))
-            .then (result       => {if (result.changed) dispatch(logout({autoLogin:true})); return result;})
+            .then (result       => {if (result.changed) dispatch(logout({autoLogin:false})); return result;})
             .then (result       => {if (result.changed) dispatch({type:actionType.UPDATE_ETH_ADDRESS,payload:{ethAddress:result.ethAddress}}); return result;});
             //.then (result       => {if (result.changed) dispatch(emitFlare(flareBook.flareType.INFO,flareBook.infoFlare.DETECTED_ETH_ADDRESS_CHANGE))});
     },INTERVAL_ETH_ADDRESS_WORKER);
     dispatch({type:actionType.RECEIVE_ETH_ADDRESS_WORKER,payload:{ethAddressWorker}});
 };
 
-export const transform = (transformEth) => (dispatch,getState) => {
+export const transform = transformEth => (dispatch,getState) => {
     const transformContract = getState().session.blockchain.thrubiContract.methods.transform;
     const ethAddress = getState().client.userAccess.ethAddress;
     const populationId = getState().client.population.id;
     const userId = getState().client.user.id;
-    return new Promise((resolve,reject) => {
-        transformContract(ethAddress,populationId,userId)
+    return new Promise(resolve => {
+        transformContract(userId,populationId,ethAddress)
             .send({from:ethAddress,value:transformEth*1e18})
             .once(ethEventType.confirmation,() => {
                     // Thrubi will automatically process the transform via its workers on the backend

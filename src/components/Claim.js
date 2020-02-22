@@ -35,7 +35,7 @@ class _Claim extends Component {
 
                                                 </div>
                                                 <_ActionButton action={claim} disabled={!thrubiBlueEth}
-                                                               buttonType={"btn btn-sm p-0 btn-block btn-"+(thrubiBlueEth?"primary":"light")}
+                                                               buttonType={"btn-"+(thrubiBlueEth?"primary":"light")}
                                                                text={thrubiBlueEth?("Claim your " +thrubiBlueEth.toFixed(2) + " Ξ"):"Nothing to claim"}/>
                                             </Fragment>
                                     }
@@ -52,12 +52,12 @@ class _Claim extends Component {
 }
 
 const mapStateToProps = state => ({
-    busy: state.session.busy.component.claim,
-    populationId: state.client.population.id,
-    claimBusy: state.session.busy.action.claim,
-    thrubiBlueEth: state.client.member.thrubiBlueEth,
-    ccySymbol: state.client.population.ccySymbol,
-    exrate: state.global.market.exrate,
+    busy:               state.session.busy.component.claim,
+    populationId:       state.client.population.id,
+    claimBusy:          state.session.busy.action.claim,
+    thrubiBlueEth:      state.client.member.thrubiBlueEth,
+    ccySymbol:          state.client.population.ccySymbol,
+    exrate:             state.global.market.exrate,
 });
 
 const Claim = connect(mapStateToProps,{claim})(_Claim);

@@ -6,10 +6,10 @@ class _UserDetails extends Component {
         const {id,name,surname,email,document,deactivated,emailVerified,identityCertified} = this.props;
         return (
             <div className="text-center mb-2">
-                <div className="text-primary displayInlineBlock p-0">
+                <div className="text-primary d-inline-block p-0">
                     <b>{(name || surname) ? (name ? name : "") + " " + (surname ? surname : "") : "No user data"}</b>&nbsp;
                 </div>
-                <div className="text-secondary displayInlineBlock small">uid#{id}&nbsp;<span
+                <div className="text-secondary d-inline-block small">uid#{id}&nbsp;<span
                     className={"badge "+(deactivated?"badge-danger":"badge-info")}>{deactivated?"Deactivated":"Active account"}</span></div>
                 <div className="text-secondary small">email: {email ? email : "not found"}&nbsp;<span
                     className={"badge "+(emailVerified?"badge-info":"badge-danger")}>{emailVerified?"Email verified":"Pending verification"}</span></div>

@@ -55,7 +55,7 @@ class _Info extends Component {
                                  className="border-0 container-fluid m-0 societies p-4 text-success">
                                 <h2 className="text-center text-lg-left"><b>Thriving societies</b></h2>
                                 <p>
-                                    Thrubi is powered by internal social models and public <a
+                                    Thrubi is powered by in-house social models and public <a
                                     target="_blank" className="text-success" rel="noopener noreferrer" href="https://www.irs.gov">IRS.gov</a> and <a
                                     target="_blank" className="text-success" rel="noopener noreferrer" href="https://wid.world">wid.world</a> income inequality data.
                                     Start accepting Thrubi Gold to fulfill tax duties for your country.
@@ -65,7 +65,7 @@ class _Info extends Component {
                             <div className="border-0 container-fluid m-0 overflow-hidden topLeft p-4 opaque text-success">
                                 <h2 className="text-center text-lg-left"><b>Thriving societies</b></h2>
                                 <p>
-                                    Thrubi is powered by internal social models and public <a
+                                    Thrubi is powered by in-house social models and public <a
                                     target="_blank" className="text-success" rel="noopener noreferrer" href="https://www.irs.gov">IRS.gov</a> and <a
                                     target="_blank" className="text-success" rel="noopener noreferrer" href="https://wid.world">wid.world</a> income inequality data.
                                     Start accepting Thrubi Gold to fulfill tax duties for your country.

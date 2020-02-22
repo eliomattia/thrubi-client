@@ -19,7 +19,7 @@ const _RadioButtons = ({columnSize,color,activeFilter,checkedFilter,action,eleme
                                 !element.channel ? "" :
                                     <img className="p-0 my-0 mx-2" alt={element.channel} height="32" width="32" src={process.env.PUBLIC_URL+"/png/"+Channel.channelColor(element.channel)+".png"} />
                             }
-                            <div className={(element.channel?"ml-4":"fullWidth")+" displayInlineBlock text-"+(element.channel?"left":"center")}>{element.text}</div>
+                            <div className={(element.channel?"ml-4":"fullWidth")+" d-inline-block text-"+(element.channel?"left":"center")}>{element.text}</div>
                         </div>
                     </div>
                 </button>

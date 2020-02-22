@@ -14,7 +14,7 @@ class _ActionButton extends Component {
                             !channel ? "" :
                                 <img className="p-0 my-0 mx-2" alt={channel} height="32" width="32" src={process.env.PUBLIC_URL+"/png/"+Channel.channelColor(channel)+".png"} />
                         }
-                        <div className={(channel?"ml-4":"fullWidth")+" displayInlineBlock text-"+(channel?"left":"center")}>{ text ? text : this.props.children}</div>
+                        <div className={(channel?"ml-4":"fullWidth")+" d-inline-block text-"+(channel?"left":"center")}>{ text ? text : this.props.children}</div>
                     </div>
                 </div>
             </button>

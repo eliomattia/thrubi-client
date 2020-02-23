@@ -46,17 +46,19 @@ class _App extends Component {
                                     <h4 className="display-4 d-inline-block p-2 pb-4">Rising inequality is toxic to growth</h4>
                                     <i className="d-inline-block">&nbsp;(Nick Hanauer)</i>
                                     <h5 className="m-0 px-2">
-                                        With Thrubi, wealthy individuals can transfer money directly and simultaneously
-                                        to everybody in their country
+                                        Thrubi enables wealthy individuals to transfer money directly and simultaneously to everybody in their country
                                     </h5>
                                     <h4 className="m-0 p-2">
-                                        Our purpose? Solve extreme poverty
+                                        Our purpose? Solve extreme poverty.
                                     </h4>
-                                    <h6 className="p-2 pt-4">
+                                    <h5 className="m-0 px-2">
+                                        Create an account now and keep yourself up to date with the latest developments!
+                                    </h5>
+                                    <p className="p-2 pt-4">
                                         Thrubi is powered by in-house social models and public <a
                                         target="_blank" className="text-primary" rel="noopener noreferrer" href="https://www.irs.gov">IRS.gov</a> and <a
                                         target="_blank" className="text-primary" rel="noopener noreferrer" href="https://wid.world">wid.world</a> income inequality data.
-                                    </h6>
+                                    </p>
                                 </div>
                         }
                         {

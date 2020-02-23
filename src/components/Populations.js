@@ -16,7 +16,7 @@ class _Populations extends Component {
                 ))
                 .map((population,index) => {
                 return (
-                    <div key={index} className="bg-light p-0 my-2">
+                    <div key={index} className="bg-light p-0 my-1">
                         <button
                             className={"btn btn-sm m-0 p-0 rounded-0 border-0 btn-block btn-outline-primary"+
                                 ((populationId===population.populationId)?" active":"")}

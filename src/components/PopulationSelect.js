@@ -33,8 +33,8 @@ class _PopulationSelect extends Component {
                         populationsBusy ? "User populations loading..." :
                             populationsNotAvailable ? "No populations found..."
                                 :
-                                <div className="m-3 d-flex flex-column flex-grow-1 align-items-center wMin800 bg-light">
-                                    <div className="d-flex flex-column flex-grow-1 wMin800">
+                                <div className="m-3 d-flex flex-column flex-grow-1 align-items-center wMin800">
+                                    <div className="d-flex flex-column flex-grow-1 wMin800 bg-light">
                                         <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
                                         <input ref={(input) => countryFilter = input}
                                                onChange={() => changeCountryFilter(countryFilter.value)}
@@ -43,6 +43,7 @@ class _PopulationSelect extends Component {
                                         <Populations />
                                         <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
                                     </div>
+                                    <a className="nav-link text-primary text-center" href="mailto:info@thrubi.com">Not found? Let us know: info@thrubi.com</a>
                                 </div>
                 }
             </div>

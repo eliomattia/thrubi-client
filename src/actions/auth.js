@@ -488,6 +488,22 @@ export const updatePayPal = () => async (dispatch,getState) => {
     return await Promise.resolve();
 };
 
+export const createTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const loginTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const addTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const updateTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
 export const sendRedirect = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => window.location.search)

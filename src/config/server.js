@@ -33,6 +33,7 @@ export const endpoint = {
     USER_CLOSE:                             "/user/close",
     USERACCESS_LISTUSERCHANNELS:            "/userAccess/listUserChannels",
     USERACCESS_SETPAYCHANNEL:               "/userAccess/setPayChannel",
+    USERACCESS_SETRECEIVECHANNEL:           "/userAccess/setReceiveChannel",
     USERACCESS_DELETE:                      "/userAccess/delete",
     USERACCESS_ADD_KEYBOARD:                "/userAccess/add/keyboard",
     USERACCESS_UPDATE_KEYBOARD:             "/userAccess/update/keyboard",

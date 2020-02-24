@@ -4,6 +4,7 @@ class Channel {
     static channelIsForPay        (channelMode) {return (Math.abs(channelMode)>>1) %2;} //second-to-last bit
 
     static channelName = {
+        NOT_AVAILABLE:          "N/A",
         BLOCKCHAIN_ETHEREUM:    "BLOCKCHAIN_ETHEREUM",
         KEYBOARD:               "KEYBOARD",
         FACEBOOK:               "FACEBOOK",

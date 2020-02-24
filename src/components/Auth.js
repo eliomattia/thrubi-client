@@ -28,8 +28,8 @@ class _Auth extends Component {
     }
 
     render() {
-        const {busy,loggedIn,optionLoginCreate,optionKeyboardMode,optionUserMenu,payChannel,channels} = this.props;
-        const {switchOptionLoginCreate,switchOptionUserMenu,abandonKeyboard,setPayChannel,deleteChannel,logout} = this.props;
+        const {busy,loggedIn,optionLoginCreate,optionKeyboardMode,optionUserMenu,payChannel,receiveChannel,channels} = this.props;
+        const {switchOptionLoginCreate,switchOptionUserMenu,abandonKeyboard,setPayChannel,setReceiveChannel,deleteChannel,logout} = this.props;
 
         return <div className="text-center small text-dark">
             {
@@ -88,22 +88,27 @@ class _Auth extends Component {
                                             <Fragment>
                                                 {
                                                     optionUserMenu !== userOptions.optionUserMenu.PAY ? "" :
-                                                        <div className="my-4">
-                                                            My payment method:
-                                                            <_RadioButtons columnSize="col-lg-12"
-                                                                       activeFilter={payChannel}
-                                                                       checkedFilter={payChannel}
-                                                                       action={setPayChannel}
-                                                                       elements={Object.keys(channels).map(key => {    //loop on individual channel types
-                                                                            if (Channel.channelIsForPay(channels[key])) return ({
-                                                                                key:key,
-                                                                                channel:key,
-                                                                                color:"btn-" + (Channel.channelIsOpen(channels[key]) ? "" : "outline-")+Channel.channelColor(key),
-                                                                                disabledFilter:(key === payChannel),
-                                                                                text:Channel.channelUserFriendlyName(key, (key === payChannel ? "USING" : (Channel.channelIsOpen(channels[key]) ? "USE" : "LINK")))
-                                                                            }); else return null;
-                                                                       }).filter(element=>element!==null)}/>
-                                                        </div>
+                                                        [
+                                                            {message:"My payment method:",          channel:payChannel,     setter:setPayChannel,},
+                                                            {message:"My inbound payment method:",  channel:receiveChannel, setter:setReceiveChannel,}
+                                                        ].map(o =>
+                                                            <div className="my-4">
+                                                                {o.message}
+                                                                <_RadioButtons columnSize="col-lg-12"
+                                                                           activeFilter={o.channel}
+                                                                           checkedFilter={o.channel}
+                                                                           action={o.setter}
+                                                                           elements={Object.keys(channels).map(key => {    //loop on individual channel types
+                                                                                if (Channel.channelIsForPay(channels[key])) return ({
+                                                                                    key:(key===o.channel?Channel.channelName.NOT_AVAILABLE:key),
+                                                                                    channel:key,
+                                                                                    color:"btn-"+(key===o.channel?"":"outline-")+Channel.channelColor(key),
+                                                                                    disabledFilter:(key===o.channel),
+                                                                                    text:Channel.channelUserFriendlyName(key,(key===o.channel?"USING":(Channel.channelIsOpen(channels[key])?"USE":"LINK"))),
+                                                                                }); else return null;
+                                                                           }).filter(element=>element!==null)}/>
+                                                            </div>
+                                                        )
                                                 }
                                                 <div className="my-4">
                                                     {
@@ -163,6 +168,7 @@ const mapStateToProps = state => ({
     loggedIn:           state.client.userAccess.loggedIn,
     autoLogin:          state.client.userAccess.autoLogin,
     payChannel:         state.client.userAccess.payChannel,
+    receiveChannel:     state.client.userAccess.receiveChannel,
     channels:           state.client.userAccess.channels,
 });
 

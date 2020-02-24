@@ -7,6 +7,7 @@ const userAccessInit = {
     loggedIn:       false,
     loginChannel:               null,
     payChannel:                 null,
+    receiveChannel:             null,
     channels: {
         FACEBOOK:               0,
         GOOGLE:                 0,
@@ -76,6 +77,10 @@ const userAccess = (state = userAccessInit,action) => {
             return Object.assign({},state,{
                 payChannel:             action.payload.payChannel,
             });
+        case actionType.RECEIVE_RECEIVE_CHANNEL:
+            return Object.assign({},state,{
+                receiveChannel:         action.payload.receiveChannel,
+            });
         case actionType.RECEIVE_FACEBOOK_LOGIN_STATUS:
             return Object.assign({},state,{
                 facebookStatus:         action.payload.facebookStatus,
@@ -117,6 +122,7 @@ const userAccess = (state = userAccessInit,action) => {
                 accessJwt:              action.payload.accessJwt,
                 refreshJwt:             action.payload.refreshJwt,
                 payChannel:             action.payload.payChannel,
+                receiveChannel:         action.payload.receiveChannel,
             });
         default:
             return state;

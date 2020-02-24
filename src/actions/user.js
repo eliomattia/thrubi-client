@@ -58,8 +58,8 @@ const flareUserFlags = flags => async (dispatch,getState) => {
 export const activateUserWorker = () => async (dispatch,getState) => {
     let userWorker = setInterval((() => {
         let userFlags;
-        const activity = () => {
-            return Promise.resolve()
+        const activity = async () => {
+            await Promise.resolve()
                 .then (()         => dispatch(processRequest(requestType.GET,endpoint.USER_GETFLAGS,null)))
                 .then (flags      => userFlags=flags)
                 .then (()         => dispatch(flareUserFlags(userFlags)))

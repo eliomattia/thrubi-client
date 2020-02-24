@@ -112,20 +112,37 @@ export const deleteChannel = (channelName) => async (dispatch,getState) => {
         .finally(()                           => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
 
-export const setPayChannel = (payChannel) => async (dispatch,getState) => {
+export const getPayChannel = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const setPayChannel = payChannel => async (dispatch,getState) => {
     return await Promise.resolve()
-        .then   (()               => {if (!Channel.channelIsOpen(getState().client.userAccess.channels[payChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
+        .then   (()               => {if (payChannel!==Channel.channelName.NOT_AVAILABLE&&!Channel.channelIsOpen(getState().client.userAccess.channels[payChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_SETPAYCHANNEL,{payChannel})))
         .then   (newPayChannel    => dispatch({type:actionType.RECEIVE_PAY_CHANNEL,payload:{payChannel:newPayChannel}}))
         .catch  (error            => {if (error !== flareBook.errorFlare.CHANNEL_CLOSED) throw error;})
         .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_PAY_CHANNEL_UPDATE)));
 };
 
+export const getReceiveChannel = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const setReceiveChannel = receiveChannel => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => {if (receiveChannel!==Channel.channelName.NOT_AVAILABLE&&!Channel.channelIsOpen(getState().client.userAccess.channels[receiveChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_SETRECEIVECHANNEL,{receiveChannel})))
+        .then   (newReceiveChannel=> dispatch({type:actionType.RECEIVE_RECEIVE_CHANNEL,payload:{receiveChannel:newReceiveChannel}}))
+        .catch  (error            => {if (error !== flareBook.errorFlare.CHANNEL_CLOSED) throw error;})
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_RECEIVE_CHANNEL_UPDATE)));
+};
+
 // ----------------------
 // Login and verification
 // ----------------------
 
-const finalizeLogin = (loginData) => async (dispatch,getState) => {
+const finalizeLogin = loginData => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => {if (!loginData.userId) throw loginData.loginError;})
         .then   (()               => dispatch({type:actionType.LOGIN,payload:loginData}))

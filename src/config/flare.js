@@ -45,6 +45,7 @@ const flareBook = {
         ERR_ACCOUNT_CLOSE:          {thrubiFlareId:"0015",message:"Could not close user account"},
         ERR_GENERIC_USERMENU:       {thrubiFlareId:"0016",message:"Internal: error with an user menu operation"},
         ERR_PAY_CHANNEL_UPDATE:     {thrubiFlareId:"0017",message:"Error updating user pay channel"},
+        ERR_RECEIVE_CHANNEL_UPDATE: {thrubiFlareId:"0023",message:"Error updating user receive channel"},
         ERR_USER_CHANNEL_FETCH:     {thrubiFlareId:"0018",message:"Error fetching user channels"},
         ERR_CHANNEL_FETCH:          {thrubiFlareId:"0019",message:"Error fetching channels"},
         ERR_USER_FLAGS:             {thrubiFlareId:"0020",message:"Could not update user flags"},

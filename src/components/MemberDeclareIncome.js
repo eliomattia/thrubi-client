@@ -14,7 +14,7 @@ class _MemberDeclareIncome extends Component {
             <Fragment>
                 <div className="navbar-light col-lg-4 container-fluid row m-0">
                     {
-                        declareIncomeBusy?"Busy processing income declaration":
+                        declareIncomeBusy?"":
                             <Fragment>
                                 <div className="col-lg-12">
                                     <_CcyRow text="Declared income" bold={false} value={mCurrent} ccySymbol={ccySymbol}/>

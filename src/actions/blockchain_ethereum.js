@@ -46,14 +46,18 @@ export const transform = transformEth => (dispatch,getState) => {
     const ethAddress = getState().client.userAccess.ethAddress;
     const populationId = getState().client.population.id;
     const userId = getState().client.user.id;
-    return new Promise(resolve => {
-        transformContract(userId,populationId,ethAddress)
-            .send({from:ethAddress,value:transformEth*1e18})
-            .once(ethEventType.confirmation,() => {
-                    // Thrubi will automatically process the transform via its workers on the backend
-                    resolve();
-                }
-            );
+    return new Promise((resolve,reject) => {
+        try {
+            transformContract(userId,populationId,ethAddress)
+                .send({from:ethAddress,value:transformEth*1e18})
+                .once(ethEventType.confirmation,() => {
+                        // Thrubi will automatically process the transform via its workers on the backend
+                        resolve();
+                    }
+                );
+        } catch (error) {
+            throw flareBook.errorFlare.NO_ETHEREUM_CONFIG;
+        }
     });
 };
 

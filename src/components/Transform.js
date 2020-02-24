@@ -32,25 +32,25 @@ class _Transform extends Component {
                                                     Any excess Ξ that you transform will be credited on the account and used whenever $₮ becomes available.
                                                 </div>
                                                 <div className="text-secondary container">
-                                                    <_CcyRow text="Your Ξ balance"
+                                                    {/*<_CcyRow text="Your Ξ balance"
                                                              bold={false}
-                                                             value={0 /* add a worker that constantly checks Ξ balance from blockchain for account */ }
-                                                             ccySymbol="Ξ" />
+                                                             value=0 // add a worker that constantly checks Ξ balance from blockchain for account
+                                                             ccySymbol="Ξ" />*/}
                                                     <_CcyRow text="Ξ to spend to transform"
                                                              bold={false}
                                                              value={this.state.transformEthValue}
                                                              ccySymbol="Ξ" />
                                                     <_CcyRow text={"Current value in "+ccySymbol}
                                                              bold={false}
-                                                             value={(this.state.transformEthValue * exrate)}
+                                                             value={(this.state.transformEthValue*exrate)}
                                                              ccySymbol={ccySymbol} />
-                                                    <_CcyRow text={"Thrubi fees ("+(thrubiFees * 100).toFixed(1)+"%)"}
+                                                    <_CcyRow text={"Thrubi fees ("+(thrubiFees*100).toFixed(1)+"%)"}
                                                              bold={false}
-                                                             value={((this.state.transformEthValue * exrate) * thrubiFees)}
+                                                             value={(this.state.transformEthValue*exrate)*thrubiFees}
                                                              ccySymbol={ccySymbol} />
                                                     <_CcyRow text="You can transform"
                                                              bold={false}
-                                                             value={((this.state.transformEthValue * exrate) * (1-thrubiFees) / thrubiPriceSilver)}
+                                                             value={(this.state.transformEthValue*exrate)*(1-thrubiFees)*(!thrubiPriceSilver?0:(1/thrubiPriceSilver))}
                                                              ccySymbol="$₮" />
                                                 </div>
                                                 <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
@@ -68,7 +68,7 @@ class _Transform extends Component {
                                                                text={this.state.transformEthValue?"Transform "+this.state.transformEthValue.toFixed(2)+" Ξ":"Insert an Ξ amount"} />
                                             </Fragment>
                                     }
-                                    <_ActionButton disabled={((!thrubiSilver)&&(!this.state.transformProcedureActive))}
+                                    <_ActionButton disabled={(!thrubiSilver)&&(!this.state.transformProcedureActive)}
                                                    buttonType={"btn-"+(this.state.transformProcedureActive?"":"outline-")+"secondary"+(thrubiSilver?" active":"")}
                                                    text={(this.state.transformProcedureActive?"Close":(thrubiSilver?"Activate transform procedure":"Nothing to transform"))}
                                                    action={() => this.setState({transformProcedureActive: !this.state.transformProcedureActive})} />

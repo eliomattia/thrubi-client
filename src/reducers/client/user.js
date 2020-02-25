@@ -2,21 +2,22 @@ import actionType from "../config/actionTypes";
 import userOptions from "../../config/user";
 
 const userInit = {
-    id: null,
-    role: null,
-    deactivated: null,
-    emailVerified: null,
-    identityCertified: null,
-    incomeApproved: null,
-    name: null,
-    surname: null,
-    email: null,
-    document: null,
+    id:                 null,
+    role:               null,
+    deactivated:        null,
+    emailVerified:      null,
+    identityCertified:  null,
+    incomeApproved:     null,
+    name:               null,
+    surname:            null,
+    email:              null,
+    document:           null,
+    profilePicture:     null,
     optionKeyboardMode: null,
-    optionLoginCreate: userOptions.optionLoginCreate.LOGIN,
-    optionUserMenu: userOptions.optionUserMenu.ADD,
+    optionLoginCreate:  userOptions.optionLoginCreate.LOGIN,
+    optionUserMenu:     userOptions.optionUserMenu.ADD,
     optionAdvancedMode: false,
-    optionViewHistory: false,
+    optionViewHistory:  false,
 };
 
 const user = (state = userInit,action) => {
@@ -47,10 +48,11 @@ const user = (state = userInit,action) => {
             });
         case actionType.RECEIVE_USER_DETAILS:
             return Object.assign({},state,{
-                name:                   action.payload.name         ? action.payload.name       : state.name,
-                surname:                action.payload.surname      ? action.payload.surname    : state.surname,
-                email:                  action.payload.email        ? action.payload.email      : state.email,
-                document:               action.payload.document     ? action.payload.document   : state.document,
+                name:                   action.payload.name             ? action.payload.name           : state.name,
+                surname:                action.payload.surname          ? action.payload.surname        : state.surname,
+                email:                  action.payload.email            ? action.payload.email          : state.email,
+                document:               action.payload.document         ? action.payload.document       : state.document,
+                profilePicture:         action.payload.profilePicture   ? action.payload.profilePicture : state.profilePicture,
             });
         case actionType.DELETE_USER_DETAILS:
             return Object.assign({},state,{
@@ -58,6 +60,7 @@ const user = (state = userInit,action) => {
                 surname:                null,
                 email:                  null,
                 document:               null,
+                profilePicture:         null,
             });
         case actionType.ABANDON_KEYBOARD:
             return Object.assign({},state,{

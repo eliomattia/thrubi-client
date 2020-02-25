@@ -1,12 +1,15 @@
 let envLinkedInRedirectUri;
 let envGoogleRedirectUri;
+let envTwitterRedirectUri;
 
 if (process.env.NODE_ENV === "production") {
-    envLinkedInRedirectUri    = "https://eliomattia.github.io/thrubi-client";
-    envGoogleRedirectUri      = "https://eliomattia.github.io/thrubi-client";
+    envLinkedInRedirectUri    = "https://www.thrubi.com";
+    envGoogleRedirectUri      = "https://www.thrubi.com";
+    envTwitterRedirectUri     = "https://www.thrubi.com";
 } else {
     envLinkedInRedirectUri    = "https://localhost:3000";
     envGoogleRedirectUri      = "https://localhost:3000";
+    envTwitterRedirectUri     = "https://localhost:3000";
 }
 
 export const linkedInRedirectUri    = envLinkedInRedirectUri;
@@ -15,3 +18,6 @@ export const linkedInAppClientId    = "78w03u1p8bc928";
 
 export const googleRedirectUri      = envGoogleRedirectUri;
 export const googleAppClientId      = "627523329723-5kfvuqg068851dsf6efh911ue4v7ttur.apps.googleusercontent.com";
+
+export const twitterRedirectUri     = envTwitterRedirectUri;
+export const twitterAppClientId     = "";

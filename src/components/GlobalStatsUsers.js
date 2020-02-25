@@ -5,7 +5,7 @@ const _GlobalStatsUsers = ({
     nUser,
 }) => (
     <span className="text-primary text-center small mr-2">
-        A {nUser}-strong community for sustainable income redistribution.
+        A {/*{nUser}-strong */}worldwide community for sustainable income redistribution.
     </span>
 );
 

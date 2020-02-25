@@ -116,6 +116,20 @@ const userAccess = (state = userAccessInit,action) => {
             return Object.assign({},state,{
                 googleCode:             action.payload.code,
             });
+        case actionType.RECEIVE_TWITTER_WINDOW_AND_LISTENER:
+            return Object.assign({},state,{
+                twitterWindow:          action.payload.twitterWindow,
+                twitterListener:        action.payload.twitterListener,
+            });
+        case actionType.CLEAR_TWITTER_WINDOW_AND_LISTENER:
+            return Object.assign({},state,{
+                twitterWindow:          null,
+                twitterListener:        null,
+            });
+        case actionType.RECEIVE_TWITTER_LOGIN:
+            return Object.assign({},state,{
+                twitterCode:            action.payload.code,
+            });
         case actionType.LOGIN:
             return Object.assign({},state,{
                 loggedIn:               true,

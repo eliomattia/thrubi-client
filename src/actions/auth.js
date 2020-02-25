@@ -10,12 +10,15 @@ import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "../config/redirect";
 import {endpoint} from "../config/server";
 import {facebook} from "../config/facebook";
 import {
+    linkedInAuthUri,
+    linkedInWindowName,
+    linkedInWindowParams,
     googleAuthUri,
     googleWindowName,
     googleWindowParams,
-    linkedInAuthUri,
-    linkedInWindowName,
-    linkedInWindowParams
+    twitterAuthUri,
+    twitterWindowName,
+    twitterWindowParams,
 } from "../config/auth";
 import flareBook from "../config/flare";
 import userOptions from "../config/user";
@@ -25,6 +28,8 @@ import {
     linkedInAppClientId,
     googleRedirectUri,
     googleAppClientId,
+    twitterRedirectUri,
+    twitterAppClientId,
 } from "../env/auth";
 import {REDIRECT_CLOSE_INTERVAL} from "../env/redirect";
 
@@ -489,6 +494,74 @@ export const updateGoogle = () => async (dispatch,getState) => {
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
 
+const processTwitterLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
+    let twitterListener = null;
+    return await Promise.resolve()
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) {console.error(event.data); return event.data;} else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_TWITTER_LOGIN,payload:pjRenamed});})
+        .then   (()               => {twitterListener=getState().client.userAccess.twitterListener;})
+        .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
+        .then   (()               => getState().client.userAccess.twitterWindow)
+        .then   (twitterWindow     => {twitterWindow.close();})
+        .then   (()               => dispatch({type:actionType.CLEAR_TWITTER_WINDOW_AND_LISTENER,payload:{}}))
+        .then   (()               => {waitingHandleResolve();})
+        .catch  (()               => null);
+};
+
+const startupTwitterLogin = () => async (dispatch,getState) => {
+    let twitterWindow = null;
+    let twitterListener = null;
+    let twitterInterval = null;
+    let waitingHandleResolve = null;
+    let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {twitterWindow = getState().client.userAccess.twitterWindow;})
+        .then   (()               => ((twitterWindow===null)||(twitterWindow.closed)))
+        .then   (openNewWindow    => {if (openNewWindow) twitterWindow = window.open(twitterAuthUri(twitterRedirectUri,twitterAppClientId),twitterWindowName,twitterWindowParams);})
+        .then   (()               => twitterWindow.focus())
+        .then   (()               => {twitterInterval = setInterval(() => {if (twitterWindow.closed) {waitingHandleResolve(); clearInterval(twitterInterval);}},REDIRECT_CLOSE_INTERVAL);})
+        .then   (()               => {twitterListener = event => dispatch(processTwitterLogin(event,waitingHandleResolve));})
+        .then   (()               => {window.addEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
+        .then   (()               => dispatch({type:actionType.RECEIVE_TWITTER_WINDOW_AND_LISTENER,payload:{twitterWindow,twitterListener}}))
+        .then   (()               => waitingHandle)
+        .then   (()               => ({twitterCode:getState().client.userAccess.twitterCode}));
+};
+
+export const createTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_TWITTER,gLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_TWITTER,gLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_TWITTER,gLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_TWITTER,gLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
 export const createPayPal = () => async (dispatch,getState) => {
     return await Promise.resolve();
 };
@@ -502,22 +575,6 @@ export const addPayPal = () => async (dispatch,getState) => {
 };
 
 export const updatePayPal = () => async (dispatch,getState) => {
-    return await Promise.resolve();
-};
-
-export const createTwitter = () => async (dispatch,getState) => {
-    return await Promise.resolve();
-};
-
-export const loginTwitter = () => async (dispatch,getState) => {
-    return await Promise.resolve();
-};
-
-export const addTwitter = () => async (dispatch,getState) => {
-    return await Promise.resolve();
-};
-
-export const updateTwitter = () => async (dispatch,getState) => {
     return await Promise.resolve();
 };
 

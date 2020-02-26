@@ -1,4 +1,4 @@
-import {AMAZON_S3_MAX_PICTURE_SIZE} from "../env/s3";
+import {AMAZON_S3_MAX_PICTURE_SIZE} from "./s3";
 
 const flareBook = {
     flareType: {

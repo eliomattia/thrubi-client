@@ -68,6 +68,7 @@ export const detailName = {
     name:               "name",
     surname:            "surname",
     email:              "email",
+    profilePicture:     "profilePicture",
     document:           "document",
     submittedDocument:  "submittedDocument",
 };

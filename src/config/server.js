@@ -31,6 +31,7 @@ export const endpoint = {
     USER_DETAILS_FETCH:                     "/user/details/fetch",
     USER_DETAILS_DELETE:                    "/user/details/delete",
     USER_DETAILS_STORE:                     "/user/details/store",
+    USER_PROFILEPICTURE_SIGN:               "/user/profilePicture/sign",
     USER_CERTIFY:                           "/user/certify",
     USER_CLOSE:                             "/user/close",
     USERACCESS_LISTUSERCHANNELS:            "/userAccess/listUserChannels",

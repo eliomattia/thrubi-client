@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import UserIcon from './UserIcon';
+import UserProfilePicture from './UserProfilePicture';
 import UserDetails from './UserDetails';
 
 class _UserView extends Component {
@@ -13,7 +13,7 @@ class _UserView extends Component {
                     busy ? <div>Dashboard loading...</div> :
                         !loggedIn ? <div>User not logged in</div> :
                             <div>
-                                <UserIcon />
+                                <UserProfilePicture />
                                 <UserDetails />
                             </div>
                 }

@@ -1,3 +1,5 @@
+import {AMAZON_S3_MAX_PICTURE_SIZE} from "../env/s3";
+
 const flareBook = {
     flareType: {
         ERROR:      "ERROR",
@@ -42,6 +44,8 @@ const flareBook = {
         NO_ETHEREUM_CONFIG:         {thrubiFlareId:"0022",message:"Ethereum wallet not found, please configure or enable MetaMask"},
         CANNOT_ENABLE_ETHEREUM:     {thrubiFlareId:"0013",message:"Could not enable Ethereum"},
         ERR_USER_DETAILS:           {thrubiFlareId:"0014",message:"Error processing user details"},
+        ERR_USER_PROFILE_PICTURE:   {thrubiFlareId:"0023",message:"Please upload a JPG or PNG file, max size: "+((AMAZON_S3_MAX_PICTURE_SIZE/1000).toFixed(0))+" kB"},
+        S3_UPLOAD_ERROR:            {thrubiFlareId:"0024",message:"Could not upload picture to Amazon S3"},
         ERR_ACCOUNT_CLOSE:          {thrubiFlareId:"0015",message:"Could not close user account"},
         ERR_GENERIC_USERMENU:       {thrubiFlareId:"0016",message:"Internal: error with an user menu operation"},
         ERR_PAY_CHANNEL_UPDATE:     {thrubiFlareId:"0017",message:"Error updating user pay channel"},

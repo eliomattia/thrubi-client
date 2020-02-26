@@ -48,11 +48,11 @@ const user = (state = userInit,action) => {
             });
         case actionType.RECEIVE_USER_DETAILS:
             return Object.assign({},state,{
-                name:                   action.payload.name             ? action.payload.name           : state.name,
-                surname:                action.payload.surname          ? action.payload.surname        : state.surname,
-                email:                  action.payload.email            ? action.payload.email          : state.email,
-                document:               action.payload.document         ? action.payload.document       : state.document,
-                profilePicture:         action.payload.profilePicture   ? action.payload.profilePicture : state.profilePicture,
+                name:                   action.payload.name             ? action.payload.name           : userInit.name,
+                surname:                action.payload.surname          ? action.payload.surname        : userInit.surname,
+                email:                  action.payload.email            ? action.payload.email          : userInit.email,
+                document:               action.payload.document         ? action.payload.document       : userInit.document,
+                profilePicture:         action.payload.profilePicture   ? action.payload.profilePicture : userInit.profilePicture,
             });
         case actionType.DELETE_USER_DETAILS:
             return Object.assign({},state,{

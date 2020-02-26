@@ -19,7 +19,9 @@
   "author": "Elio Mattia",
   "license": "GNU GPL v3.0",
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap-react": "^0.3.1",
+    "form-data": "^3.0.0",
     "node-sass": "^4.13.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.16",

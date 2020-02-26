@@ -1,0 +1,1 @@
+export const AMAZON_S3_MAX_PICTURE_SIZE=1000000;

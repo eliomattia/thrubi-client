@@ -7,6 +7,8 @@ import {requestType} from "../config/http";
 import actionType, {busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "../config/server";
 import {INTERVAL_USER_WORKER} from "../env/workers";
+import {AMAZON_S3_MAX_PICTURE_SIZE} from "../env/s3";
+import {uploadS3} from "./s3";
 
 export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
     return dispatch({type:actionType.SWITCH_OPTION_USER_MENU,payload:{optionUserMenu}});
@@ -37,6 +39,18 @@ export const storeDetails = (userDetails,overwrite) => async (dispatch,getState)
         .then   (()               => dispatch(fetchDetails()))
         .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_DETAILS)))
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
+};
+
+export const uploadProfilePicture = picture => async (dispatch,getState) => {
+    let profilePictureSignature;
+    return await Promise.resolve()
+        .then   (()               => {if (!(picture.type==="image/jpeg"||picture.type==="image/png")) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
+        .then   (()               => {if (picture.size>AMAZON_S3_MAX_PICTURE_SIZE) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_PROFILEPICTURE_SIGN,{fileName:picture.name,fileType:picture.type,fileSize:picture.size})))
+        .then   (sig              => profilePictureSignature=sig)
+        .then   (()               => console.error("profilePictureSignature: ",profilePictureSignature))
+        .then   (()               => dispatch(uploadS3(profilePictureSignature.signedRequest,picture)))
+        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:profilePictureSignature.url},{overwrite:true})));
 };
 
 export const uploadDocument = () => async (dispatch,getState) => {

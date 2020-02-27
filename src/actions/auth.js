@@ -312,11 +312,12 @@ const connectFacebook = () => async (dispatch,getState) => {
 };
 
 const fetchFacebookDetails = () => async (dispatch,getState) => {
+    let fbDetails = {};
     return await Promise.resolve()
         .then   (()               => dispatch(FBgetLoginStatus(null)))
-        .then   (facebookStatus   => new Promise((resolve) => {if (facebookStatus===facebook.status.connected) window.FB.api(facebook.apiQuery,(result=>resolve(result)));}))
-        .then   (facebookDetails  => ({name:facebookDetails.first_name,surname:facebookDetails.last_name,email:facebookDetails.email}))
-        .then   (facebookDetails  => dispatch(storeDetails(facebookDetails,{overwrite:false})))
+        .then   (facebookStatus   => new Promise(resolve => {if (facebookStatus===facebook.status.connected) window.FB.api(facebook.apiQuery,(result => resolve(result)));}))
+        .then   (d                => fbDetails={name:d.first_name,surname:d.last_name,email:d.email,profilePicture:d.picture.data.url})
+        .then   (()               => dispatch(storeDetails(fbDetails,{overwrite:false})))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.FB_NOT_FOUND));});
 };
 

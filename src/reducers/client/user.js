@@ -62,6 +62,10 @@ const user = (state = userInit,action) => {
                 document:               null,
                 profilePicture:         null,
             });
+        case actionType.DELETE_PROFILE_PICTURE:
+            return Object.assign({},state,{
+                profilePicture:         null,
+            });
         case actionType.ABANDON_KEYBOARD:
             return Object.assign({},state,{
                 optionKeyboardMode:     null,

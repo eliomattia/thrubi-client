@@ -65,6 +65,7 @@ export const activationState = {
 
 
 export const detailName = {
+    all:                "all",                  //special detailName used to delete all the other details
     name:               "name",
     surname:            "surname",
     email:              "email",

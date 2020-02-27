@@ -26,8 +26,17 @@ export const fetchDetails = () => async (dispatch,getState) => {
 export const deleteDetails = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}))
-        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_DETAILS_DELETE,null)))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_DETAILS_DELETE,{userDetails:{[detailName.all]:true}})))
         .then   (()               => dispatch({type:actionType.DELETE_USER_DETAILS,payload:{}}))
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_DETAILS)))
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
+};
+
+export const deleteProfilePicture = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}))
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_DETAILS_DELETE,{userDetails:{[detailName.profilePicture]:true}})))
+        .then   (()               => dispatch({type:actionType.DELETE_PROFILE_PICTURE,payload:{}}))
         .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_USER_DETAILS)))
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
 };

@@ -26,6 +26,7 @@ let actionType = {
     SET_USER_DEACTIVATED: null,
     RECEIVE_USER_DETAILS: null,
     DELETE_USER_DETAILS: null,
+    DELETE_PROFILE_PICTURE: null,
     ABANDON_KEYBOARD: null,
     CHOOSE_KEYBOARD: null,
     SWITCH_OPTION_LOGIN_CREATE: null,

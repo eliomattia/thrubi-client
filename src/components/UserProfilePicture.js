@@ -1,12 +1,13 @@
 import React,{Component} from "react";
 import {connect} from "react-redux";
-import {uploadProfilePicture} from "../actions/user";
+import {deleteProfilePicture,uploadProfilePicture} from "../actions/user";
+import _ActionButton from "./_ActionButton";
 
 class _UserProfilePicture extends Component {
     render() {
         let refs = {localProfilePicture:null};
         const {role,deactivated,profilePicture} = this.props;
-        const {uploadProfilePicture} = this.props;
+        const {deleteProfilePicture,uploadProfilePicture} = this.props;
 
         return (
             <div className="mb-2">
@@ -17,7 +18,9 @@ class _UserProfilePicture extends Component {
                 <input id="profilePictureInput" className="d-none" ref={input => refs.localProfilePicture = input}
                        type="file" onChange={() => uploadProfilePicture(refs.localProfilePicture)} />
                 {
-                    profilePicture?"":<div className="small text-secondary m-0 p-0">Click on the user icon to upload a profile picture</div>
+                    profilePicture
+                        ?<_ActionButton noMargin="small m-0 mt-2 p-0" buttonType={"nav-link border-0 text-secondary"} action={deleteProfilePicture} text="Delete my profile picture" />
+                        :<div className="small text-secondary m-0 p-0">Click on the user icon to upload a profile picture</div>
                 }
             </div>
         );
@@ -30,6 +33,6 @@ const mapStateToProps = state => ({
     profilePicture:     state.client.user.profilePicture,
 });
 
-const UserProfilePicture = connect(mapStateToProps,{uploadProfilePicture})(_UserProfilePicture);
+const UserProfilePicture = connect(mapStateToProps,{deleteProfilePicture,uploadProfilePicture})(_UserProfilePicture);
 
 export default UserProfilePicture;

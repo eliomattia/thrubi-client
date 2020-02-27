@@ -9,7 +9,7 @@ class _Info extends Component {
                 <div className="row py-2 rounded-bottom">
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mr-0 mr-lg-3 my-2 my-lg-0 thrubiBlue">
-                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/crowd.jpg)"}}
+                            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/jpg/crowd.jpg)"}}
                                  className="border-0 container-fluid m-0 everybody p-4 text-primary">
                                 <h2 className="text-center text-lg-left"><b>Vision</b></h2>
                                 <p>
@@ -30,7 +30,7 @@ class _Info extends Component {
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mr-0 mr-lg-3 my-2 my-lg-0 thrubiSilver">
-                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/bloomberg.jpg)"}}
+                            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/jpg/hanauer.jpg)",backgroundSize: "100%"}}
                                  className="border-0 container-fluid m-0 wealthy p-4 text-secondary">
                                 <h2 className="text-center text-lg-left"><b>Wealthy individuals</b></h2>
                                 <p>
@@ -51,7 +51,7 @@ class _Info extends Component {
                     </div>
                     <div className="col-lg-4 p-0 navbar-light">
                         <div className="mr-0 mr-lg-3 my-2 my-lg-0 thrubiGold">
-                            <div style={{"backgroundImage": "url("+process.env.PUBLIC_URL+"/jpg/futuristic.jpg)"}}
+                            <div style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/jpg/futuristic.jpg)"}}
                                  className="border-0 container-fluid m-0 societies p-4 text-success">
                                 <h2 className="text-center text-lg-left"><b>Thriving societies</b></h2>
                                 <p>

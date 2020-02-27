@@ -16,6 +16,7 @@ export const getFlareNext = () => async (dispatch,getState) => {
 
 export const emitFlare = (flareType,flare) => async (dispatch,getState) => {
     let index,fallbackFlare,displayMessage,displayDetails;
+    console.error("flare: ",flare);
     return Promise.resolve()
         .then(()            => dispatch(getFlareNext()))
         .then(next          => index = next)

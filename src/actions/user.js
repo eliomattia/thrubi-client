@@ -7,7 +7,7 @@ import {requestType} from "../config/http";
 import actionType, {busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "../config/server";
 import {INTERVAL_USER_WORKER} from "../env/workers";
-import {AMAZON_S3_MAX_PICTURE_SIZE} from "../config/s3";
+import {AMAZON_S3_MAX_PICTURE_SIZE,MIME_TYPE_JPEG,MIME_TYPE_PNG} from "../config/s3";
 import {uploadS3} from "./s3";
 
 export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
@@ -45,13 +45,12 @@ export const uploadProfilePicture = fileRef => async (dispatch,getState) => {
     let awsPacket;
     let picture=fileRef.files[0];
     return await Promise.resolve()
-        .then   (()               => {if (!(picture.type==="image/jpeg"||picture.type==="image/png")) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
+        .then   (()               => {if (!(picture.type===MIME_TYPE_JPEG||picture.type===MIME_TYPE_PNG)) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
         .then   (()               => {if (picture.size>AMAZON_S3_MAX_PICTURE_SIZE) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_PROFILEPICTURE_SIGN,{fileName:picture.name,fileType:picture.type,fileSize:picture.size})))
         .then   (packet           => awsPacket=packet)
         .then   (()               => dispatch(uploadS3(awsPacket.signedPutUri,picture)))
-        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsPacket.unsignedGetUri},{overwrite:true})))
-        .finally(()               => fileRef.files=[]);
+        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsPacket.unsignedGetUri},{overwrite:true})));
 };
 
 export const uploadDocument = () => async (dispatch,getState) => {

@@ -50,7 +50,8 @@ export const uploadProfilePicture = fileRef => async (dispatch,getState) => {
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_PROFILEPICTURE_SIGN,{fileName:picture.name,fileType:picture.type,fileSize:picture.size})))
         .then   (packet           => awsPacket=packet)
         .then   (()               => dispatch(uploadS3(awsPacket.signedPutUri,picture)))
-        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsPacket.unsignedGetUri},{overwrite:true})));
+        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsPacket.unsignedGetUri},{overwrite:true})))
+        .finally(()               => fileRef.value=null);
 };
 
 export const uploadDocument = () => async (dispatch,getState) => {

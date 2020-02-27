@@ -9,6 +9,5 @@ export const uploadS3 = (signedRequest,picture) => async (dispatch,getState) => 
     };
     return Promise.resolve()
         .then (()       => axios.put(signedRequest,picture,config))
-        .then (result   => console.error("axios result: ",result))
-        .catch(e       => {console.error("axios error: ",e); throw flareBook.errorFlare.S3_UPLOAD_ERROR;});
+        .catch(e       => {throw flareBook.errorFlare.S3_UPLOAD_ERROR;});
 };

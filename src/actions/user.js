@@ -41,16 +41,17 @@ export const storeDetails = (userDetails,overwrite) => async (dispatch,getState)
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_USERDETAILS}));
 };
 
-export const uploadProfilePicture = picture => async (dispatch,getState) => {
-    let awsSignedUri;
+export const uploadProfilePicture = fileRef => async (dispatch,getState) => {
+    let awsPacket;
+    let picture=fileRef.files[0];
     return await Promise.resolve()
         .then   (()               => {if (!(picture.type==="image/jpeg"||picture.type==="image/png")) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
         .then   (()               => {if (picture.size>AMAZON_S3_MAX_PICTURE_SIZE) throw flareBook.errorFlare.ERR_USER_PROFILE_PICTURE;})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USER_PROFILEPICTURE_SIGN,{fileName:picture.name,fileType:picture.type,fileSize:picture.size})))
-        .then   (packet           => awsSignedUri=packet)
-        .then   (()               => console.error("awsSignedUri: ",awsSignedUri))
-        .then   (()               => dispatch(uploadS3(awsSignedUri.signedRequest,picture)))
-        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsSignedUri.url},{overwrite:true})));
+        .then   (packet           => awsPacket=packet)
+        .then   (()               => dispatch(uploadS3(awsPacket.signedPutUri,picture)))
+        .then   (()               => dispatch(storeDetails({[detailName.profilePicture]:awsPacket.unsignedGetUri},{overwrite:true})))
+        .finally(()               => fileRef.files=[]);
 };
 
 export const uploadDocument = () => async (dispatch,getState) => {

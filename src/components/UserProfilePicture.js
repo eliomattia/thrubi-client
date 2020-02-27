@@ -15,7 +15,7 @@ class _UserProfilePicture extends Component {
                          src={profilePicture?profilePicture:(process.env.PUBLIC_URL+"/icons/"+role+deactivated+".png")}/>
                 </label>
                 <input id="profilePictureInput" className="d-none" ref={input => refs.localProfilePicture = input}
-                       type="file" onChange={() => uploadProfilePicture(refs.localProfilePicture.files[0])} />
+                       type="file" onChange={() => uploadProfilePicture(refs.localProfilePicture)} />
                 {
                     profilePicture?"":<div className="small text-secondary m-0 p-0">Click on the user icon to upload a profile picture</div>
                 }

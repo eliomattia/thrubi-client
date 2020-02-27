@@ -85,7 +85,7 @@ const fetchConfig = populationId => async (dispatch,getState) => {
         .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)));
 };
 
-export const changeCountryFilter = countryFilter => async (dispatch,getState) => {
+export const changeFilter = filter => async (dispatch,getState) => {
     return Promise.resolve()
-        .then   (()             => dispatch({type:actionType.RECEIVE_COUNTRY_FILTER,payload:{countryFilter}}));
+        .then   (()             => dispatch({type:actionType.RECEIVE_POPULATION_FILTER,payload:{filter}}));
 };

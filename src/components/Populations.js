@@ -4,15 +4,17 @@ import {selectPopulation,deselectPopulation} from "../actions/population";
 
 class _Populations extends Component {
     render() {
-        const {populations,populationId,countryFilter} = this.props;
+        const {populations,populationId,filter} = this.props;
         const {selectPopulation,deselectPopulation} = this.props;
 
         return (
             populations
                 .filter(p => (
-                    !countryFilter
-                    || p.countryId.toLowerCase().includes(countryFilter.toLowerCase())
-                    || p.countryName.toLowerCase().includes(countryFilter.toLowerCase())
+                    !filter
+                    || p.countryId.toLowerCase().includes(filter.toLowerCase())
+                    || p.countryName.toLowerCase().includes(filter.toLowerCase())
+                    || p.ccyId.toLowerCase().includes(filter.toLowerCase())
+                    || p.ccyName.toLowerCase().includes(filter.toLowerCase())
                 ))
                 .map((population,index) => {
                 return (
@@ -44,7 +46,7 @@ const mapStateToProps = state => ({
     deactivated:        state.client.user.deactivated,
     populationId:       state.client.population.id,
     populations:        state.client.population.populations,
-    countryFilter:      state.client.population.countryFilter,
+    filter:             state.client.population.filter,
 });
 
 const Populations = connect(mapStateToProps,{selectPopulation,deselectPopulation})(_Populations);

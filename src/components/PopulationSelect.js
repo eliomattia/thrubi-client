@@ -4,7 +4,7 @@ import Populations from "./Populations";
 import {fetchPopulations} from "../actions/population";
 import _ActionButton from "./_ActionButton";
 import {createMember} from "../actions/member";
-import {changeCountryFilter} from "../actions/population";
+import {changeFilter} from "../actions/population";
 
 class _PopulationSelect extends Component {
     componentDidMount() {
@@ -23,7 +23,7 @@ class _PopulationSelect extends Component {
 
     render() {
         const {busy,populationsBusy,populationsNotAvailable,populationId} = this.props;
-        const {createMember,changeCountryFilter} = this.props;
+        const {createMember,changeFilter} = this.props;
         let countryFilterXs,countryFilterLg;
 
         return (
@@ -36,9 +36,9 @@ class _PopulationSelect extends Component {
                                     <div className="d-flex flex-column flex-grow-1 wMin800 bg-light">
                                         <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
                                         <input ref={(input) => countryFilterLg = input}
-                                               onChange={() => changeCountryFilter(countryFilterLg.value)}
+                                               onChange={() => changeFilter(countryFilterLg.value)}
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
-                                               placeholder="Search country"/>
+                                               placeholder="Search by country or currency"/>
                                         <Populations />
                                         <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
                                     </div>
@@ -50,9 +50,9 @@ class _PopulationSelect extends Component {
                                     <div className="d-flex flex-column flex-grow-1 bg-light">
                                         <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
                                         <input ref={(input) => countryFilterXs = input}
-                                               onChange={() => changeCountryFilter(countryFilterXs.value)}
+                                               onChange={() => changeFilter(countryFilterXs.value)}
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
-                                               placeholder="Search country"/>
+                                               placeholder="Search by country or currency"/>
                                         <Populations />
                                         <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
                                     </div>
@@ -72,6 +72,6 @@ const mapStateToProps = state => ({
     populationId:               state.client.population.id,
 });
 
-const PopulationSelect = connect(mapStateToProps,{fetchPopulations,createMember,changeCountryFilter})(_PopulationSelect);
+const PopulationSelect = connect(mapStateToProps,{fetchPopulations,createMember,changeFilter})(_PopulationSelect);
 
 export default PopulationSelect;

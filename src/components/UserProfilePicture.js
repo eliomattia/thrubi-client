@@ -12,7 +12,7 @@ class _UserProfilePicture extends Component {
         return (
             <div className="mb-2">
                 <label for="profilePictureInput" className="m-0 p-0">
-                    <img className="mt-3 rounded-lg" alt="profilePicture" height="128" width="128"
+                    <img className="mt-3 rounded-circle" alt="profilePicture" height="128" width="128"
                          src={profilePicture?profilePicture:(process.env.PUBLIC_URL+"/icons/"+role+deactivated+".png")}/>
                 </label>
                 <input id="profilePictureInput" className="d-none" ref={input => refs.localProfilePicture = input}

@@ -19,5 +19,4 @@ export const linkedInAppClientId    = "78w03u1p8bc928";
 export const googleRedirectUri      = envGoogleRedirectUri;
 export const googleAppClientId      = "627523329723-5kfvuqg068851dsf6efh911ue4v7ttur.apps.googleusercontent.com";
 
-export const twitterRedirectUri     = envTwitterRedirectUri;
-export const twitterAppClientId     = "";
+export const twitterRedirectUri     = envTwitterRedirectUri; // not used

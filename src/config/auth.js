@@ -30,13 +30,8 @@ export const googleWindowParams = "toolbar=no, menubar=no, width=600, height=500
 // -------
 // Twitter
 // -------
-const twitterScope = "email%20profile";
-export const twitterAuthUri =    (twitterRedirectUri,twitterAppClientId) => //////change!!!!!!
-    "https://accounts.google.com/o/oauth2/auth?"+
-    "response_type=code" +
-    "&redirect_uri="+twitterRedirectUri+
-    "&scope="+twitterScope+
-    "&client_id="+twitterAppClientId;
+export const twitterAuthUri =    twitterRequestToken =>
+    "https://twitter.com/oauth/authenticate?oauth_token="+twitterRequestToken;
 
 export const twitterWindowName = "Login to Thrubi using your Twitter account";
 export const twitterWindowParams = "toolbar=no, menubar=no, width=600, height=500, top=50, left=100";

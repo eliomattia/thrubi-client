@@ -27,6 +27,10 @@ const userAccessInit = {
     googleWindow:           null,
     googleListener:         null,
     googleCode:             null,
+    twitterWindow:          null,
+    twitterListener:        null,
+    twitterRequestToken:    null,
+    twitterOAuthVerifier:   null,
     accessJwt:              null,
     refreshJwt:             null,
 };
@@ -128,7 +132,8 @@ const userAccess = (state = userAccessInit,action) => {
             });
         case actionType.RECEIVE_TWITTER_LOGIN:
             return Object.assign({},state,{
-                twitterCode:            action.payload.code,
+                twitterRequestToken:    action.payload.twitterRequestToken,
+                twitterOAuthVerifier:   action.payload.twitterOAuthVerifier,
             });
         case actionType.LOGIN:
             return Object.assign({},state,{

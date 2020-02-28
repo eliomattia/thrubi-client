@@ -28,8 +28,6 @@ import {
     linkedInAppClientId,
     googleRedirectUri,
     googleAppClientId,
-    twitterRedirectUri,
-    twitterAppClientId,
 } from "../env/auth";
 import {REDIRECT_CLOSE_INTERVAL} from "../env/redirect";
 
@@ -510,6 +508,7 @@ const processTwitterLogin = (event,waitingHandleResolve) => async (dispatch,getS
 };
 
 const startupTwitterLogin = () => async (dispatch,getState) => {
+    let twitterRequestToken = null;
     let twitterWindow = null;
     let twitterListener = null;
     let twitterInterval = null;
@@ -517,22 +516,24 @@ const startupTwitterLogin = () => async (dispatch,getState) => {
     let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
     return await Promise.resolve()
         .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.AUTH_TOKEN_TWITTER)))
+        .then   (token            => twitterRequestToken=token)
         .then   (()               => {twitterWindow = getState().client.userAccess.twitterWindow;})
         .then   (()               => ((twitterWindow===null)||(twitterWindow.closed)))
-        .then   (openNewWindow    => {if (openNewWindow) twitterWindow = window.open(twitterAuthUri(twitterRedirectUri,twitterAppClientId),twitterWindowName,twitterWindowParams);})
+        .then   (openNewWindow    => {if (openNewWindow) twitterWindow = window.open(twitterAuthUri(twitterRequestToken),twitterWindowName,twitterWindowParams);})
         .then   (()               => twitterWindow.focus())
         .then   (()               => {twitterInterval = setInterval(() => {if (twitterWindow.closed) {waitingHandleResolve(); clearInterval(twitterInterval);}},REDIRECT_CLOSE_INTERVAL);})
         .then   (()               => {twitterListener = event => dispatch(processTwitterLogin(event,waitingHandleResolve));})
         .then   (()               => {window.addEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
         .then   (()               => dispatch({type:actionType.RECEIVE_TWITTER_WINDOW_AND_LISTENER,payload:{twitterWindow,twitterListener}}))
         .then   (()               => waitingHandle)
-        .then   (()               => ({twitterCode:getState().client.userAccess.twitterCode}));
+        .then   (()               => ({twitterRequestToken:getState().client.userAccess.twitterRequestToken,twitterOAuthVerifier:getState().client.userAccess.twitterOAuthVerifier}));
 };
 
 export const createTwitter = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => dispatch(startupTwitterLogin()))
-        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_TWITTER,gLoginPackage)))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_TWITTER,tLoginPackage)))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .then   (loginData        => dispatch(finalizeLogin(loginData)));
 };
@@ -540,7 +541,7 @@ export const createTwitter = () => async (dispatch,getState) => {
 export const loginTwitter = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => dispatch(startupTwitterLogin()))
-        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_TWITTER,gLoginPackage)))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_TWITTER,tLoginPackage)))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .then   (loginData        => dispatch(finalizeLogin(loginData)));
 };
@@ -548,7 +549,7 @@ export const loginTwitter = () => async (dispatch,getState) => {
 export const addTwitter = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => dispatch(startupTwitterLogin()))
-        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_TWITTER,gLoginPackage)))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_TWITTER,tLoginPackage)))
         .then   (()               => dispatch(fetchUserChannels()))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
@@ -557,7 +558,7 @@ export const addTwitter = () => async (dispatch,getState) => {
 export const updateTwitter = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => dispatch(startupTwitterLogin()))
-        .then   (gLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_TWITTER,gLoginPackage)))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_TWITTER,tLoginPackage)))
         .then   (()               => dispatch(fetchUserChannels()))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
@@ -583,6 +584,12 @@ export const sendRedirect = () => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => window.location.search)
         .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}'))
-        .then   (pJson            => ({code:pJson.code,state:pJson.state,origin:EVENT_DATA_ORIGIN_THRUBI}))
+        .then   (pJson            => ({
+            origin:                 EVENT_DATA_ORIGIN_THRUBI,
+            code:                   pJson.code,
+            state:                  pJson.state,
+            twitterRequestToken:    pJson.oauth_token,
+            twitterOAuthVerifier:   pJson.oauth_verifier,
+        }))
         .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
 };

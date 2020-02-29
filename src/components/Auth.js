@@ -6,7 +6,8 @@ import _RadioButtons from "./_RadioButtons";
 import _KeyboardChannel from "./_KeyboardChannel";
 import * as auth from "../actions/auth";
 import {switchOptionUserMenu} from "../actions/user";
-import userOptions from "../config/user";
+import {logAction} from "../actions/log";
+import userOptions,{loggableActionType} from "../config/user";
 
 class _Auth extends Component {
     componentDidUpdate() {
@@ -23,8 +24,16 @@ class _Auth extends Component {
         logout({autoLogin:false});
     };
     
-    authFunction(optionLoginCreate,channelName) {
-        return this.props[optionLoginCreate.toLowerCase()+Channel.channelAuthFunctionName(channelName)];
+    authFunction(actionType,channelName) {
+        const {logAction} = this.props;
+
+        return () => {
+            console.error(actionType);
+            if (actionType===userOptions.optionLoginCreate.LOGIN||actionType===userOptions.optionLoginCreate.CREATE) {
+                logAction(loggableActionType.clickChannel,actionType+"_"+channelName);
+            }
+            this.props[actionType.toLowerCase()+Channel.channelAuthFunctionName(channelName)]();
+        }
     }
 
     render() {
@@ -39,7 +48,7 @@ class _Auth extends Component {
                             optionKeyboardMode === null ? "" :
                                 <_KeyboardChannel
                                     text={Channel.keyboardChannelMessage(optionKeyboardMode)}
-                                    action={this.props[optionKeyboardMode.toLowerCase() + "KeyboardForm"]}
+                                    action={this.props[optionKeyboardMode.toLowerCase()+"KeyboardForm"]}
                                     buttonType="btn btn-sm p-0 btn-primary"
                                     abandonAction={abandonKeyboard}
                                     abandonButtonType="btn btn-sm p-0 btn-secondary"/>
@@ -115,13 +124,13 @@ class _Auth extends Component {
                                                         [
                                                             {
                                                                 mode:   "UPDATE",
-                                                                action: (key) => this.props["update"+Channel.channelAuthFunctionName(key)],
+                                                                action: (key) => this.authFunction("UPDATE",Channel.channelAuthFunctionName(key)),
                                                                 color:  "",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.MANAGE) && ((Channel.channelIsForLogin(channelMode) || (Channel.channelIsForPay(channelMode))) && (Channel.channelIsOpen(channelMode))))
                                                             },
                                                             {
                                                                 mode:   "ADD",
-                                                                action: (key) => this.props["add"+Channel.channelAuthFunctionName(key)],
+                                                                action: (key) => this.authFunction("ADD",Channel.channelAuthFunctionName(key)),
                                                                 color:  "outline-",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.ADD) && (!Channel.channelIsOpen(channelMode)))
                                                             },
@@ -172,6 +181,6 @@ const mapStateToProps = state => ({
     channels:           state.client.userAccess.channels,
 });
 
-const Auth = connect(mapStateToProps,Object.assign({},auth,{switchOptionUserMenu}))(_Auth);
+const Auth = connect(mapStateToProps,Object.assign({},auth,{logAction,switchOptionUserMenu}))(_Auth);
 
 export default Auth;

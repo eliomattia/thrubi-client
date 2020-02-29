@@ -1,5 +1,15 @@
 import flareBook from "./flare";
 
+export const loggableActionType = {
+    clickChannel:       "CLICK_CHANNEL",
+    clickHomeButton:    "CLICK_HOME_BUTTON",
+};
+export const loggableActionValue = {
+    EVERYBODY:  "EVERYBODY",
+    WEALTHY:    "WEALTHY",
+    SOCIETIES:  "SOCIETIES",
+};
+
 const userOptions = {
     optionLoginCreate: {
         LOGIN:  "LOGIN",

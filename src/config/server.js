@@ -1,4 +1,6 @@
 export const endpoint = {
+    ACTIONS_LOG:                            "/actions/log",
+    ACTIONS_AUTH:                           "/actions/auth",
     AUTH_CHALLENGE_BLOCKCHAINETHEREUM:      "/auth/challenge/blockchainEthereum",
     AUTH_LISTCHANNELS:                      "/auth/listChannels",
     AUTH_REFRESH:                           "/auth/refresh",

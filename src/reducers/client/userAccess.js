@@ -9,13 +9,13 @@ const userAccessInit = {
     payChannel:                 null,
     receiveChannel:             null,
     channels: {
+        TWITTER:                0,
         FACEBOOK:               0,
         GOOGLE:                 0,
         LINKEDIN:               0,
         BLOCKCHAIN_ETHEREUM:    0,
         PAYPAL:                 0,
         KEYBOARD:               0,
-        TWITTER:                0,
     },
     facebookStatus:         null,
     facebookUserId:         null,
@@ -65,13 +65,13 @@ const userAccess = (state = userAccessInit,action) => {
         case actionType.RECEIVE_CHANNELS:
         case actionType.RECEIVE_USER_CHANNELS:
             return Object.assign({},state,{channels:{
+                TWITTER:                action.payload.TWITTER              ? action.payload.TWITTER                : state.channels.TWITTER,
                 FACEBOOK:               action.payload.FACEBOOK             ? action.payload.FACEBOOK               : state.channels.FACEBOOK,
                 GOOGLE:                 action.payload.GOOGLE               ? action.payload.GOOGLE                 : state.channels.GOOGLE,
                 LINKEDIN:               action.payload.LINKEDIN             ? action.payload.LINKEDIN               : state.channels.LINKEDIN,
                 BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
                 PAYPAL:                 action.payload.PAYPAL               ? action.payload.PAYPAL                 : state.channels.PAYPAL,
                 KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
-                TWITTER:                action.payload.TWITTER              ? action.payload.TWITTER                : state.channels.TWITTER,
             }});
         case actionType.RECEIVE_LOGIN_CHANNEL:
             return Object.assign({},state,{

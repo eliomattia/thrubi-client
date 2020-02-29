@@ -428,7 +428,7 @@ export const updateLinkedIn = () => async (dispatch,getState) => {
 const processGoogleLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
     let googleListener = null;
     return await Promise.resolve()
-        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) {console.error(event.data); return event.data;} else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
         .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_GOOGLE_LOGIN,payload:pjRenamed});})
         .then   (()               => {googleListener=getState().client.userAccess.googleListener;})
         .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,googleListener);})
@@ -496,7 +496,7 @@ export const updateGoogle = () => async (dispatch,getState) => {
 const processTwitterLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
     let twitterListener = null;
     return await Promise.resolve()
-        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) {console.error(event.data); return event.data;} else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
         .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_TWITTER_LOGIN,payload:pjRenamed});})
         .then   (()               => {twitterListener=getState().client.userAccess.twitterListener;})
         .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
@@ -516,8 +516,8 @@ const startupTwitterLogin = () => async (dispatch,getState) => {
     let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
     return await Promise.resolve()
         .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
-        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.AUTH_TOKEN_TWITTER)))
-        .then   (token            => twitterRequestToken=token)
+        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.AUTH_TOKEN_TWITTER,{})))
+        .then   (token            => twitterRequestToken=token.requestToken)
         .then   (()               => {twitterWindow = getState().client.userAccess.twitterWindow;})
         .then   (()               => ((twitterWindow===null)||(twitterWindow.closed)))
         .then   (openNewWindow    => {if (openNewWindow) twitterWindow = window.open(twitterAuthUri(twitterRequestToken),twitterWindowName,twitterWindowParams);})

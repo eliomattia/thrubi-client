@@ -16,8 +16,8 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 <span className="small d-block"><GlobalStatsCountryCcy/></span>
                 <span className="mb-2 small">Public data provided by:</span>
                 <br/>
-                <img className="text-center d-inline mr-1 mb-1" alt="IRS.gov" height="80px" src={process.env.PUBLIC_URL+"/jpg/IRS.gov.jpg"} />
-                <img className="text-center d-inline mr-1 mb-1" alt="wid.world" height="80px" src={process.env.PUBLIC_URL+"/png/wid.world.png"} />
+                <a href="https://www.irs.gov" target="_blank" rel="noopener noreferrer"><img className="text-center d-inline mr-1 mb-1" alt="IRS.gov" height="80px" src={process.env.PUBLIC_URL+"/jpg/IRS.gov.jpg"} /></a>
+                <a href="https://wid.world" target="_blank" rel="noopener noreferrer"><img className="text-center d-inline mr-1 mb-1" alt="wid.world" height="80px" src={process.env.PUBLIC_URL+"/png/wid.world.png"} /></a>
                 <br/>
                 <div className="px-1">
                     <img className="text-center d-inline mr-1 mb-1" alt="email" width="20px" src={process.env.PUBLIC_URL+"/png/email.png"} style={{filter:"opacity(.5) sepia(1) hue-rotate(180deg)"}} />

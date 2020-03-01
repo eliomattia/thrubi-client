@@ -25,7 +25,7 @@ class _Guest extends Component {
                     <h4 className="m-2 px-2">
                         It is calculated based on your current earnings and funded by wealthy individuals.
                     </h4>
-                    <h4 className="display-2 m-0 p-2">
+                    <h4 className="display-3 m-0 p-2">
                         Our purpose? <span className="thrubiGradient">Solve extreme poverty.</span>
                     </h4>
                 </div>

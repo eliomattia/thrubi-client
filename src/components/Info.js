@@ -70,16 +70,15 @@ class _Info extends Component {
                                 ],
                                 style:"thrubiGold",    image:"/jpg/futuristic.jpg",bg:"societies", color:"success",     header:"Thriving societies",    text:this.societiesText(),},
                         ].map(e => (
-                                <div className="col-lg-4 p-0 navbar-light">
-                                    <div className={"mr-0 mr-lg-3 my-2 my-lg-0 "+e.style}>
+                                <div className="col-lg-4 p-0 m-0 navbar-light">
+                                    <h2 className={"mr-0 mr-lg-3 mb-0 my-lg-0 text-center text-lg-left px-4 py-3 text-light bg-"+e.color}>{e.header}</h2>
+                                    <div className={"mr-0 mr-lg-3 mb-4 my-lg-0 "+e.style}>
                                         <div style={{backgroundImage: "url("+process.env.PUBLIC_URL+e.image,backgroundSize:"cover",backgroundRepeat:"no-repeat"}}
                                              className={"border-0 container-fluid m-0 "+e.bg+" p-4 text-"+e.color}>
-                                            <h2 className="text-center text-lg-left"><b>{e.header}</b></h2>
                                             <p>{e.text}</p>
-                                            {e.actions.map(a => <_ActionButton text="Learn more" buttonType={"my-4 btn-outline-"+e.color} action={null} />)}
+                                            {e.actions.map(a => <_ActionButton text={a.text} buttonType={"my-4 btn-outline-"+e.color} action={null} />)}
                                         </div>
                                         <div className={"border-0 container-fluid m-0 overflow-hidden topLeft p-4 opaque text-"+e.color}>
-                                            <h2 className="text-center text-lg-left"><b>{e.header}</b></h2>
                                             <p>{e.text}</p>
                                             {e.actions.map(a => <_ActionButton text={a.text} buttonType={"my-4 btn-outline-"+e.color} action={() => {logAction(loggableActionType.clickHomeButton,a.actionValue)}} />)}
                                         </div>

@@ -52,20 +52,21 @@ class _Info extends Component {
                     {
                         [
                             {actions: [
-                                    {text:"How to certify my identity?",actionValue:loggableActionValue.VISION_IDENTITY},
-                                    {text:"Should I disclose my income?",actionValue:loggableActionValue.VISION_INCOME_DISCLOSE},
-                                    {text:"How will Thrubi verify my income?",actionValue:loggableActionValue.VISION_INCOME_VERIFY},
+                                    {text:"How to certify my identity?",                actionValue:loggableActionValue.VISION_IDENTITY},
+                                    {text:"Should I disclose my income?",               actionValue:loggableActionValue.VISION_INCOME_DISCLOSE},
+                                    {text:"How will Thrubi verify my income?",          actionValue:loggableActionValue.VISION_INCOME_VERIFY},
+                                    {text:"Will I receive basic income every month?",   actionValue:loggableActionValue.VISION_UBI_MONTHLY},
                                 ],
                                 style:"thrubiBlue",    image:"/jpg/crowd.jpg",     bg:"everybody", color:"primary",     header:"Vision",                text:this.visionText(),},
                             {actions: [
-                                    {text:"What about my Thrubi Gold?",    actionValue:loggableActionValue.WEALTHY_GOLD},
-                                    {text:"I represent a company. Can I contribute?",    actionValue:loggableActionValue.WEALTHY_COMPANY},
-                                    {text:"Just one country seems too restrictive. What about a worldwide basic income?",    actionValue:loggableActionValue.WEALTHY_WORLDWIDE},
+                                    {text:"What about my Thrubi Gold?",                                                         actionValue:loggableActionValue.WEALTHY_GOLD},
+                                    {text:"I represent a company. Can I contribute?",                                           actionValue:loggableActionValue.WEALTHY_COMPANY},
+                                    {text:"Just one country seems too restrictive. What about a worldwide basic income?",       actionValue:loggableActionValue.WEALTHY_WORLDWIDE},
                                 ],
                                 style:"thrubiSilver",  image:"/jpg/hanauer.jpg",   bg:"wealthy",   color:"secondary",   header:"Wealthy individuals",   text:this.wealthyText(),},
                             {actions: [
-                                    {text:"Are the models publicly available?",actionValue:loggableActionValue.SOCIETIES_MODELS_PUBLIC},
-                                    {text:"I would like to learn more about the social models used to determine basic income.",actionValue:loggableActionValue.SOCIETIES_MODELS_ABOUT},
+                                    {text:"Are the models publicly available?",                                                 actionValue:loggableActionValue.SOCIETIES_MODELS_PUBLIC},
+                                    {text:"I would like to learn more about the social models used to determine basic income.", actionValue:loggableActionValue.SOCIETIES_MODELS_ABOUT},
                                 ],
                                 style:"thrubiGold",    image:"/jpg/futuristic.jpg",bg:"societies", color:"success",     header:"Thriving societies",    text:this.societiesText(),},
                         ].map(e => (

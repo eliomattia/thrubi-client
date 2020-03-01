@@ -10,7 +10,7 @@ import {INTERVAL_USER_WORKER} from "../env/workers";
 import {AMAZON_S3_MAX_PICTURE_SIZE,MIME_TYPE_JPEG,MIME_TYPE_PNG} from "../config/s3";
 import {uploadS3} from "./s3";
 
-export const switchOptionUserMenu = (optionUserMenu) => async (dispatch,getState) => {
+export const switchOptionUserMenu = optionUserMenu => async (dispatch,getState) => {
     return dispatch({type:actionType.SWITCH_OPTION_USER_MENU,payload:{optionUserMenu}});
 };
 

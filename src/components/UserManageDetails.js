@@ -13,9 +13,9 @@ const _UserManageDetails = ({updateUserBusy,name,surname,email,document,storeDet
                     "Updating user data..."
                     :
                     <Fragment>
-                        <input id="inputUserName"     ref={(input) => refs.name = input}      type="text" className={fieldClassName} placeholder={name?name:"Enter name"} />
-                        <input id="inputUserSurname"  ref={(input) => refs.surname = input}   type="text" className={fieldClassName} placeholder={surname?surname:"Enter surname"} />
-                        <input id="inputUserEmail"    ref={(input) => refs.email = input}     type="text" className={fieldClassName} placeholder={email?email:"Enter email address"} />
+                        <input id="inputUserName"     ref={input => refs.name = input}      type="text" className={fieldClassName} placeholder={name?name:"Enter name"} />
+                        <input id="inputUserSurname"  ref={input => refs.surname = input}   type="text" className={fieldClassName} placeholder={surname?surname:"Enter surname"} />
+                        <input id="inputUserEmail"    ref={input => refs.email = input}     type="text" className={fieldClassName} placeholder={email?email:"Enter email address"} />
                         <input id="inputUserDocument" disabled                                                     type="text" className={fieldClassName} placeholder={document?document:"Identity not verified"} />
                         <_ActionButton text="Update my personal data"  buttonType="btn-primary" action={() => {
                             let userDetails = {};

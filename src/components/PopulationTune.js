@@ -25,13 +25,13 @@ class _PopulationTune extends Component {
                     event.preventDefault();
                     tunePopulation(newBrake.value, newWarperMincome.value, newWarperEquality.value);
                 }}>
-                    <input id="newBrake" ref={(input) => newBrake = input}
+                    <input id="newBrake" ref={input => newBrake = input}
                            type="text" className="form-control form-control-sm"
                            placeholder={brake.toFixed(2)} required/>
-                    <input id="newWarperMincome" ref={(input) => newWarperMincome = input}
+                    <input id="newWarperMincome" ref={input => newWarperMincome = input}
                            type="text" className="form-control form-control-sm"
                            placeholder={warperMincome.toFixed(2)} required/>
-                    <input id="newWarperEquality" ref={(input) => newWarperEquality = input}
+                    <input id="newWarperEquality" ref={input => newWarperEquality = input}
                            type="text" className="form-control form-control-sm"
                            placeholder={warperEquality.toFixed(2)} required/>
                     <input className="btn btn-sm p-0 btn-block btn-primary" type="submit" value="Change configuration"/>

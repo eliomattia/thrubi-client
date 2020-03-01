@@ -42,10 +42,10 @@ class _Auth extends Component {
 
         return <div className="text-center small text-dark">
             {
-                busy ? "Auth module busy..." :
+                busy?"Auth module busy...":
                     <Fragment>
                         {
-                            optionKeyboardMode === null ? "" :
+                            optionKeyboardMode===null?"":
                                 <_KeyboardChannel
                                     text={Channel.keyboardChannelMessage(optionKeyboardMode)}
                                     action={this.props[optionKeyboardMode.toLowerCase()+"KeyboardForm"]}
@@ -54,7 +54,7 @@ class _Auth extends Component {
                                     abandonButtonType="btn btn-sm p-0 btn-secondary"/>
                         }
                         {
-                            (optionKeyboardMode !== null) || (loggedIn) ? "" :
+                            (optionKeyboardMode!==null)||(loggedIn)?"":
                                 <Fragment>
                                     {
                                         Object.keys(channels).map((key) => {    //loop on individual channel types
@@ -63,9 +63,9 @@ class _Auth extends Component {
                                                     <_ActionButton
                                                         channel={key}
                                                         text={Channel.channelUserFriendlyName(key,optionLoginCreate)}
-                                                        key={(optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "login" : "create")+key}
+                                                        key={(optionLoginCreate === userOptions.optionLoginCreate.LOGIN?"login":"create")+key}
                                                         action={this.authFunction(optionLoginCreate,key)}
-                                                        buttonType={"btn btn-sm p-0 btn-" + (optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "" : "outline-")}/>
+                                                        buttonType={"btn btn-sm p-0 btn-"+(optionLoginCreate===userOptions.optionLoginCreate.LOGIN?"outline-":"")}/>
                                                 );
                                             else return "";
                                         })

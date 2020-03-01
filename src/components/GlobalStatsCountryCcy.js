@@ -5,7 +5,7 @@ const _GlobalStatsCountryCcy = ({
     nCcy,
     nCountry,
 }) => (
-    <span className="text-primary text-center small mr-2">
+    <span>
         Thrubi is launching in {nCountry} {nCountry===1?"country":"countries"} and {nCcy} {nCcy===1?"currency":"currencies"}.
     </span>
 );

@@ -14,7 +14,7 @@ const userInit = {
     document:           null,
     profilePicture:     null,
     optionKeyboardMode: null,
-    optionLoginCreate:  userOptions.optionLoginCreate.LOGIN,
+    optionLoginCreate:  userOptions.optionLoginCreate.CREATE,
     optionUserMenu:     userOptions.optionUserMenu.ADD,
     optionAdvancedMode: false,
     optionViewHistory:  false,

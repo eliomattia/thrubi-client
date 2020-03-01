@@ -28,6 +28,10 @@
     // font-family: BentonSans, "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
+.mainView {
+    margin: 47px 0 0 0;
+}
+
 .thrubiGradient {
     background: thrubiGradient("thrubi-gradient-r");
     -webkit-background-clip: text;
@@ -35,7 +39,7 @@
 }
 
 .titleBar {
-     height: 43px;
+     height: 47px;
      min-width: 100%;
      background: white;
      // border-bottom: solid 3px white;
@@ -70,11 +74,7 @@
 }
 
 .alignBottom {
-    line-height: 40px;
-}
-
-.mainView {
-    margin: 43px 0 0 0;
+    line-height: 47px;
 }
 
 .ccyRowElement {

@@ -1,14 +1,12 @@
-import React, { Component,Fragment } from "react";
-import { connect } from "react-redux";
+import React,{Component,Fragment} from "react";
+import {connect} from "react-redux";
 import MemberBar from "./MemberBar";
 import Auth from "./Auth";
 import Info from "./Info";
 import UserView from "./UserView";
 import UserActivation from "./UserActivation";
 import UserManageDetails from "./UserManageDetails";
-import UserIdentity from "./UserIdentity"
-import MemberDelete from "./MemberDelete"
-import MemberDeclareIncome from "./MemberDeclareIncome";
+import UserIdentity from "./UserIdentity";
 import ThrubiBlue from "./ThrubiBlue";
 import ThrubiSilver from "./ThrubiSilver";
 import ThrubiGold from "./ThrubiGold";
@@ -18,7 +16,6 @@ import _ActionButton from "./_ActionButton";
 import PopulationDelete from "./PopulationDelete";
 import PopulationTune from "./PopulationTune"
 import {close} from "../actions/user";
-import {deletePopulation} from "../actions/adminMenu";
 import "./styles/User.scss";
 
 class _User extends Component {
@@ -115,6 +112,6 @@ const mapStateToProps = state => ({
     identityCertified:  state.client.user.identityCertified,
 });
 
-const User = connect(mapStateToProps,{deletePopulation,close})(_User);
+const User = connect(mapStateToProps,{close})(_User);
 
 export default User;

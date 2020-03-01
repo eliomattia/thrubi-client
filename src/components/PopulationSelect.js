@@ -35,7 +35,7 @@ class _PopulationSelect extends Component {
                                 <div className="m-3 d-flex flex-column flex-grow-1 align-items-center wMin800">
                                     <div className="d-flex flex-column flex-grow-1 wMin800 bg-light">
                                         <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
-                                        <input ref={(input) => countryFilterLg = input}
+                                        <input ref={input => countryFilterLg = input}
                                                onChange={() => changeFilter(countryFilterLg.value)}
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
                                                placeholder="Search by country or currency"/>
@@ -49,7 +49,7 @@ class _PopulationSelect extends Component {
                                 <div className="m-3 d-flex flex-column flex-grow-1 align-items-center">
                                     <div className="d-flex flex-column flex-grow-1 bg-light">
                                         <div className="text-center bg-primary text-light p-2">Please select your country and currency from the list below and confirm:</div>
-                                        <input ref={(input) => countryFilterXs = input}
+                                        <input ref={input => countryFilterXs = input}
                                                onChange={() => changeFilter(countryFilterXs.value)}
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
                                                placeholder="Search by country or currency"/>

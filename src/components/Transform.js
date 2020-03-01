@@ -53,7 +53,7 @@ class _Transform extends Component {
                                                              value={(this.state.transformEthValue*exrate)*(1-thrubiFees)*(!thrubiPriceSilver?0:(1/thrubiPriceSilver))}
                                                              ccySymbol="$₮" />
                                                 </div>
-                                                <input id="transformEth" ref={(input) => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
+                                                <input id="transformEth" ref={input => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
                                                            placeholder={this.transformEthValue} required
                                                            onChange={(action) => {
                                                                action.preventDefault();

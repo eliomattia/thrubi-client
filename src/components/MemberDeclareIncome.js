@@ -32,7 +32,7 @@ class _MemberDeclareIncome extends Component {
                             <Fragment>
                                 <div className="col-lg-12">
                                     <div className="row">
-                                        <input ref={(input) => mDeclared = input}
+                                        <input ref={input => mDeclared = input}
                                                type="text" className="form-control form-control-sm rounded-0 m-0"
                                                placeholder={mCurrent.toFixed(2)+" "+ccySymbol} required/>
                                     </div>

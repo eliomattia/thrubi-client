@@ -28,6 +28,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 </div>
                 <a href="https://twitter.com/thrubi_org?ref_src=twsrc%5Etfw" data-show-count="false" className="twitter-follow-button">Follow @thrubi_org</a>
                 <br/>
+                <a href="https://www.patreon.com/bePatron?u=30859926" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
             </div>
             {
                 !ethNetwork || !ethAddress ? "" :
@@ -65,7 +66,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 <a href="https://wid.world" target="_blank" rel="noopener noreferrer"><img className="text-center d-inline mr-1 mb-1" alt="wid.world" height="80px" src={process.env.PUBLIC_URL+"/png/wid.world.png"} /></a>
                 <p className="m-0 p-0 mt-3"/>
                 <GlobalStatsCountryCcy/>
-                <div className="py-3">
+                <div className="py-1">
                     <img className="text-center d-inline mr-1 mb-1" alt="email" width="20px" src={process.env.PUBLIC_URL+"/png/email.png"} style={{filter:"opacity(.5) sepia(1) hue-rotate(180deg)"}} />
                     &nbsp;
                     <a className="text-center text-secondary" href="mailto:info@thrubi.com">
@@ -74,6 +75,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 </div>
                 <a href="https://twitter.com/thrubi_org?ref_src=twsrc%5Etfw" data-show-count="false" className="twitter-follow-button">Follow @thrubi_org</a>
                 <br/>
+                <a href="https://www.patreon.com/bePatron?u=30859926" data-patreon-widget-type="become-patron-button" className="mt-4">Become a Patron!</a>
             </div>
             <div className="col-lg-4 float-right m-0 px-0 py-3 text-center text-secondary">
                 <a href="https://discord.gg/ZUHPgyt" target="_blank" rel="noopener noreferrer">

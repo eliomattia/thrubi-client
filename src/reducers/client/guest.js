@@ -2,6 +2,7 @@ import actionType from "../config/actionTypes";
 
 const guestInit = {
     subscribed:         false,
+    faqState:           {},
 };
 
 const guest = (state = guestInit,action) => {
@@ -13,6 +14,10 @@ const guest = (state = guestInit,action) => {
             return Object.assign({},state,{
                 subscribed:                     action.payload.guestSubscribed,
             });
+        case actionType.TOGGLE_FAQ_STATE:
+            return Object.assign({},state,{faqState:Object.assign({},state.faqState,{
+                [action.payload.actionValue]:                     !state.faqState[action.payload.actionValue],
+            })});
         default:
             return state;
     }

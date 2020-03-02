@@ -16,6 +16,7 @@ const flareBook = {
     },
     infoFlare: {
         CANNOT_SUBSCRIBE_NEWSLETTER:{thrubiFlareId:"I015",message:"Could not subscribe you to the newsletter, please try again"},
+        CANNOT_TOGGLE_FAQ_STATE:    {thrubiFlareId:"I016",message:"Something went wrong with toggling the content"},
         DETECTED_ETH_NETWORK_CHANGE:{thrubiFlareId:"I001",message:"Detected Ethereum network change"},
         DETECTED_ETH_ADDRESS_CHANGE:{thrubiFlareId:"I002",message:"Detected Ethereum address change"},
         DEACTIVATED_ON:             {thrubiFlareId:"I003",message:"User account is deactivated"},

@@ -28,7 +28,6 @@ class _Auth extends Component {
         const {logAction} = this.props;
 
         return () => {
-            console.error(actionType);
             if (actionType===userOptions.optionLoginCreate.LOGIN||actionType===userOptions.optionLoginCreate.CREATE) {
                 logAction(loggableActionType.clickChannel,actionType+"_"+channelName);
             }
@@ -124,19 +123,19 @@ class _Auth extends Component {
                                                         [
                                                             {
                                                                 mode:   "UPDATE",
-                                                                action: (key) => this.authFunction("UPDATE",Channel.channelAuthFunctionName(key)),
+                                                                action: key => this.authFunction("UPDATE",key),
                                                                 color:  "",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.MANAGE) && ((Channel.channelIsForLogin(channelMode) || (Channel.channelIsForPay(channelMode))) && (Channel.channelIsOpen(channelMode))))
                                                             },
                                                             {
                                                                 mode:   "ADD",
-                                                                action: (key) => this.authFunction("ADD",Channel.channelAuthFunctionName(key)),
+                                                                action: key => this.authFunction("ADD",key),
                                                                 color:  "outline-",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.ADD) && (!Channel.channelIsOpen(channelMode)))
                                                             },
                                                             {
                                                                 mode:   "DELETE",
-                                                                action: (key) => () => deleteChannel(key),
+                                                                action: key => () => deleteChannel(key),
                                                                 color:  "outline-",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.MANAGE) && ((Channel.channelIsForLogin(channelMode) || (Channel.channelIsForPay(channelMode))) && (Channel.channelIsOpen(channelMode))))
                                                             }

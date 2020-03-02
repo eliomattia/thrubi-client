@@ -205,7 +205,7 @@ class _Info extends Component {
                                 ],
                                 style:"thrubiGold",    image:"/jpg/futuristic.jpg",bg:"societies", color:"success",     header:"Thriving societies",    text:this.societiesText(),},
                         ].map(e => (
-                                <div className="col-lg-4 p-0 m-0 navbar-light">
+                                <div className="col-xl-4 p-0 m-0 navbar-light">
                                     <h2 className={"mr-0 mr-lg-3 mb-0 my-lg-0 text-center text-lg-center px-4 py-3 text-light bg-"+e.color}
                                         style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/logo.png",
                                             backgroundSize:"contain",

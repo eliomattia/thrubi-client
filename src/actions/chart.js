@@ -21,7 +21,7 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     const yAxisLabel = "# who earn $ (or more)";
     const circleRadius = 2;
 
-    const vRatio = 0.8;
+    const vRatio = 0.7;
     const widthLimit = 800;
     const svg = select(svgChart);
     let width = svgChart.clientWidth;
@@ -129,15 +129,19 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     // Create Event Handlers for mouse
     function handleMouseOver(d,i) {  // Add interactivity
         // Use D3 to select element, change color and size
-        select(this).attr("r",circleRadius*2);
+        select(this)
+            .attr("r",circleRadius*2);
+
+        console.error(xScale(xValue(d)),width,((xScale(xValue(d))>(width/2))?"end":"start"));
 
         // Specify where to put label of text
-        select(this)
-            .append("text")
+        g.append("text")
             .attr("id","t"+d.x+"-"+d.y+"-"+i)  // Create an id for text so we can select it later for removing on mouseout
-            .attr("x",f => (xScale(d.x)-30))
-            .attr("y",f => (yScale(d.y)-15))
-            .text("Label: ");  // Value of the text
+            .attr("text-anchor",((xScale(xValue(d))>(width/2))?"end":"start"))
+            .attr("x",() => (xScale(xValue(d))+((xScale(xValue(d))>(width/2))?margin.right:-margin.left)))
+            .attr("y",() => (yScale(yValue(d))-15))
+            .attr("fill",bootstrapColors.thrubiBlueChart)
+            .text(() => (format(".2s")(yValue(d)).replace("G","B")+" people earn $"+format(".2s")(xValue(d)).replace("G","B")+"+"));  // Value of the text
     }
 
     function handleMouseOut(d,i) {

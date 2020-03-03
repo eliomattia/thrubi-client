@@ -18,7 +18,7 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     const ref = await dispatch(processRequest(requestType.GET,endpoint.REF_FETCHREF,{}));
 
     const xAxisLabel = "Income in $";
-    const yAxisLabel = "# of individuals earning a given income (or higher)";
+    const yAxisLabel = "# who earn $ (or more)";
     const circleRadius = 2;
 
     const vRatio = 0.8;

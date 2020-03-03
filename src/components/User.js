@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import MemberBar from "./MemberBar";
 import Auth from "./Auth";
 import Info from "./Info";
+import Chart from "./Chart";
 import UserView from "./UserView";
 import UserActivation from "./UserActivation";
 import UserManageDetails from "./UserManageDetails";
@@ -42,7 +43,10 @@ class _User extends Component {
                             <div className="col-lg-9 navbar-light p-0">
                                 {
                                     !loggedIn ?
-                                        <Info />
+                                        <Fragment>
+                                            <Info />
+                                            <Chart />
+                                        </Fragment>
                                         :
                                         !isMember ?
                                             <Fragment>

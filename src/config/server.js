@@ -26,6 +26,7 @@ export const endpoint = {
     MEMBER_REQUEST_CLAIM:                   "/member/request/claim",
     MEMBER:                                 "/member",
     MEMBER_REQUEST_DECLAREINCOME:           "/member/request/declareIncome",
+    REF_FETCHREF:                           "/ref/fetchRef",
     STATS_NUSER:                            "/stats/nUser",
     STATS_NCOUNTRY:                         "/stats/nCountry",
     STATS_NCCY:                             "/stats/nCcy",

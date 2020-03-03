@@ -6,6 +6,12 @@ import actionType from "../reducers/config/actionTypes";
 import {logAction} from "../actions/log";
 import {loggableActionType} from "../config/user";
 
+export const chooseGuestMenu = guestMenuOption => async (dispatch,getState) => {
+    return Promise.resolve()
+        .then   (()               => dispatch(logAction(loggableActionType.clickGuestMenu,guestMenuOption)))
+        .then   (()               => dispatch({type:actionType.RECEIVE_GUEST_MENU_OPTION,payload:{guestMenuOption}}));
+};
+
 export const toggleFaq = actionValue => async (dispatch,getState) => {
     return Promise.resolve()
         .then   (()               => {if (!getState().client.guest.faqState[actionValue]) dispatch(logAction(loggableActionType.clickHomeButton,actionValue));})

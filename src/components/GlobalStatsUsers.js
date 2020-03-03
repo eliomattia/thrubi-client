@@ -5,7 +5,7 @@ const _GlobalStatsUsers = ({
     nUser,
 }) => (
     <p className="text-primary text-center small my-0 mr-2">
-        Thrubi is a {/*{nUser}-strong */}worldwide community for sustainable income redistribution.
+        Thrubi is a {/*{nUser}-strong */}worldwide community where Universal Basic Income supply meets demand.
     </p>
 );
 

@@ -8,7 +8,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
         <div className="d-block d-lg-none container-fluid flex-md-nowrap p-0 footer">
             <div className="col-lg-12 float-right m-0 py-2 pt-2 text-center bg-light"
                  style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/logo.png",
-                     backgroundSize: "50%",
+                     backgroundSize: "contain",
                      backgroundPosition: "center",
                      backgroundRepeat:"no-repeat",
                      backgroundBlendMode:"color-dodge"}}>
@@ -56,7 +56,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
         </div>
         <div className="d-none d-lg-flex flex-md-nowrap m-0 p-4 container-fluid flex-grow-1 footer bg-light"
              style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/logo.png",
-                 backgroundSize: "50%",
+                 backgroundSize: "contain",
                  backgroundPosition: "center",
                  backgroundRepeat:"no-repeat",
                  backgroundBlendMode:"color-dodge"}}>

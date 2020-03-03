@@ -5,7 +5,7 @@ import _ActionButton from "./_ActionButton";
 import {guestSubscribeNewsletter} from "../actions/guest";
 
 
-class _Guest extends Component {
+class _GuestBanner extends Component {
     componentDidMount() {
         this.setState({guestSubscribed:false});
     }
@@ -76,8 +76,8 @@ const mapStateToProps = state => ({
     guestSubscribed: state.client.guest.subscribed,
 });
 
-const Guest = connect(mapStateToProps,{guestSubscribeNewsletter})(_Guest);
+const GuestBanner = connect(mapStateToProps,{guestSubscribeNewsletter})(_GuestBanner);
 
-export default Guest;
+export default GuestBanner;
 
 

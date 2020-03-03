@@ -2,6 +2,7 @@ let actionType = {
     APP_SHUTDOWN: null,
     LOGOUT: null,
     SET_GUEST_SUBSCRIBED: null,
+    RECEIVE_GUEST_MENU_OPTION: null,
     TOGGLE_FAQ_STATE: null,
     STOP_AUTO_LOGIN: null,
     UPDATE_ETH_NETWORK: null,

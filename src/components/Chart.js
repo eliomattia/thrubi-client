@@ -1,12 +1,11 @@
-import React,{Component,Fragment} from "react";
+import React,{Component} from "react";
 import {connect} from "react-redux";
-import _ActionButton from "./_ActionButton";
 import {d3plot} from "../actions/chart";
-import {loggableActionValue} from "../config/user";
 
 class _Chart extends Component {
-    // ref for drawing
+    // Chart objects
     svgChart;
+    // -------------
 
     componentDidMount() {
         const {d3plot} = this.props;
@@ -16,9 +15,9 @@ class _Chart extends Component {
     render() {
         return(
             <div className="container-fluid m-0">
-                <div className="row mr-0 bg-light">
+                <div className="row mr-0">
                     <div className="col-lg-12">
-                        <svg width="800" height="700" ref={input => this.svgChart = input} />
+                        <svg width="700" height="500" ref={input => this.svgChart = input} />
                     </div>
                 </div>
             </div>

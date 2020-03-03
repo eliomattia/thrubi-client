@@ -4,7 +4,7 @@ import _ActionButton from "./_ActionButton";
 import {toggleFaq} from "../actions/guest";
 import {loggableActionValue} from "../config/user";
 
-class _Info extends Component {
+class _GuestFaq extends Component {
     visionText = () => (
         <Fragment>
             <ul>
@@ -250,6 +250,6 @@ const mapStateToProps = state => ({
     faqState:   state.client.guest.faqState,
 });
 
-const Info = connect(mapStateToProps,{toggleFaq})(_Info);
+const GuestFaq = connect(mapStateToProps,{toggleFaq})(_GuestFaq);
 
-export default Info;
+export default GuestFaq;

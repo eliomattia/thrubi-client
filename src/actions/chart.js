@@ -2,16 +2,23 @@ import {processRequest} from "./server";
 import {select} from "d3-selection";
 import {scaleLinear,scaleLog} from "d3-scale";
 import {min,max} from "d3-array";
+import {format} from "d3-format";
 import {axisLeft,axisBottom,axisRight,axisTop} from "d3-axis";
 import {requestType} from "../config/http";
 import {endpoint} from "../config/server";
 
 export const d3plot = svgChart => async (dispatch,getState) => {
+    const bootstrapColors = {
+        //these are similar to Bootstrap, but not the same, until I find a way to get them directly from Bootstrap
+        thrubiBlueChart:    "#3d5e73",
+        thrubiSilverChart:  "#cccccc",
+        thrubiGoldChart:    "#947a25",
+    };
+
     const ref = await dispatch(processRequest(requestType.GET,endpoint.REF_FETCHREF,{}));
 
-    const title = "USA income distribution";
     const xAxisLabel = "Income in $";
-    const yAxisLabel = "Cumulative distribution";
+    const yAxisLabel = "# of individuals earning a given income (or higher)";
     const circleRadius = 2;
 
     const svg = select(svgChart);
@@ -50,36 +57,38 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     // x axis labels
     const xAxisG = g.append("g").call(xAxis)
         .attr("transform",`translate(0,${margin.top})`)
-        .attr("stroke","#0F7365");
+        .attr("stroke",bootstrapColors.thrubiBlueChart); // x axis numbers
     xAxisG.select(".domain").remove();
     xAxisG.selectAll("line")
-        .attr("stroke","#0F7365");
+        .attr("stroke",bootstrapColors.thrubiSilverChart); // x axis vertical lines
     xAxisG.append("text")
         .attr("class","axis-label")
         .attr("y",innerHeight+margin.top+15)
         .attr("x",margin.left+(innerWidth/2))
-        .attr("stroke","#333")
+        .attr("stroke",bootstrapColors.thrubiBlueChart) // x axis label
         .text(xAxisLabel);
 
     // y axis
     const yAxis = axisLeft(yScale)
+        .ticks(5)
+        .tickFormat(d => format(".1s")(d).replace("G","B"))
         .tickSize(innerWidth)
         .tickPadding(5);
     // y axis labels
     const yAxisG = g.append("g").call(yAxis)
         .attr("transform",`translate(${innerWidth+margin.left},0)`)
         .attr("class","tick")
-        .attr("stroke","#0F7365");
+        .attr("stroke",bootstrapColors.thrubiBlueChart); // y axis numbers
     yAxisG.selectAll(".domain").remove();
     yAxisG.selectAll("line")
-        .attr("stroke","#0F7365");
+        .attr("stroke",bootstrapColors.thrubiSilverChart); // y axis horizontal lines
     yAxisG.append("text")
         .attr("class","axis-label")
         .attr("y",-(innerWidth+margin.left-15))
         .attr("x",-innerHeight/2)
         .attr("text-anchor","middle")
         .attr("transform",`rotate(-90)`)
-        .attr("stroke","#333")
+        .attr("stroke",bootstrapColors.thrubiBlueChart) // y axis label
         .text(yAxisLabel);
 
     // scatter data
@@ -88,13 +97,6 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         .attr("cy",d => yScale(yValue(d)))
         .attr("cx",d => xScale(xValue(d)))
         .attr("r",circleRadius)
-        .attr("stroke","#333");
-
-    /*
-    g.append("text")
-        .attr("class", "title")
-        .attr("x",0)
-        .attr("y",0)
-        .text(title);
-     */
+        .attr("fill",bootstrapColors.thrubiGoldChart)
+        .attr("stroke",bootstrapColors.thrubiGoldChart); // data points: dots
 };

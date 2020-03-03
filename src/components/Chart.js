@@ -10,6 +10,12 @@ class _Chart extends Component {
     componentDidMount() {
         const {d3plot} = this.props;
         d3plot(this.svgChart);
+        window.addEventListener("resize", () => d3plot(this.svgChart));
+    }
+
+    componentDidUpdate() {
+        const {d3plot} = this.props;
+        d3plot(this.svgChart);
     }
 
     render() {
@@ -17,7 +23,7 @@ class _Chart extends Component {
             <div className="container-fluid m-0">
                 <div className="row mr-0">
                     <div className="col-lg-12">
-                        <svg width="700" height="500" ref={input => this.svgChart = input} />
+                        <svg className="w-100" ref={input => this.svgChart = input} />
                     </div>
                 </div>
             </div>

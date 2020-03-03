@@ -3,7 +3,7 @@ import {guestMenuOption} from "../../config/guest";
 
 const guestInit = {
     subscribed:         false,
-    guestMenuOption:    guestMenuOption.INFOGRAPHICS,
+    guestMenuOption:    guestMenuOption.FAQ,
     faqState:           {},
 };
 

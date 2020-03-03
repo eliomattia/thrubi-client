@@ -21,13 +21,27 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     const yAxisLabel = "# of individuals earning a given income (or higher)";
     const circleRadius = 2;
 
+    const vRatio = 0.8;
+    const widthLimit = 800;
     const svg = select(svgChart);
-    const width = +svg.attr("width");
-    const height = +svg.attr("height");
+    let width = svgChart.clientWidth;
+    svgChart.style.paddingLeft = 0;
+    if (width>widthLimit) {
+        const paddingLeft = (width-widthLimit)/2;
+        console.error("width,paddingLeft: ",width,paddingLeft);
+        svgChart.style.paddingLeft = paddingLeft>10?paddingLeft:0;
+        width = widthLimit;
+        svgChart.style.width = width;
+    }
+    const height = width*vRatio;
+    svgChart.style.height = height;
+    const xTicks = width>550?10:width>350?5:3;
 
     const margin = {top:15,right:25,bottom:45,left:65};
     const innerWidth = width-margin.left-margin.right;
     const innerHeight = height-margin.top-margin.bottom;
+
+    svg.selectAll("*").remove();
 
     const xValue = d => d.m;
     const minxValue = +min(ref,xValue);
@@ -54,7 +68,8 @@ export const d3plot = svgChart => async (dispatch,getState) => {
     // x axis
     const xAxis = axisBottom(xScale)
         .tickSize(innerHeight)
-        .tickPadding(10);
+        .tickPadding(10)
+        .ticks(xTicks);
     // x axis labels
     const xAxisG = g
         .append("g")

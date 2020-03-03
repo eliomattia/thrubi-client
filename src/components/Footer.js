@@ -81,6 +81,7 @@ const _Footer = ({ethNetwork,ethAddress}) => (
                 <a href="https://discord.gg/ZUHPgyt" target="_blank" rel="noopener noreferrer">
                     <img className="text-center d-inline mx-0 mb-3" alt="discord" height="50px" src={process.env.PUBLIC_URL+"/png/discord_grey.png"} />
                 </a>
+                <br />
                 <iframe src="https://discordapp.com/widget?id=681677187044343841&theme=dark" width="350" height="300"
                         allowTransparency="true" frameBorder="0" />
             </div>

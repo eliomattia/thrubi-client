@@ -46,7 +46,8 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         .nice();
 
     // main viewport
-    const g = svg.append("g")
+    const g = svg
+        .append("g")
         .attr("width",innerWidth)
         .attr("height",innerHeight);
 
@@ -55,10 +56,13 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         .tickSize(innerHeight)
         .tickPadding(10);
     // x axis labels
-    const xAxisG = g.append("g").call(xAxis)
+    const xAxisG = g
+        .append("g")
+        .call(xAxis)
         .attr("transform",`translate(0,${margin.top})`)
         .attr("stroke",bootstrapColors.thrubiBlueChart); // x axis numbers
-    xAxisG.select(".domain").remove();
+    xAxisG.select(".domain")
+        .remove();
     xAxisG.selectAll("line")
         .attr("stroke",bootstrapColors.thrubiSilverChart); // x axis vertical lines
     xAxisG.append("text")
@@ -75,11 +79,14 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         .tickSize(innerWidth)
         .tickPadding(5);
     // y axis labels
-    const yAxisG = g.append("g").call(yAxis)
+    const yAxisG = g
+        .append("g")
+        .call(yAxis)
         .attr("transform",`translate(${innerWidth+margin.left},0)`)
         .attr("class","tick")
         .attr("stroke",bootstrapColors.thrubiBlueChart); // y axis numbers
-    yAxisG.selectAll(".domain").remove();
+    yAxisG.selectAll(".domain")
+        .remove();
     yAxisG.selectAll("line")
         .attr("stroke",bootstrapColors.thrubiSilverChart); // y axis horizontal lines
     yAxisG.append("text")
@@ -92,11 +99,39 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         .text(yAxisLabel);
 
     // scatter data
-    g.selectAll("circle").data(ref)
-        .enter().append("circle")
+    g.selectAll("circle")
+        .data(ref)
+        .enter()
+        .append("circle")
         .attr("cy",d => yScale(yValue(d)))
         .attr("cx",d => xScale(xValue(d)))
         .attr("r",circleRadius)
         .attr("fill",bootstrapColors.thrubiGoldChart)
-        .attr("stroke",bootstrapColors.thrubiGoldChart); // data points: dots
+        .attr("stroke",bootstrapColors.thrubiGoldChart)
+        .on("mouseover",handleMouseOver)
+        .on("mouseout",handleMouseOut); // data points: dots
+
+    // Create Event Handlers for mouse
+    function handleMouseOver(d,i) {  // Add interactivity
+        // Use D3 to select element, change color and size
+        select(this).attr("r",circleRadius*2);
+
+        // Specify where to put label of text
+        select(this)
+            .append("text")
+            .attr("id","t"+d.x+"-"+d.y+"-"+i)  // Create an id for text so we can select it later for removing on mouseout
+            .attr("x",f => (xScale(d.x)-30))
+            .attr("y",f => (yScale(d.y)-15))
+            .text("Label: ");  // Value of the text
+    }
+
+    function handleMouseOut(d,i) {
+        // Use D3 to select element, change color back to normal
+        select(this)
+            .attr("r",circleRadius);
+
+        // Select text by id and then remove
+        select("#t"+d.x+"-"+d.y+"-"+i)
+            .remove();  // Remove text location
+    }
 };

@@ -1,10 +1,10 @@
 import {processRequest} from "./server";
-import {deselectPopulation} from "./userMenu";
+import {deselectPopulation} from "./population";
 import {emitFlare} from "./flare";
-import {requestType} from "./config/http";
-import {flareBook} from "./config/flare";
+import {requestType} from "../config/http";
+import flareBook from "../config/flare";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
-import {endpoint} from "./config/server";
+import {endpoint} from "../config/server";
 
 export const fetchCcys = () => async (dispatch,getState) => {
     processRequest(requestType.GET,endpoint.CCY_LIST,null)(dispatch,getState)

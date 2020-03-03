@@ -47,7 +47,7 @@ class _Ccys extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     ccys: state.global.ccy.ccys,
     ccyId: state.global.ccy.id,
 });

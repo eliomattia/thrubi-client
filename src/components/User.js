@@ -1,34 +1,33 @@
-import React, { Component,Fragment } from "react";
-import { connect } from "react-redux";
+import React,{Component,Fragment} from "react";
+import {connect} from "react-redux";
 import MemberBar from "./MemberBar";
 import Auth from "./Auth";
 import Info from "./Info";
 import UserView from "./UserView";
 import UserActivation from "./UserActivation";
 import UserManageDetails from "./UserManageDetails";
-import DeclareIncome from "./DeclareIncome";
+import UserIdentity from "./UserIdentity";
 import ThrubiBlue from "./ThrubiBlue";
 import ThrubiSilver from "./ThrubiSilver";
 import ThrubiGold from "./ThrubiGold";
-import SelectPopulation from "./SelectPopulation";
-import AddPopulation from "./AddPopulation";
+import PopulationSelect from "./PopulationSelect";
+import PopulationAdd from "./PopulationAdd";
 import _ActionButton from "./_ActionButton";
-import _DeletePopulation from "./_DeletePopulation";
-import TunePopulation from "./TunePopulation"
+import PopulationDelete from "./PopulationDelete";
+import PopulationTune from "./PopulationTune"
 import {close} from "../actions/user";
-import {deletePopulation} from "../actions/adminMenu";
 import "./styles/User.scss";
 
 class _User extends Component {
     render() {
-        const {busy,optionUserMenu,loggedIn,auth,populationId} = this.props;
-        const {deletePopulation,close} = this.props;
+        const {busy,optionUserMenu,loggedIn,auth,identityCertified,isMember,member} = this.props;
+        const {close} = this.props;
 
         return(
-            <div className="container-fluid">
+            <div className="container-fluid row p-0 m-0 mb-5">
                 {
                     busy ? "User loading..." :
-                        <div className="row">
+                        <Fragment>
                             <div className="col-lg-3 navbar-light">
                                 {loggedIn ? <UserView /> : ""}
                                 <Auth />
@@ -40,67 +39,79 @@ class _User extends Component {
                                     </div>
                                     : ""}
                             </div>
-                            <div className="col-lg-9 navbar-light">
+                            <div className="col-lg-9 navbar-light p-0">
                                 {
                                     !loggedIn ?
                                         <Info />
                                         :
-                                        populationId===-1 ?
+                                        !isMember ?
                                             <Fragment>
-                                                <SelectPopulation />
-                                                {
-                                                    auth!==1 ? "" : <AddPopulation />
-                                                }
+                                                <PopulationSelect />
+                                                { !auth ? "" : <PopulationAdd /> }
                                             </Fragment>
-                                        :
-                                            <Fragment>
+                                            :
+                                            <div className="bg-light mr-2 ml-2 ml-lg-0">
                                                 <MemberBar />
                                                 {
-                                                    auth!==1 ?
-                                                        <Fragment>
-                                                            <DeclareIncome />
-                                                            <div className="container-fluid">
-                                                                <div className="row p-0 userContent">
-                                                                    <div className="col-lg-4 thrubiBlue navbar-light">
-                                                                        <ThrubiBlue />
-                                                                    </div>
-                                                                    <div className="col-lg-4 thrubiSilver navbar-light">
-                                                                        <ThrubiSilver />
-                                                                    </div>
-                                                                    <div className="col-lg-4 thrubiGold navbar-light">
-                                                                        <ThrubiGold />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </Fragment>
+                                                    identityCertified<=0 ?
+                                                        <div>
+                                                            <UserIdentity />
+                                                        </div>
                                                         :
                                                         <Fragment>
-                                                            <div className="col-lg-4 userPanel navbar-light">
-                                                                <_DeletePopulation action={deletePopulation} text="Delete Population" buttonType="btn btn-sm p-0 btn-block btn-secondary"/>
-                                                            </div>
-                                                            <div className="col-lg-4 userPanel navbar-light">
-                                                                <TunePopulation />
-                                                            </div>
+                                                            {
+                                                                !auth ?
+                                                                    <Fragment>
+                                                                        <div className="container-fluid row p-0 m-0">
+                                                                            <div className="col-lg-4 thrubiBlue navbar-light">
+                                                                                { (member.thrubiBlue || member.thrubiBlueNext || member.thrubiBlueEth
+                                                                                    || member.thrubiBlueAward || member.thrubiBlueAwardTotal || member.thrubiBlueClaimTotal)
+                                                                                    ? <ThrubiBlue /> : ""}
+                                                                            </div>
+                                                                            <div className="col-lg-4 thrubiSilver navbar-light">
+                                                                                { (member.thrubiSilver || member.thrubiSilverNext || member.thrubiSilverEth
+                                                                                    || member.thrubiSilverTransformTotal)
+                                                                                    ? <ThrubiSilver /> : ""}
+                                                                            </div>
+                                                                            <div className="col-lg-4 thrubiGold navbar-light">
+                                                                                { (member.thrubiGold)
+                                                                                    ? <ThrubiGold /> : ""}
+                                                                            </div>
+                                                                        </div>
+                                                                    </Fragment>
+                                                                    :
+                                                                    <Fragment>
+                                                                        <div className="col-lg-4 navbar-light">
+                                                                            <PopulationDelete/>
+                                                                        </div>
+                                                                        <div className="col-lg-4 navbar-light">
+                                                                            <PopulationTune />
+                                                                        </div>
+                                                                    </Fragment>
+                                                            }
                                                         </Fragment>
                                                 }
-                                            </Fragment>
+                                            </div>
                                 }
                             </div>
-                        </div>
+                        </Fragment>
                 }
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:               state.session.busy.component.user,
     optionUserMenu:     state.client.user.optionUserMenu,
     role:               state.client.user.role,
     loggedIn:           state.client.userAccess.loggedIn,
     populationId:       state.client.population.id,
+    isMember:           state.client.member.isMember,
+    member:             state.client.member,
+    identityCertified:  state.client.user.identityCertified,
 });
 
-const User = connect(mapStateToProps,{deletePopulation,close})(_User);
+const User = connect(mapStateToProps,{close})(_User);
 
 export default User;

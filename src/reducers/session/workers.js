@@ -5,6 +5,7 @@ const workersInit = {
     ethAddress: null,
     refreshTokens: null,
     globalStats: null,
+    user: null,
     member: null,
     market: null,
     population: null,
@@ -20,6 +21,8 @@ const workers = (state = workersInit,action) => {
             return Object.assign({},state,{refreshTokens:action.payload.refreshTokensWorker,});
         case actionType.RECEIVE_GLOBAL_STATS_WORKER:
             return Object.assign({},state,{globalStats:action.payload.globalStatsWorker,});
+        case actionType.RECEIVE_USER_WORKER:
+            return Object.assign({},state,{user:action.payload.userWorker,});
         case actionType.RECEIVE_MEMBER_WORKER:
             return Object.assign({},state,{member:action.payload.memberWorker,});
         case actionType.RECEIVE_MARKET_WORKER:
@@ -27,19 +30,21 @@ const workers = (state = workersInit,action) => {
         case actionType.RECEIVE_POPULATION_WORKER:
             return Object.assign({},state,{population:action.payload.populationWorker,});
         case actionType.STOP_ETH_NETWORK_WORKER:
-            return Object.assign({},state,{ethNetwork:{},});
+            return Object.assign({},state,{ethNetwork:null,});
         case actionType.STOP_ETH_ADDRESS_WORKER:
-            return Object.assign({},state,{ethAddress:{},});
+            return Object.assign({},state,{ethAddress:null,});
         case actionType.STOP_REFRESH_TOKENS_WORKER:
-            return Object.assign({},state,{refreshTokens:{},});
+            return Object.assign({},state,{refreshTokens:null,});
         case actionType.STOP_GLOBAL_STATS_WORKER:
-            return Object.assign({},state,{globalStats:{},});
+            return Object.assign({},state,{globalStats:null,});
+        case actionType.STOP_USER_WORKER:
+            return Object.assign({},state,{user:null,});
         case actionType.STOP_MEMBER_WORKER:
-            return Object.assign({},state,{member:{},});
+            return Object.assign({},state,{member:null,});
         case actionType.STOP_MARKET_WORKER:
-            return Object.assign({},state,{market:{},});
+            return Object.assign({},state,{market:null,});
         case actionType.STOP_POPULATION_WORKER:
-            return Object.assign({},state,{population:{},});
+            return Object.assign({},state,{population:null,});
         default:
             return state;
     }

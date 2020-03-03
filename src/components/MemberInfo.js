@@ -1,39 +1,47 @@
-import React, {Fragment} from 'react';
+import React,{Fragment} from "react";
 import { connect } from "react-redux";
 
 const _MemberInfo = ({
-    populationId,
-    countryName,
-    ccyId,
-    ccyName,
     ccySymbol,
     exrate,
+    thrubiSilver,
+    thrubiSilverNext,
     thrubiPriceSilver,
     thrubiPriceSilverNext,
     thrubiPriceGold,
 }) => (
-    <Fragment>
-        <div className="col-lg-9 py-3">
-            <span>{countryName}/{ccyName}({ccyId}) <span className="small">(pid#{populationId})</span></span>
-            <span>&nbsp;| 1.00Ξ = {exrate.toFixed(2)}{ccySymbol}</span>
-            <span>&nbsp;| 1.00$₮ = {thrubiPriceSilver.toFixed(2)}{ccySymbol}</span>
-            <span>&nbsp;| 1.00$₮ = {thrubiPriceSilverNext.toFixed(2)}{ccySymbol} (next)</span>
-            <span>&nbsp;| 1.00₲₮ = {thrubiPriceGold.toFixed(2)}{ccySymbol}</span>
+    <div className="container-fluid p-0 m-0 small consoleFont">
+        <div className="col-sm-12 container-fluid row p-0 m-0">
+            <div className="col-5 container-fluid p-0 m-0 text-right">
+                <div className="col-sm-12 p-0">1.00Ξ</div>
+                { (thrubiSilver || thrubiSilverNext) ? <div className="col-sm-12 p-0">1.00₮S</div> : "" }
+                { /* <div className="col-sm-12 p-0">1.00₮S</div> */ }
+                { /* <div className="col-sm-12 p-0">1.00₮G</div> */ }
+            </div>
+            <div className="col-2 container-fluid p-0 m-0 text-center">
+                <div className="col-sm-12 p-0">=</div>
+                { (thrubiSilver || thrubiSilverNext) ? <div className="col-sm-12 p-0">=</div> : "" }
+                { /* <div className="col-sm-12 p-0">=</div> */ }
+                { /* <div className="col-sm-12 p-0">=</div> */ }
+            </div>
+            <div className="col-5 container-fluid p-0 m-0 text-left">
+                <div className="col-sm-12 p-0">{exrate.toFixed(2)}{ccySymbol}</div>
+                    { (thrubiSilver || thrubiSilverNext) ? <div className="col-sm-12 p-0">{thrubiPriceSilver.toFixed(2)}{ccySymbol}</div> : "" }
+                { /* <div className="col-sm-12 p-0">{thrubiPriceSilverNext.toFixed(2)}{ccySymbol} (next month)</div> */ }
+                { /* <div className="col-sm-12 p-0">{thrubiPriceGold.toFixed(2)}{ccySymbol}</div> */ }
+            </div>
         </div>
-    </Fragment>
+    </div>
 );
 
-const mapStateToProps = (state) => ({
-    loggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
-    countryName: state.client.population.countryName,
-    ccyId: state.client.population.ccyId,
-    ccyName: state.client.population.ccyName,
-    ccySymbol: state.client.population.ccySymbol,
-    exrate: state.global.market.exrate,
-    thrubiPriceSilver: state.client.population.thrubiPriceSilver,
-    thrubiPriceSilverNext: state.client.population.thrubiPriceSilverNext,
-    thrubiPriceGold: state.client.population.thrubiPriceGold,
+const mapStateToProps = state => ({
+    ccySymbol:              state.client.population.ccySymbol,
+    exrate:                 state.global.market.exrate,
+    thrubiSilver:           state.client.member.thrubiSilver,
+    thrubiSilverNext:       state.client.member.thrubiSilverNext,
+    thrubiPriceSilver:      state.client.population.thrubiPriceSilver,
+    thrubiPriceSilverNext:  state.client.population.thrubiPriceSilverNext,
+    thrubiPriceGold:        state.client.population.thrubiPriceGold,
 });
 
 const MemberInfo = connect(mapStateToProps,{})(_MemberInfo);

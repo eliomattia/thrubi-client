@@ -1,7 +1,8 @@
 import request from "request";
-import {uri,spotApi} from "./config/market";
-import {flareBook} from "./config/flare";
+import {uri,spotApi} from "../config/market";
+import flareBook from "../config/flare";
 import actionType from "../reducers/config/actionTypes";
+import {INTERVAL_MARKET_WORKER} from "../env/workers";
 
 export const fetchExrate = ccyId => async (dispatch,getState) => {
     if (ccyId) {
@@ -17,4 +18,20 @@ export const fetchExrate = ccyId => async (dispatch,getState) => {
             });
         });
     }
+};
+
+export const startMarketWorker = () => async (dispatch,getState) => {
+    let marketWorker = setInterval((() => {
+        const activity = () => {
+            dispatch(fetchExrate(getState().client.population.ccyId));
+        };
+        activity();
+        return activity;
+    })(),INTERVAL_MARKET_WORKER);
+    dispatch({type:actionType.RECEIVE_MARKET_WORKER,payload:{marketWorker}});
+};
+
+export const stopMarketWorker = () => async (dispatch,getState) => {
+    clearInterval(getState().session.workers.market);
+    dispatch({type:actionType.STOP_MARKET_WORKER,payload:{}});
 };

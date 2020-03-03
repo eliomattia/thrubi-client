@@ -1,32 +1,35 @@
 import Channel from "../classes/Channel";
 import {processRequest} from "./server";
 import {signMessage} from "./blockchain_ethereum";
-import {switchOptionUserMenu,fetchDetails,storeDetails} from "./user";
+import {switchOptionUserMenu,fetchDetails,storeDetails,activateUserWorker,stopUserWorker} from "./user";
 import {emitFlare} from "./flare";
-import {deselectPopulation} from "./userMenu";
-import {requestType} from "./config/http";
+import {deselectPopulation} from "./population";
+import {requestType} from "../config/http";
 import actionType,{busyPayload} from "../reducers/config/actionTypes";
-import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "./config/thrubi";
-import {endpoint} from "./config/server";
-import {facebook} from "./config/facebook";
+import {EVENT_DATA_ORIGIN_THRUBI,EVENT_TYPE_MESSAGE} from "../config/redirect";
+import {endpoint} from "../config/server";
+import {facebook} from "../config/facebook";
 import {
+    linkedInAuthUri,
+    linkedInWindowName,
+    linkedInWindowParams,
     googleAuthUri,
     googleWindowName,
     googleWindowParams,
-    linkedInAuthUri,
-    linkedInWindowName,
-    linkedInWindowParams
-} from "./config/auth";
-import {flareBook} from "./config/flare";
-import userOptions from "./config/user";
+    twitterAuthUri,
+    twitterWindowName,
+    twitterWindowParams,
+} from "../config/auth";
+import flareBook from "../config/flare";
+import userOptions from "../config/user";
 import {
     linkedInRedirectUri,
     linkedInAppState,
     linkedInAppClientId,
     googleRedirectUri,
     googleAppClientId,
-} from "./env/auth";
-import {REDIRECT_CLOSE_INTERVAL} from "./env/redirect";
+} from "../env/auth";
+import {REDIRECT_CLOSE_INTERVAL} from "../env/redirect";
 
 // ---------------
 // Auth menu items
@@ -40,7 +43,7 @@ export const switchOptionLoginCreate = () => async (dispatch,getState) => {
 // Logout
 // ------
 
-export const logout = (payload) => async (dispatch,getState) => {
+export const logout = payload => async (dispatch,getState) => {
     if (getState().client.userAccess.loggedIn) {
         return await Promise.resolve()
             .then   (()           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
@@ -48,6 +51,7 @@ export const logout = (payload) => async (dispatch,getState) => {
             .then   (()           => dispatch({type:actionType.LOGOUT,payload}))
             .then   (()           => dispatch(cancelRefreshTokens()))
             .then   (()           => dispatch(fetchChannels()))
+            .then   (()           => dispatch(stopUserWorker()))
             .then   (()           => dispatch(deselectPopulation()))
             .then   (()           => dispatch(FBlogout()))
             .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGOUT)})
@@ -66,7 +70,7 @@ const cancelRefreshTokens = () => async (dispatch,getState) => {
         .catch  (()           => {throw flareBook.errorFlare.ERROR_STOP_TOKEN_REFRESH});
 };
 
-const scheduleRefreshTokens = (intervalTime) => async (dispatch,getState) => {
+const scheduleRefreshTokens = intervalTime => async (dispatch,getState) => {
     const refreshTokensWorker = setTimeout(async () => {
         let tokens;
         return await Promise.resolve()
@@ -75,7 +79,7 @@ const scheduleRefreshTokens = (intervalTime) => async (dispatch,getState) => {
             .then   (()           => dispatch({type:actionType.REFRESH_TOKENS,payload:tokens}))
             .then   (()           => dispatch(scheduleRefreshTokens(tokens.accessJwtExpiry)))
             .catch  (error        => {throw flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN)})
-            .catch  (()           => dispatch(logout({autoLogin:true})));
+            .catch  (error        => {console.error(error);dispatch(logout({autoLogin:false}));});
     },intervalTime/2);
     dispatch({type:actionType.RECEIVE_REFRESH_TOKENS_WORKER,payload:{refreshTokensWorker}});
 };
@@ -105,41 +109,61 @@ export const fetchUserChannels = () => async (dispatch,getState) => {
 export const deleteChannel = (channelName) => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()                           => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
-        .then   (()                           => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_DELETE+channelName,{})))
+        .then   (()                           => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_DELETE+"/"+channelName,{})))
         .then   (()                           => dispatch(fetchUserChannels()))
         .catch  (error                        => dispatch(emitFlare(flareBook.flareType.ERROR,error)))
         .finally(()                           => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
 
-export const setPayChannel = (payChannel) => async (dispatch,getState) => {
+export const getPayChannel = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const setPayChannel = payChannel => async (dispatch,getState) => {
     return await Promise.resolve()
-        .then   (()               => {if (!Channel.channelIsOpen(getState().client.userAccess.channels[payChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
+        .then   (()               => {if (payChannel!==Channel.channelName.NOT_AVAILABLE&&!Channel.channelIsOpen(getState().client.userAccess.channels[payChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_SETPAYCHANNEL,{payChannel})))
         .then   (newPayChannel    => dispatch({type:actionType.RECEIVE_PAY_CHANNEL,payload:{payChannel:newPayChannel}}))
         .catch  (error            => {if (error !== flareBook.errorFlare.CHANNEL_CLOSED) throw error;})
         .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_PAY_CHANNEL_UPDATE)));
 };
 
+export const getReceiveChannel = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const setReceiveChannel = receiveChannel => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => {if (receiveChannel!==Channel.channelName.NOT_AVAILABLE&&!Channel.channelIsOpen(getState().client.userAccess.channels[receiveChannel])) {dispatch(switchOptionUserMenu("ADD")); throw flareBook.errorFlare.CHANNEL_CLOSED;}})
+        .then   (()               => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_SETRECEIVECHANNEL,{receiveChannel})))
+        .then   (newReceiveChannel=> dispatch({type:actionType.RECEIVE_RECEIVE_CHANNEL,payload:{receiveChannel:newReceiveChannel}}))
+        .catch  (error            => {if (error !== flareBook.errorFlare.CHANNEL_CLOSED) throw error;})
+        .catch  (error            => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.ERR_RECEIVE_CHANNEL_UPDATE)));
+};
+
 // ----------------------
 // Login and verification
 // ----------------------
 
-const finalizeLogin = (loginData) => async (dispatch,getState) => {
+const finalizeLogin = loginData => async (dispatch,getState) => {
     return await Promise.resolve()
         .then   (()               => {if (!loginData.userId) throw loginData.loginError;})
         .then   (()               => dispatch({type:actionType.LOGIN,payload:loginData}))
         .then   (()               => dispatch(scheduleRefreshTokens(loginData.accessJwtExpiry)))
         .then   (()               => dispatch(fetchDetails()))
+        .then   (()               => dispatch(activateUserWorker()))
         .then   (()               => dispatch(fetchUserChannels()))
         .catch  (()               => dispatch(logout({autoLogin:false})))
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
 };
 
 const verifyBlockchainEthereum = () => async (dispatch,getState) => {
+    let ethNetwork = getState().client.userAccess.ethNetwork;
     let ethAddress = getState().client.userAccess.ethAddress;
     let challengeTokens;
     return await Promise.resolve()
         .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => {if (!ethNetwork || !ethAddress) throw flareBook.errorFlare.NO_ETHEREUM_CONFIG;})
         .then   (()               => dispatch(processRequest(requestType.POST,endpoint.AUTH_CHALLENGE_BLOCKCHAINETHEREUM,{ethAddress})))
         .then   (result           => {challengeTokens={challengeJwt:result.challengeJwt,hashedJwt:result.hashedJwt};})
         .then   (()               => dispatch(signMessage(challengeTokens.hashedJwt)))
@@ -286,11 +310,12 @@ const connectFacebook = () => async (dispatch,getState) => {
 };
 
 const fetchFacebookDetails = () => async (dispatch,getState) => {
+    let fbDetails = {};
     return await Promise.resolve()
         .then   (()               => dispatch(FBgetLoginStatus(null)))
-        .then   (facebookStatus   => new Promise((resolve) => {if (facebookStatus===facebook.status.connected) window.FB.api(facebook.apiQuery,(result=>resolve(result)));}))
-        .then   (facebookDetails  => ({name:facebookDetails.first_name,surname:facebookDetails.last_name,email:facebookDetails.email}))
-        .then   (facebookDetails  => dispatch(storeDetails(facebookDetails,{overwrite:false})))
+        .then   (facebookStatus   => new Promise(resolve => {if (facebookStatus===facebook.status.connected) window.FB.api(facebook.apiQuery,(result => resolve(result)));}))
+        .then   (d                => fbDetails={name:d.first_name,surname:d.last_name,email:d.email,profilePicture:d.picture.data.url})
+        .then   (()               => dispatch(storeDetails(fbDetails,{overwrite:false})))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.errorFlare.FB_NOT_FOUND));});
 };
 
@@ -344,14 +369,6 @@ const processLinkedInLogin = (event,waitingHandleResolve) => async (dispatch,get
         .then   (()               => dispatch({type:actionType.CLEAR_LINKEDIN_WINDOW_AND_LISTENER,payload:{}}))
         .then   (()               => {waitingHandleResolve();})
         .catch  (()               => null);
-};
-
-export const sendLinkedInLogin = () => async (dispatch,getState) => {
-    return await Promise.resolve()
-        .then   (()               => window.location.search)
-        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
-        .then   (pJson            => ({linkedInCode:pJson.code,linkedInState:pJson.state,origin:EVENT_DATA_ORIGIN_THRUBI}))
-        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
 };
 
 const startupLinkedInLogin = () => async (dispatch,getState) => {
@@ -422,14 +439,6 @@ const processGoogleLogin = (event,waitingHandleResolve) => async (dispatch,getSt
         .catch  (()               => null);
 };
 
-export const sendGoogleLogin = () => async (dispatch,getState) => {
-    return await Promise.resolve()
-        .then   (()               => window.location.search)
-        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"')+'"}'))
-        .then   (pJson            => ({googleCode:pJson.code,origin:EVENT_DATA_ORIGIN_THRUBI}))
-        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
-};
-
 const startupGoogleLogin = () => async (dispatch,getState) => {
     let googleWindow = null;
     let googleListener = null;
@@ -482,4 +491,105 @@ export const updateGoogle = () => async (dispatch,getState) => {
         .then   (()               => dispatch(fetchUserChannels()))
         .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
         .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+const processTwitterLogin = (event,waitingHandleResolve) => async (dispatch,getState) => {
+    let twitterListener = null;
+    return await Promise.resolve()
+        .then   (()               => {if ((event.data.origin)&&(event.data.origin===EVENT_DATA_ORIGIN_THRUBI)) return event.data; else throw flareBook.errorFlare.MESSAGE_IGNORED;})
+        .then   (pjRenamed        => {dispatch({type:actionType.RECEIVE_TWITTER_LOGIN,payload:pjRenamed});})
+        .then   (()               => {twitterListener=getState().client.userAccess.twitterListener;})
+        .then   (()               => {window.removeEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
+        .then   (()               => getState().client.userAccess.twitterWindow)
+        .then   (twitterWindow     => {twitterWindow.close();})
+        .then   (()               => dispatch({type:actionType.CLEAR_TWITTER_WINDOW_AND_LISTENER,payload:{}}))
+        .then   (()               => {waitingHandleResolve();})
+        .catch  (()               => null);
+};
+
+const startupTwitterLogin = () => async (dispatch,getState) => {
+    let twitterRequestToken = null;
+    let twitterWindow = null;
+    let twitterListener = null;
+    let twitterInterval = null;
+    let waitingHandleResolve = null;
+    let waitingHandle = new Promise(resolve => waitingHandleResolve=resolve);
+    return await Promise.resolve()
+        .then   (()               => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}))
+        .then   (()               => dispatch(processRequest(requestType.GET,endpoint.AUTH_TOKEN_TWITTER,{})))
+        .then   (token            => twitterRequestToken=token.requestToken)
+        .then   (()               => {twitterWindow = getState().client.userAccess.twitterWindow;})
+        .then   (()               => ((twitterWindow===null)||(twitterWindow.closed)))
+        .then   (openNewWindow    => {if (openNewWindow) twitterWindow = window.open(twitterAuthUri(twitterRequestToken),twitterWindowName,twitterWindowParams);})
+        .then   (()               => twitterWindow.focus())
+        .then   (()               => {twitterInterval = setInterval(() => {if (twitterWindow.closed) {waitingHandleResolve(); clearInterval(twitterInterval);}},REDIRECT_CLOSE_INTERVAL);})
+        .then   (()               => {twitterListener = event => dispatch(processTwitterLogin(event,waitingHandleResolve));})
+        .then   (()               => {window.addEventListener(EVENT_TYPE_MESSAGE,twitterListener);})
+        .then   (()               => dispatch({type:actionType.RECEIVE_TWITTER_WINDOW_AND_LISTENER,payload:{twitterWindow,twitterListener}}))
+        .then   (()               => waitingHandle)
+        .then   (()               => ({twitterRequestToken:getState().client.userAccess.twitterRequestToken,twitterOAuthVerifier:getState().client.userAccess.twitterOAuthVerifier}));
+};
+
+export const createTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_CREATE_TWITTER,tLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const loginTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.AUTH_LOGIN_TWITTER,tLoginPackage)))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .then   (loginData        => dispatch(finalizeLogin(loginData)));
+};
+
+export const addTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_ADD_TWITTER,tLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const updateTwitter = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => dispatch(startupTwitterLogin()))
+        .then   (tLoginPackage    => dispatch(processRequest(requestType.POST,endpoint.USERACCESS_UPDATE_TWITTER,tLoginPackage)))
+        .then   (()               => dispatch(fetchUserChannels()))
+        .catch  (error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.FAILED_LOGIN))); return {loginError:true};})
+        .finally(()               => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_COMPONENT_AUTH}));
+};
+
+export const createPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const loginPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const addPayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const updatePayPal = () => async (dispatch,getState) => {
+    return await Promise.resolve();
+};
+
+export const sendRedirect = () => async (dispatch,getState) => {
+    return await Promise.resolve()
+        .then   (()               => window.location.search)
+        .then   (params           => JSON.parse('{"'+decodeURI(params).replace("?","").replace(/"/g,'\\"').replace(/&/g,'","').replace(/=/g,'":"')+'"}'))
+        .then   (pJson            => ({
+            origin:                 EVENT_DATA_ORIGIN_THRUBI,
+            code:                   pJson.code,
+            state:                  pJson.state,
+            twitterRequestToken:    pJson.oauth_token,
+            twitterOAuthVerifier:   pJson.oauth_verifier,
+        }))
+        .then   (pjRenamed        => {if (window.opener) window.opener.postMessage(pjRenamed);});
 };

@@ -1,66 +1,255 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React,{Component,Fragment} from "react";
+import {connect} from "react-redux";
 import _ActionButton from "./_ActionButton";
+import {toggleFaq} from "../actions/guest";
+import {loggableActionValue} from "../config/user";
 
 class _Info extends Component {
+    visionText = () => (
+        <Fragment>
+            <ul>
+                <li>Become a Thrubi member</li>
+                <li>Certify your identity</li>
+                <li>Declare and verify your income</li>
+                <li>Get your <b>Thrubi Blue</b> level assigned (the lower your income, the higher your level)</li>
+                <li>Receive your basic income</li>
+            </ul>
+        </Fragment>
+    );
+
+    wealthyText = () => (
+        <Fragment>
+            <ul>
+                <li>Become a Thrubi member</li>
+                <li>Certify your identity</li>
+                <li>Declare and verify your income</li>
+                <li>Get your <b>Thrubi Silver</b> level assigned (the higher your income, the higher your level)</li>
+                <li>Purchase <b>Thrubi Gold</b></li>
+                <li>The purchase proceedings will fund basic income in your country</li>
+            </ul>
+        </Fragment>
+    );
+
+    societiesText = () => (
+        <Fragment>
+            Thrubi is powered by:
+            <ul>
+                <li>In-house social models</li>
+                <li>Public <a
+                    target="_blank" className="text-success" rel="noopener noreferrer" href="https://www.irs.gov">IRS.gov</a> and <a
+                    target="_blank" className="text-success" rel="noopener noreferrer" href="https://wid.world">wid.world</a> income inequality data</li>
+            </ul>
+        </Fragment>
+    );
+
+
     render() {
+        const {faqState} = this.props;
+        const {toggleFaq} = this.props;
         return(
             <div className="container-fluid">
                 <div className="row py-2 rounded-bottom">
-                    <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiBlue">
-                            <div className="border-0 container-fluid align-top m-0 everybody" />
-                            <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-primary"><div className="opaque">
-                                <h3>Everybody</h3>
-                                <p>
-                                    Be part of the sustainable societies of the future. If your country has adhered to a Thrubi plan,
-                                    you will be awarded Thrubi Blue each month, based on your current income.
-                                    Your Thrubi Blue will in turn give you the rights to regular payments.
-                                    Nobody can be extremely poor or extremely rich with Thrubi.
-                                </p>
-                                <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-primary" />
-                            </div></div>
-                        </div>
-                    </div>
-                    <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiSilver">
-                            <div className="border-0 container-fluid align-top m-0 wealthy" />
-                            <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-secondary"><div className="opaque">
-                                <h3>Wealthy individuals</h3>
-                                <p>
-                                    If you are an investor, choose a sustainable future. As a wealthy individual,
-                                    you will have access to purchasing Thrubi Gold, the investment tool of sustainable societies.
-                                    Thrubi Gold can only be purchased by redeeming Thrubi Silver, which you will be awarded according
-                                    to your current income. Governments are accepting Thrubi Gold to pay tax duties.
-                                </p>
-                                <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-secondary" />
-                            </div></div>
-                        </div>
-                    </div>
-                    <div className="col-lg-4 p-0 navbar-light">
-                        <div className="mx-2 thrubiGold">
-                            <div className="border-0 container-fluid align-top m-0 societies" />
-                            <div className="border-0 container-fluid align-top m-0 overflow-hidden topLeft p-4 text-success"><div className="opaque">
-                                <h3>Thriving societies</h3>
-                                <p>
-                                    If you are a sovereign government, you want your people to be at their best.
-                                    Thrubi stabilizes a country's income distribution. Growth is shared amongst all participants
-                                    of a society in a non-equal fashion: people with a higher net worth will stay richer.
-                                    Thrubi, however, will ensure that a society becomes richer as a whole.
-                                </p>
-                                <_ActionButton text="Learn more" action={() => {}} buttonType="btn-outline-success" />
-                            </div></div>
-                        </div>
-                    </div>
+                    {
+                        [
+                            {actions: [
+                                    {
+                                        actionValue:loggableActionValue.VISION_IDENTITY,
+                                        buttonText:"How to certify my identity?",
+                                        text:"We are considering various partners for identity certification, from " +
+                                             "official government agencies to country-agnostic services such as Veriff.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.VISION_INCOME_DISCLOSE,
+                                        buttonText:"Should I disclose my income?",
+                                        text:"Yes, Thrubi needs to be informed of your earnings in order to calculate " +
+                                             "how to distribute basic income to you and to others in your country.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.VISION_INCOME_VERIFY,
+                                        buttonText:"How will Thrubi verify my income?",
+                                        text:"We are working to collaborate with government entities in order to gather " +
+                                             "current and trustworthy information regarding your income.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.VISION_INCOME_FRAUD,
+                                        buttonText:"What about those who declare a false income?",
+                                        text:"Our efforts will go towards reducing fraud as much as conceivable. Thrubi " +
+                                             "will work to cover the unavoidable remaining small percentage of fraudulent " +
+                                             "income declarations by an appropriate insurance policy. It should cover basic " +
+                                             "income unfairly attributed to fraudulent declarations and taken away from " +
+                                             "legitimate recipients. Those responsible would be banned from receiving " +
+                                             "basic income in the future.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.VISION_TAX_HAVENS,
+                                        buttonText:"How does Thrubi deal with undeclared offshore incomes?",
+                                        text:"Tax havens are an ongoing issue for the realization of a fair universal basic " +
+                                             "income and will be until countries agree on common rules for income declaration " +
+                                             "and transparency on financial matters. It is still important to implement " +
+                                             "basic income plans to the extent of our capabilities, while governments work " +
+                                             "together to define more efficient schemes of financial cooperation.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.VISION_UBI_MONTHLY,
+                                        buttonText:"Will I receive basic income every month?",
+                                        text:"No, initially you will receive basic income only whenever wealthy individuals " +
+                                             "in your country actively participate by transferring a sum of money. The " +
+                                             "periodicity of basic income payments could change in the future. We will keep " +
+                                             "you informed regarding that.",
+                                    },
+                                ],
+                                style:"thrubiBlue",    image:"/jpg/crowd.jpg",     bg:"everybody", color:"primary",     header:"Vision",                text:this.visionText(),},
+                            {actions: [
+                                    {
+                                        actionValue:loggableActionValue.WEALTHY_GOLD,
+                                        buttonText:"What about my Thrubi Gold?",
+                                        text:"At the moment, Thrubi Gold acquired in your country is only representative " +
+                                             "of the extent to which you have contributed towards basic income. While in the future " +
+                                             "it might become possible to freely trade Thrubi Gold, it is at the moment " +
+                                             "non-transferable. We also intend to gauge interest by government agencies " +
+                                             "to accept Thrubi Gold as a means to cover your tax duties, given that by purchasing " +
+                                             "Thrubi Gold, you will have directly contributed to growth in your society.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.WEALTHY_COMPANY,
+                                        buttonText:"I represent a company. Can I contribute?",
+                                        text:"Please get in touch at info@thrubi.com \u2014 while at the moment Thrubi " +
+                                             "algorithms only support individuals and tax units (couples or families) " +
+                                             "that declare income together, our long-term plan is to include companies in the " +
+                                             "picture. We would be delighted to hear your intentions.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.WEALTHY_WORLDWIDE,
+                                        buttonText:"Benefiting just my country seems too restrictive. What about a worldwide basic income?",
+                                        text:"The long-term plans for Thrubi include extending our basic income scheme to the whole " +
+                                             "world's population. We have income distribution data to work towards that goal, already. " +
+                                             "Before it can become a reality, a few technicalities need to be covered first, such as " +
+                                             "ensuring universal identity certification and stronger income verification procedures.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.WEALTHY_PUBLIC_INFO,
+                                        buttonText:"I would like people to know that I contributed to Thrubi. Will my payments be made public?",
+                                        text:"Yes, all Thrubi Gold purchase proceedings go towards basic income and will be publicly " +
+                                             "available, unless you explicitly have us not reveal that information.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.WEALTHY_BUSINESS_MODEL,
+                                        buttonText:"How does Thrubi make money?",
+                                        text:"We are currently working on our business model. The current possibilities are: 1) advertisements, " +
+                                             "2) a small fee on Thrubi Gold purchases, 3) donations. Let us know your suggestions: info@thrubi.com",
+                                    },
+                                ],
+                                style:"thrubiSilver",  image:"/jpg/hanauer.jpg",   bg:"wealthy",   color:"secondary",   header:"Wealthy individuals",   text:this.wealthyText(),},
+                            {actions: [
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_UBI_GOV,
+                                        buttonText:"Shouldn't universal basic income be the government's responsibility?",
+                                        text:"Probably. However, it seems a target that is hard to agree upon as a government. That leaves " +
+                                             "the wealthy who protect their own interests able to do so, and other wealthy individuals " +
+                                             "advocating basic income and even willing to actively pay towards it unable to do so, " +
+                                             "for lack of a suitable platform, and left to blame the government. Enter Thrubi.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_THRUBI_WHY,
+                                        buttonText:"What is the main goal for Thrubi?",
+                                        text:"Thrubi aims to create a global community where UBI can be achieved according to shared " +
+                                             "principles and rational mathematical models. The desired result is a fair, healthy society " +
+                                             "that people love being an active part of.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_MODELS_PUBLIC,
+                                        buttonText:"Are the in-house models publicly available?",
+                                        text:"The in-house models underlying all basic income calculations will be made open source " +
+                                             "in the future. For the time being, they are not public. The rationale behind that decision " +
+                                             "is we have an edge and would like to keep that advantage to gain traction around the " +
+                                             "intended goal for Thrubi, which is to achieve positive social change around financial " +
+                                             "fairness in an evolving world.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_GOV_CONTRIBUTE,
+                                        buttonText:"I represent a government. How can we implement Thrubi in our country?",
+                                        text:"Please get in touch at info@thrubi.com \u2014 The starting point would be to provide " +
+                                             "a proven way of identifying your citizens and their incomes. It would be desirable for you " +
+                                             "to start thinking whether your would accept Thrubi Gold to fulfill tax duties in your country.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_FLAT_UBI,
+                                        buttonText:"Prices will rise, so basic income is useless. Right?",
+                                        text:"Wrong, you are probably assuming that everybody should be paid a flat UBI amount. That is not sustainable. " +
+                                             "What needs to be addressed in any basic income scheme is not the basic income itself, as a number, but rather " +
+                                             "a country's income distribution. Given the latter, it is possible to calculate a target income " +
+                                             "distribution whereby anyone below a (variable) income threshold gets a basic income, higher for " +
+                                             "those with lower earnings. By periodically recalculating the target distribution and the individual " +
+                                             "basic incomes, it is possible to create a scheme that does not barely provide a fixed amount of money " +
+                                             "with an inevitably decreasing purchasing power, but rather connects all individuals in an overarching social " +
+                                             "scheme. Thrubi does exactly that with its inner models. By so doing, a society keeps its selfish incentives to " +
+                                             "innovate \u2014 its citizens are still rewarded by much higher incomes for higher contributions \u2014 but " +
+                                             "ensures its members that they will grow together. As an additional benefit, the extreme inequalities " +
+                                             "that put institutions at risk are smoothed out.",
+                                    },
+                                    {
+                                        actionValue:loggableActionValue.SOCIETIES_MODELS_ABOUT,
+                                        buttonText:"I am still curious. How do the social models used to determine basic income work exactly?",
+                                        text:"Here is a short summary, but please also read the answer to the question \"Prices will rise...\" if you " +
+                                             "haven't already. Capitalism has an inherent benefit \u2014 selfish incentives to innovate, produce " +
+                                             "better goods and provide better services go at the heart of human nature \u2014 and an inherent dangerous " +
+                                             "mechanics \u2014 investment principles, as opposed to consumption, if applied at scale have the ability to " +
+                                             "starve the entire system, as is seen during financial crises. Without going into the important moral " +
+                                             "considerations of workers' rights and the consequences of owning entire sectors of a society, from the " +
+                                             "bare point of view of efficiency, it is not convenient to either the poor or the rich to have an economy " +
+                                             "swinging between periods of over-exploitation and periods of stagnation. Thrubi aims with its inner models " +
+                                             "to preserve the benefit of growth while inhibiting the dangerous mechanics of starvation. It recreates an " +
+                                             "optimal distribution that allows the poor to live a healthy life and contribute to a healthy society and " +
+                                             "the rich to keep on thriving.",
+                                    },
+                                ],
+                                style:"thrubiGold",    image:"/jpg/futuristic.jpg",bg:"societies", color:"success",     header:"Thriving societies",    text:this.societiesText(),},
+                        ].map(e => (
+                                <div className="col-xl-4 p-0 m-0 navbar-light">
+                                    <h2 className={"mr-0 mr-lg-3 mb-0 my-lg-0 text-center text-lg-center px-4 py-3 text-light bg-"+e.color}
+                                        style={{backgroundImage: "url("+process.env.PUBLIC_URL+"/logo.png",
+                                            backgroundSize:"contain",
+                                            backgroundPosition:"left",
+                                            backgroundRepeat:"no-repeat",
+                                            backgroundBlendMode:"luminosity"}}>{e.header}</h2>
+                                    <div className={"mr-0 mr-lg-3 mb-4 my-lg-0 "+e.style}>
+                                        <div style={{backgroundImage: "url("+process.env.PUBLIC_URL+e.image,backgroundSize:"cover",backgroundRepeat:"no-repeat"}}
+                                             className={"border-0 container-fluid m-0 "+e.bg+" p-4 text-"+e.color}>
+                                            <p>{e.text}</p>
+                                            {e.actions.map(a =>
+                                                <Fragment>
+                                                    <_ActionButton text={a.buttonText} buttonType={"my-4 btn-outline-"+e.color} action={null} />
+                                                    {
+                                                        !faqState[a.actionValue] ? "":
+                                                            <div className="p-0">{a.text}</div>
+                                                    }
+                                                </Fragment>)}
+                                        </div>
+                                        <div className={"border-0 container-fluid m-0 overflow-hidden topLeft p-4 opaque text-"+e.color}>
+                                            <p>{e.text}</p>
+                                            {e.actions.map(a =>
+                                                <Fragment>
+                                                    <_ActionButton text={a.buttonText} buttonType={"my-4 btn-outline-"+e.color} action={() => {toggleFaq(a.actionValue)}} />
+                                                    {
+                                                        !faqState[a.actionValue] ? "":
+                                                            <div className="p-0">{a.text}</div>
+                                                    }
+                                                </Fragment>)}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                    }
                 </div>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
+    faqState:   state.client.guest.faqState,
 });
 
-const Info = connect(mapStateToProps,{})(_Info);
+const Info = connect(mapStateToProps,{toggleFaq})(_Info);
 
 export default Info;

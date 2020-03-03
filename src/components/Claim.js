@@ -1,7 +1,8 @@
 import React, {Component, Fragment} from 'react';
 import { connect } from "react-redux";
 import _CcyRow from "./_CcyRow";
-import { claim } from "../actions/userMenu";
+import {claim} from "../actions/member";
+import _ActionButton from "./_ActionButton";
 
 class _Claim extends Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class _Claim extends Component {
                     busy ? "Claim loading..." :
                         populationId === -1 ? "Please select a population, first." :
                             claimBusy ? "Busy processing claim" :
-                                <Fragment>
+                                <div className="text-primary">
                                     {
                                         !this.state.claimProcedureActive ? "" :
                                             <Fragment>
@@ -29,45 +30,34 @@ class _Claim extends Component {
                                                     The remaining Ξ will be credited in full, values in { ccySymbol } are just an indication.
                                                 </div>
                                                 <div className="container">
-                                                    <_CcyRow text="You can claim"             muted={false} bold={false} value={thrubiBlueEth} ccySymbol="Ξ" />
-                                                    <_CcyRow text={"Claimable in "+ccySymbol} muted={false} bold={false} value={(thrubiBlueEth * exrate)} ccySymbol={ccySymbol} />
+                                                    <_CcyRow text="You can claim"             bold={false} value={thrubiBlueEth} ccySymbol="Ξ" />
+                                                    <_CcyRow text={"Claimable in "+ccySymbol} bold={false} value={(thrubiBlueEth * exrate)} ccySymbol={ccySymbol} />
 
                                                 </div>
-                                                <form onSubmit={(event) => {
-                                                    event.preventDefault();
-                                                    claim();
-                                                }}>
-                                                    <input className={"btn btn-sm p-0 btn-block btn-"+(thrubiBlueEth?"primary":"light")}
-                                                           type="submit"
-                                                           disabled={!thrubiBlueEth}
-                                                           value={thrubiBlueEth?("Claim your " +thrubiBlueEth.toFixed(2) + " Ξ"):"Nothing to claim"} />
-                                                </form>
+                                                <_ActionButton action={claim} disabled={!thrubiBlueEth}
+                                                               buttonType={"btn-"+(thrubiBlueEth?"primary":"light")}
+                                                               text={thrubiBlueEth?("Claim your " +thrubiBlueEth.toFixed(2) + " Ξ"):"Nothing to claim"}/>
                                             </Fragment>
                                     }
-                                    <form onSubmit={(event) => {
-                                        event.preventDefault();
-                                        this.setState({claimProcedureActive: !this.state.claimProcedureActive});
-                                    }}>
-                                        <input id="activateClaimProcedure"
-                                               className={"btn btn-sm p-0 btn-block btn-"+(this.state.claimProcedureActive?"secondary":(thrubiBlueEth?"primary":"light"))}
-                                               type="submit"
-                                               disabled={((!thrubiBlueEth)&&(!this.state.claimProcedureActive))}
-                                               value={(this.state.claimProcedureActive?"Close":(thrubiBlueEth?"Activate claim procedure":"Nothing to claim"))} />
-                                    </form>
-                                </Fragment>
+                                    <_ActionButton
+                                        disabled={((!thrubiBlueEth)&&(!this.state.claimProcedureActive))}
+                                        buttonType={"btn-"+(this.state.claimProcedureActive?"":"outline-")+"primary"+(thrubiBlueEth?" active":"")}
+                                        text={(this.state.claimProcedureActive?"Close":(thrubiBlueEth?"Activate claim procedure":"Nothing to claim"))}
+                                        action={() => {this.setState({claimProcedureActive: !this.state.claimProcedureActive});}} />
+                                </div>
                 }
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
-    busy: state.session.busy.component.claim,
-    populationId: state.client.population.id,
-    claimBusy: state.session.busy.action.claim,
-    thrubiBlueEth: state.client.member.thrubiBlueEth,
-    ccySymbol: state.client.population.ccySymbol,
-    exrate: state.global.market.exrate,
+const mapStateToProps = state => ({
+    busy:               state.session.busy.component.claim,
+    populationId:       state.client.population.id,
+    claimBusy:          state.session.busy.action.claim,
+    thrubiBlueEth:      state.client.member.thrubiBlueEth,
+    ccySymbol:          state.client.population.ccySymbol,
+    exrate:             state.global.market.exrate,
 });
 
 const Claim = connect(mapStateToProps,{claim})(_Claim);

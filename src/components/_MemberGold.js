@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import _CcyRow from './_CcyRow';
+import _ActionButton from "./_ActionButton";
 
 const _MemberGold = ({
     ccySymbol,
@@ -8,14 +9,10 @@ const _MemberGold = ({
 }) => (
     <Fragment>
         <div className="container-fluid">
-            <_CcyRow text="Gold ₲₮"         muted={false} bold={true}  value={ member.thrubiGold} ccySymbol={"₲₮"} />
-            <_CcyRow text="Market value"    muted={false} bold={false} value={(member.thrubiGold*thrubiPriceGold)} ccySymbol={ccySymbol} />
+            <_CcyRow text="My Thrubi Gold"      bold={true}  value={ member.thrubiGold} ccySymbol={"₮G"} />
+            <_CcyRow text="Market value"        bold={false} value={(member.thrubiGold*thrubiPriceGold)} ccySymbol={ccySymbol} />
         </div>
-        <form onSubmit={(event) => {
-            event.preventDefault();
-        }}>
-            <input type="submit" value="Find gold Thrubi marketplace" className="btn btn-sm p-0 btn-block btn-light" />
-        </form>
+        <_ActionButton action={() => {}} text="Find gold Thrubi marketplace" buttonType="btn-outline-success" />
     </Fragment>
 );
 

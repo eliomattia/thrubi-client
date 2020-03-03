@@ -1,18 +1,24 @@
-import React, {Component} from "react";
+import React,{Component} from "react";
 import {connect} from "react-redux";
-import Titlebar from "./Titlebar";
+import Header from "./Header";
 import User from "./User";
 import Footer from "./Footer";
 import Flare from "./Flare";
 import {enableBlockchain} from "../actions/blockchain_ethereum";
 import {startGlobalStatsWorker,stopGlobalStatsWorker} from "../actions/workers/globalStats";
-import {fetchChannels} from "../actions/auth";
+import {fetchChannels,sendRedirect} from "../actions/auth";
 import "./styles/App.scss";
+import Guest from "./Guest";
 
 
 class _App extends Component {
     componentDidMount() {
-        this.reload();
+        const {sendRedirect} = this.props;
+        if (window.location.search) {
+            sendRedirect();
+        } else {
+            this.reload();
+        }
     };
 
     componentWillUnmount() {
@@ -31,16 +37,13 @@ class _App extends Component {
     render() {
         const {busy,loggedIn} = this.props;
         return (
-            <div className="thrubiApp text-primary">
-                <Titlebar />
+            <div className="thrubiApp text-primary d-flex flex-column align-items-stretch">
+                <Header />
                 {
                     <div className="mainView">
                         {
                             loggedIn ? "" :
-                                <div className="w-100 py-2 pt-4 pb-1 text-center">
-                                    <h3 className="displayInlineBlock">Rising inequality is toxic to growth</h3>
-                                    <i className="displayInlineBlock">&nbsp;(Nick Hanauer)</i>
-                                </div>
+                                <Guest />
                         }
                         {
                             !busy ? <User /> :
@@ -59,12 +62,12 @@ class _App extends Component {
     };
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:               state.session.busy.component.app,
     loggedIn:           state.client.userAccess.loggedIn,
 });
 
-const App = connect(mapStateToProps,{startGlobalStatsWorker,stopGlobalStatsWorker,fetchChannels,enableBlockchain})(_App);
+const App = connect(mapStateToProps,{startGlobalStatsWorker,stopGlobalStatsWorker,fetchChannels,enableBlockchain,sendRedirect})(_App);
 
 export default App;
 

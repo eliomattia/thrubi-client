@@ -1,6 +1,7 @@
 import actionType from "../config/actionTypes";
 
 const memberInit = {
+    isMember: false,
     mCurrent: 0,
     thrubiMode: -1,
     thrubiBlue: 0,                  // ₿₮
@@ -24,6 +25,7 @@ const member = (state = memberInit,action) => {
             return memberInit;
         case actionType.RECEIVE_MEMBER:
             return Object.assign({},state,{
+                isMember:                   true,
                 mCurrent:                   parseFloat(action.payload.member.mCurrent),
                 thrubiMode:                 parseInt  (action.payload.member.thrubiMode),
                 thrubiBlue:                 parseFloat(action.payload.member.thrubiBlue),
@@ -35,7 +37,6 @@ const member = (state = memberInit,action) => {
                 thrubiSilver:               parseFloat(action.payload.member.thrubiSilver),
                 thrubiSilverNext:           parseFloat(action.payload.member.thrubiSilverNext),
                 thrubiSilverEth:            parseFloat(action.payload.member.thrubiSilverEth),
-                thrubiSilverRedeem:         parseFloat(action.payload.member.thrubiSilverRedeem),
                 thrubiSilverTransformTotal: parseFloat(action.payload.member.thrubiSilverTransformTotal),
                 thrubiGold:                 parseFloat(action.payload.member.thrubiGold),
             });

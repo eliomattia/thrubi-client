@@ -1,7 +1,8 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
+import _ActionButton from "./_ActionButton";
 import Claim from "./Claim";
-import _MemberBlue from './_MemberBlue';
+import _MemberBlue from "./_MemberBlue";
 
 class _ThrubiBlue extends Component {
     constructor(props) {
@@ -14,51 +15,37 @@ class _ThrubiBlue extends Component {
 
     componentWillUpdate() {
         const {member} = this.props;
-        if (this.state.showPanel===(!member.thrubiBlue)&&!this.state.manualPanel) this.setState({showPanel: (!!member.thrubiBlue)});
+        if (this.state.showPanel===(!member.thrubiBlue)&&!this.state.manualPanel) this.setState({showPanel: (member.thrubiBlue)});
     }
 
     render() {
-        const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,optionViewHistory,optionAdvancedMode} = this.props;
+        const {busy,member,ccySymbol,exrate,optionViewHistory,optionAdvancedMode} = this.props;
 
         return(
-            <div className="text-center">
-                <form onSubmit={(event) => {
-                    event.preventDefault();
-                    this.setState({manualPanel: true});
-                    this.setState({showPanel: !this.state.showPanel});
-                }}>
-                    <b>
-                        <input id="showPanel"
-                               className={"btn btn-sm p-0 btn-block btn-"+((!!member.thrubiBlue)?(this.state.showPanel?"primary":"secondary"):"light")}
-                               type="submit"
-                               value="Blue Thrubi" />
-                    </b>
-                </form>
+            <div className="text-center text-primary">
+                <_ActionButton text="Thrubi Blue" buttonType={"btn-outline-primary"+(this.state.showPanel?" active":"")}
+                               action={() => { this.setState({manualPanel: true}); this.setState({showPanel: !this.state.showPanel});}} />
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
-                            !userLoggedIn ? "User not logged in" :
-                                populationId <0 ? "No population selected" :
-                                    <Fragment>
-                                        <_MemberBlue
-                                            member={member}
-                                            ccySymbol={ccySymbol}
-                                            exrate={exrate}
-                                            optionViewHistory={optionViewHistory}
-                                            optionAdvancedMode={optionAdvancedMode}
-                                        />
-                                        <Claim />
-                                    </Fragment>
+                            <Fragment>
+                                <_MemberBlue
+                                    member={member}
+                                    ccySymbol={ccySymbol}
+                                    exrate={exrate}
+                                    optionViewHistory={optionViewHistory}
+                                    optionAdvancedMode={optionAdvancedMode}
+                                />
+                                <Claim />
+                            </Fragment>
                 }
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.dashboard,
-    userLoggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,

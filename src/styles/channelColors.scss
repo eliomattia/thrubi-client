@@ -5,6 +5,7 @@ $channel-colors: (
         "channel-linkedin":               rgba(  0,119,181, 1.0),
         "channel-google":                 rgba( 23,107,239, 1.0),
         "channel-paypal":                 rgba(  0, 48,135, 1.0),
+        "channel-twitter":                rgba(  0,172,237, 1.0),
 );
 
 @function channelColor($channel-color) {
@@ -18,11 +19,12 @@ $channel-colors: (
   $channel-linkedin:              channelColor("channel-linkedin");
   $channel-google:                channelColor("channel-google");
   $channel-paypal:                channelColor("channel-paypal");
-
+  $channel-twitter:               channelColor("channel-twitter");
   @if ($channel-theme=="channel-blockchain-ethereum")   { @return $channel-blockchain-ethereum; }
   @if ($channel-theme=="channel-keyboard")              { @return $channel-keyboard; }
   @if ($channel-theme=="channel-facebook")              { @return $channel-facebook; }
   @if ($channel-theme=="channel-linkedin")              { @return $channel-linkedin; }
   @if ($channel-theme=="channel-google")                { @return $channel-google; }
   @if ($channel-theme=="channel-paypal")                { @return $channel-paypal; }
+  @if ($channel-theme=="channel-twitter")               { @return $channel-twitter; }
 }

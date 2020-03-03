@@ -1,10 +1,10 @@
 import {processRequest} from "../server";
 import {emitFlare} from "../flare";
-import {requestType} from "../config/http";
-import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../config/thrubi";
-import {flareBook} from "../config/flare";
+import {requestType} from "../../config/http";
+import flareBook from "../../config/flare";
 import actionType from "../../reducers/config/actionTypes";
-import {endpoint} from "../config/server";
+import {endpoint} from "../../config/server";
+import {INTERVAL_FETCH_GLOBAL_STATS_WORKER} from "../../env/workers";
 
 const fetchGlobalStats = () => async (dispatch,getState) => {
     let globalStats = {};
@@ -17,15 +17,16 @@ const fetchGlobalStats = () => async (dispatch,getState) => {
             for (let i=0;i<=2;i++) for (let key in results[i]) globalStats[key] = results[i][key];
             return globalStats;
         })
-        .catch(error => dispatch(emitFlare(flareBook.flareFallback(error,flareBook.flareBook.errorFlare.ERR_FETCH_GLOBAL_STATS))));
+        .catch(error => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.ERR_FETCH_GLOBAL_STATS))));
 };
 
 export const startGlobalStatsWorker = () => async (dispatch,getState) => {
     let globalStatsWorker = setInterval((() => {
         const activity = () => {
-            dispatch(fetchGlobalStats())
+            return Promise.resolve()
+                .then (()               => dispatch(fetchGlobalStats()))
                 .then (globalStats      => {dispatch({type:actionType.RECEIVE_GLOBAL_STATS,payload:{globalStats}});})
-                .catch(error            => {dispatch(emitFlare(flareBook.flareFallback(error,flareBook.flareType.ERROR,flareBook.errorFlare.ERR_RECEIVE_GLOBAL_STATS)));});
+                .catch(error            => {dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareFallback(error,flareBook.errorFlare.ERR_RECEIVE_GLOBAL_STATS)));});
         };
         activity();
         return activity;

@@ -7,13 +7,15 @@ const userAccessInit = {
     loggedIn:       false,
     loginChannel:               null,
     payChannel:                 null,
+    receiveChannel:             null,
     channels: {
-        BLOCKCHAIN_ETHEREUM:    0,
-        KEYBOARD:               0,
+        TWITTER:                0,
         FACEBOOK:               0,
-        LINKEDIN:               0,
         GOOGLE:                 0,
+        LINKEDIN:               0,
+        BLOCKCHAIN_ETHEREUM:    0,
         PAYPAL:                 0,
+        KEYBOARD:               0,
     },
     facebookStatus:         null,
     facebookUserId:         null,
@@ -24,7 +26,11 @@ const userAccessInit = {
     linkedInState:          null,
     googleWindow:           null,
     googleListener:         null,
-    googleState:            null,
+    googleCode:             null,
+    twitterWindow:          null,
+    twitterListener:        null,
+    twitterRequestToken:    null,
+    twitterOAuthVerifier:   null,
     accessJwt:              null,
     refreshJwt:             null,
 };
@@ -59,12 +65,13 @@ const userAccess = (state = userAccessInit,action) => {
         case actionType.RECEIVE_CHANNELS:
         case actionType.RECEIVE_USER_CHANNELS:
             return Object.assign({},state,{channels:{
-                BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
-                KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
+                TWITTER:                action.payload.TWITTER              ? action.payload.TWITTER                : state.channels.TWITTER,
                 FACEBOOK:               action.payload.FACEBOOK             ? action.payload.FACEBOOK               : state.channels.FACEBOOK,
-                LINKEDIN:               action.payload.LINKEDIN             ? action.payload.LINKEDIN               : state.channels.LINKEDIN,
                 GOOGLE:                 action.payload.GOOGLE               ? action.payload.GOOGLE                 : state.channels.GOOGLE,
+                LINKEDIN:               action.payload.LINKEDIN             ? action.payload.LINKEDIN               : state.channels.LINKEDIN,
+                BLOCKCHAIN_ETHEREUM:    action.payload.BLOCKCHAIN_ETHEREUM  ? action.payload.BLOCKCHAIN_ETHEREUM    : state.channels.BLOCKCHAIN_ETHEREUM,
                 PAYPAL:                 action.payload.PAYPAL               ? action.payload.PAYPAL                 : state.channels.PAYPAL,
+                KEYBOARD:               action.payload.KEYBOARD             ? action.payload.KEYBOARD               : state.channels.KEYBOARD,
             }});
         case actionType.RECEIVE_LOGIN_CHANNEL:
             return Object.assign({},state,{
@@ -73,6 +80,10 @@ const userAccess = (state = userAccessInit,action) => {
         case actionType.RECEIVE_PAY_CHANNEL:
             return Object.assign({},state,{
                 payChannel:             action.payload.payChannel,
+            });
+        case actionType.RECEIVE_RECEIVE_CHANNEL:
+            return Object.assign({},state,{
+                receiveChannel:         action.payload.receiveChannel,
             });
         case actionType.RECEIVE_FACEBOOK_LOGIN_STATUS:
             return Object.assign({},state,{
@@ -92,8 +103,8 @@ const userAccess = (state = userAccessInit,action) => {
             });
         case actionType.RECEIVE_LINKEDIN_LOGIN:
             return Object.assign({},state,{
-                linkedInCode:           action.payload.linkedInCode,
-                linkedInState:          action.payload.linkedInState,
+                linkedInCode:           action.payload.code,
+                linkedInState:          action.payload.state,
             });
         case actionType.RECEIVE_GOOGLE_WINDOW_AND_LISTENER:
             return Object.assign({},state,{
@@ -107,15 +118,30 @@ const userAccess = (state = userAccessInit,action) => {
             });
         case actionType.RECEIVE_GOOGLE_LOGIN:
             return Object.assign({},state,{
-                googleCode:             action.payload.googleCode,
+                googleCode:             action.payload.code,
+            });
+        case actionType.RECEIVE_TWITTER_WINDOW_AND_LISTENER:
+            return Object.assign({},state,{
+                twitterWindow:          action.payload.twitterWindow,
+                twitterListener:        action.payload.twitterListener,
+            });
+        case actionType.CLEAR_TWITTER_WINDOW_AND_LISTENER:
+            return Object.assign({},state,{
+                twitterWindow:          null,
+                twitterListener:        null,
+            });
+        case actionType.RECEIVE_TWITTER_LOGIN:
+            return Object.assign({},state,{
+                twitterRequestToken:    action.payload.twitterRequestToken,
+                twitterOAuthVerifier:   action.payload.twitterOAuthVerifier,
             });
         case actionType.LOGIN:
             return Object.assign({},state,{
                 loggedIn:               true,
-                autoLogin:              true,
                 accessJwt:              action.payload.accessJwt,
                 refreshJwt:             action.payload.refreshJwt,
                 payChannel:             action.payload.payChannel,
+                receiveChannel:         action.payload.receiveChannel,
             });
         default:
             return state;

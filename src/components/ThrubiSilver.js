@@ -1,7 +1,8 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import Transform from "./Transform";
-import _MemberSilver from './_MemberSilver';
+import _MemberSilver from "./_MemberSilver";
+import _ActionButton from "./_ActionButton";
 
 class _ThrubiSilver extends Component {
     constructor(props) {
@@ -18,49 +19,35 @@ class _ThrubiSilver extends Component {
     }
 
     render() {
-        const {busy,userLoggedIn,populationId,member,ccySymbol,exrate,thrubiPriceSilver,thrubiPriceGold,optionViewHistory,optionAdvancedMode} = this.props;
+        const {busy,member,ccySymbol,exrate,thrubiPriceSilver,thrubiPriceGold,optionViewHistory,optionAdvancedMode} = this.props;
 
         return(
-            <div className="text-center">
-                <form onSubmit={(event) => {
-                    event.preventDefault();
-                    this.setState({manualPanel: true});
-                    this.setState({showPanel: !this.state.showPanel});
-                }}>
-                    <b>
-                        <input id="showPanel"
-                               className={"btn btn-sm p-0 btn-block btn-"+((!!member.thrubiSilver)?(this.state.showPanel?"primary":"secondary"):"light")}
-                               type="submit"
-                               value="Silver Thrubi" />
-                    </b>
-                </form>
+            <div className="text-center text-secondary">
+                <_ActionButton text="Thrubi Silver" buttonType={"btn-outline-secondary"+(this.state.showPanel?" active":"")}
+                               action={() => { this.setState({manualPanel: true}); this.setState({showPanel: !this.state.showPanel});}} />
                 {
                     !this.state.showPanel ? "" :
                         busy ? "Member loading..." :
-                            !userLoggedIn ? "User not logged in" :
-                                populationId <0 ? "No population selected" :
-                                    <Fragment>
-                                        <_MemberSilver
-                                            member={member}
-                                            ccySymbol={ccySymbol}
-                                            exrate={exrate}
-                                            thrubiPriceSilver={thrubiPriceSilver}
-                                            thrubiPriceGold={thrubiPriceGold}
-                                            optionViewHistory={optionViewHistory}
-                                            optionAdvancedMode={optionAdvancedMode}
-                                        />
-                                        <Transform />
-                                    </Fragment>
+                            <Fragment>
+                                <_MemberSilver
+                                    member={member}
+                                    ccySymbol={ccySymbol}
+                                    exrate={exrate}
+                                    thrubiPriceSilver={thrubiPriceSilver}
+                                    thrubiPriceGold={thrubiPriceGold}
+                                    optionViewHistory={optionViewHistory}
+                                    optionAdvancedMode={optionAdvancedMode}
+                                />
+                                <Transform />
+                            </Fragment>
                 }
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy: state.session.busy.component.dashboard,
-    userLoggedIn: state.client.userAccess.loggedIn,
-    populationId: state.client.population.id,
     member: state.client.member,
     ccySymbol: state.client.population.ccySymbol,
     exrate: state.global.market.exrate,

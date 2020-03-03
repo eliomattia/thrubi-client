@@ -1,21 +1,16 @@
-@import '../../styles/thrubiColors';
+@import "../../styles/thrubiColors";
+
+.memberPaddingX {
+    padding: 0 1.25rem !important;
+}
 
 .verticalAlign {
     vertical-align: bottom;
     align-content: center;
 }
 
-.displayInlineBlock {
-    display: inline-block;
-}
-
 .fullWidth {
     width: 100%;
-}
-
-.population {
-    width: 800px;
-    margin: 0 50px;
 }
 
 .country {
@@ -29,8 +24,12 @@
 }
 
 .thrubiApp {
-    max-height: 100vh;
-    font-family: BentonSans, 'Helvetica Neue', helvetica, arial, sans-serif;
+    height: 100%;
+    // font-family: BentonSans, "Helvetica Neue", helvetica, arial, sans-serif;
+}
+
+.mainView {
+    margin: 47px 0 0 0;
 }
 
 .thrubiGradient {
@@ -40,14 +39,27 @@
 }
 
 .titleBar {
-    height: 43px;
+     height: 47px;
+     min-width: 100%;
+     background: white;
+     // border-bottom: solid 3px white;
+     // border-image: thrubiGradient("thrubi-gradient-titlebar");
+ }
+
+.footer {
     min-width: 100%;
     background: white;
-    border-bottom: solid 3px white;
-    border-image: thrubiGradient("thrubi-gradient-titlebar");
 }
 
-.ethBadges {
+.wMin800 {
+    min-width: 800px;
+}
+
+.wMax800 {
+    max-width: 800px;
+}
+
+.consoleFont {
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
@@ -62,11 +74,7 @@
 }
 
 .alignBottom {
-    line-height: 40px;
-}
-
-.mainView {
-    margin: 43px 0 0 0;
+    line-height: 47px;
 }
 
 .ccyRowElement {

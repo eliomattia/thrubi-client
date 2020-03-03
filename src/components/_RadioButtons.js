@@ -1,7 +1,7 @@
 import React from 'react';
 import Channel from "../classes/Channel";
 
-const _ActionButton = ({columnSize,color,activeFilter,checkedFilter,action,elements}) =>
+const _RadioButtons = ({columnSize,color,activeFilter,checkedFilter,action,elements}) =>
     <div data-toggle="buttons" className="btn btn-block btn-group btn-group-toggle border-0 row p-0 m-0 my-2">
         {
             elements.map((element,key) =>
@@ -19,7 +19,7 @@ const _ActionButton = ({columnSize,color,activeFilter,checkedFilter,action,eleme
                                 !element.channel ? "" :
                                     <img className="p-0 my-0 mx-2" alt={element.channel} height="32" width="32" src={process.env.PUBLIC_URL+"/png/"+Channel.channelColor(element.channel)+".png"} />
                             }
-                            <div className={(element.channel?"ml-4":"fullWidth")+" displayInlineBlock text-"+(element.channel?"left":"center")}>{element.text}</div>
+                            <div className={(element.channel?"ml-4":"fullWidth")+" d-inline-block text-"+(element.channel?"left":"center")}>{element.text}</div>
                         </div>
                     </div>
                 </button>
@@ -28,5 +28,5 @@ const _ActionButton = ({columnSize,color,activeFilter,checkedFilter,action,eleme
     </div>
 ;
 
-export default _ActionButton;
+export default _RadioButtons;
 

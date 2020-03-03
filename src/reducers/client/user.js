@@ -1,19 +1,23 @@
 import actionType from "../config/actionTypes";
-import userOptions from "../../actions/config/user";
+import userOptions from "../../config/user";
 
 const userInit = {
-    id: -1,
-    role: -1,
-    deactivated: 1,
-    name: null,
-    surname: null,
-    email: null,
-    passport: null,
+    id:                 null,
+    role:               null,
+    deactivated:        null,
+    emailVerified:      null,
+    identityCertified:  null,
+    incomeApproved:     null,
+    name:               null,
+    surname:            null,
+    email:              null,
+    document:           null,
+    profilePicture:     null,
     optionKeyboardMode: null,
-    optionLoginCreate: userOptions.optionLoginCreate.LOGIN,
-    optionUserMenu: userOptions.optionUserMenu.ADD,
+    optionLoginCreate:  userOptions.optionLoginCreate.CREATE,
+    optionUserMenu:     userOptions.optionUserMenu.ADD,
     optionAdvancedMode: false,
-    optionViewHistory: false,
+    optionViewHistory:  false,
 };
 
 const user = (state = userInit,action) => {
@@ -25,26 +29,42 @@ const user = (state = userInit,action) => {
             return Object.assign({},state,{
                 id:                     parseInt(action.payload.userId),
                 role:                   parseInt(action.payload.userRole),
-                deactivated:            parseInt(action.payload.deactivated),
                 optionKeyboardMode:     null,
             });
-        case actionType.UPDATE_USER_ACTIVATION:
+        case actionType.RECEIVE_USER_FLAGS:
+            return Object.assign({},state,{
+                deactivated:            parseInt(action.payload.deactivated)        === state.deactivated       ? state.deactivated         : parseInt(action.payload.deactivated),
+                emailVerified:          parseInt(action.payload.emailVerified)      === state.emailVerified     ? state.emailVerified       : parseInt(action.payload.emailVerified),
+                identityCertified:      parseInt(action.payload.identityCertified)  === state.identityCertified ? state.identityCertified   : parseInt(action.payload.identityCertified),
+                incomeApproved:         parseInt(action.payload.incomeApproved)     === state.incomeApproved    ? state.incomeApproved      : parseInt(action.payload.incomeApproved),
+            });
+        case actionType.SET_USER_ACTIVATED:
             return Object.assign({},state, {
-                deactivated:            parseInt(action.payload.deactivated),
+                deactivated:            0,
+            });
+        case actionType.SET_USER_DEACTIVATED:
+            return Object.assign({},state, {
+                deactivated:            1,
             });
         case actionType.RECEIVE_USER_DETAILS:
             return Object.assign({},state,{
-                name:                   action.payload.name         ? action.payload.name       : state.name,
-                surname:                action.payload.surname      ? action.payload.surname    : state.surname,
-                email:                  action.payload.email        ? action.payload.email      : state.email,
-                passport:               action.payload.passport     ? action.payload.passport   : state.passport,
+                name:                   action.payload.name             ? action.payload.name           : userInit.name,
+                surname:                action.payload.surname          ? action.payload.surname        : userInit.surname,
+                email:                  action.payload.email            ? action.payload.email          : userInit.email,
+                document:               action.payload.document         ? action.payload.document       : userInit.document,
+                profilePicture:         action.payload.profilePicture   ? action.payload.profilePicture : userInit.profilePicture,
             });
         case actionType.DELETE_USER_DETAILS:
             return Object.assign({},state,{
                 name:                   null,
                 surname:                null,
                 email:                  null,
-                passport:               null,
+                document:               null,
+                profilePicture:         null,
+            });
+        case actionType.DELETE_PROFILE_PICTURE:
+            return Object.assign({},state,{
+                profilePicture:         null,
             });
         case actionType.ABANDON_KEYBOARD:
             return Object.assign({},state,{

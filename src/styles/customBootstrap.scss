@@ -21,7 +21,8 @@ $theme-colors: (
     "linkedin":             channelTheme("channel-linkedin"),
     "google":               channelTheme("channel-google"),
     "paypal":               channelTheme("channel-paypal"),
-    "red":        red,
+    "twitter":              channelTheme("channel-twitter"),
+    "red":        darkred,
 );
 
 @import "../../node_modules/bootstrap/scss/bootstrap";

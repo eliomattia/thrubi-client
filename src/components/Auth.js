@@ -6,7 +6,8 @@ import _RadioButtons from "./_RadioButtons";
 import _KeyboardChannel from "./_KeyboardChannel";
 import * as auth from "../actions/auth";
 import {switchOptionUserMenu} from "../actions/user";
-import userOptions from "../actions/config/user";
+import {logAction} from "../actions/log";
+import userOptions,{loggableActionType} from "../config/user";
 
 class _Auth extends Component {
     componentDidUpdate() {
@@ -23,29 +24,36 @@ class _Auth extends Component {
         logout({autoLogin:false});
     };
     
-    authFunction(optionLoginCreate,channelName) {
-        return this.props[optionLoginCreate.toLowerCase()+Channel.channelAuthFunctionName(channelName)];
+    authFunction(actionType,channelName) {
+        const {logAction} = this.props;
+
+        return () => {
+            if (actionType===userOptions.optionLoginCreate.LOGIN||actionType===userOptions.optionLoginCreate.CREATE) {
+                logAction(loggableActionType.clickChannel,actionType+"_"+channelName);
+            }
+            this.props[actionType.toLowerCase()+Channel.channelAuthFunctionName(channelName)]();
+        }
     }
 
     render() {
-        const {busy,loggedIn,optionLoginCreate,optionKeyboardMode,optionUserMenu,payChannel,channels} = this.props;
-        const {switchOptionLoginCreate,switchOptionUserMenu,abandonKeyboard,setPayChannel,deleteChannel,logout} = this.props;
+        const {busy,loggedIn,optionLoginCreate,optionKeyboardMode,optionUserMenu,payChannel,receiveChannel,channels} = this.props;
+        const {switchOptionLoginCreate,switchOptionUserMenu,abandonKeyboard,setPayChannel,setReceiveChannel,deleteChannel,logout} = this.props;
 
         return <div className="text-center small text-dark">
             {
-                busy ? "Auth module busy..." :
+                busy?"Auth module busy...":
                     <Fragment>
                         {
-                            optionKeyboardMode === null ? "" :
+                            optionKeyboardMode===null?"":
                                 <_KeyboardChannel
                                     text={Channel.keyboardChannelMessage(optionKeyboardMode)}
-                                    action={this.props[optionKeyboardMode.toLowerCase() + "KeyboardForm"]}
+                                    action={this.props[optionKeyboardMode.toLowerCase()+"KeyboardForm"]}
                                     buttonType="btn btn-sm p-0 btn-primary"
                                     abandonAction={abandonKeyboard}
                                     abandonButtonType="btn btn-sm p-0 btn-secondary"/>
                         }
                         {
-                            (optionKeyboardMode !== null) || (loggedIn) ? "" :
+                            (optionKeyboardMode!==null)||(loggedIn)?"":
                                 <Fragment>
                                     {
                                         Object.keys(channels).map((key) => {    //loop on individual channel types
@@ -54,9 +62,9 @@ class _Auth extends Component {
                                                     <_ActionButton
                                                         channel={key}
                                                         text={Channel.channelUserFriendlyName(key,optionLoginCreate)}
-                                                        key={(optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "login" : "create")+key}
+                                                        key={(optionLoginCreate === userOptions.optionLoginCreate.LOGIN?"login":"create")+key}
                                                         action={this.authFunction(optionLoginCreate,key)}
-                                                        buttonType={"btn btn-sm p-0 btn-" + (optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "" : "outline-")}/>
+                                                        buttonType={"btn btn-sm p-0 btn-"+(optionLoginCreate===userOptions.optionLoginCreate.LOGIN?"outline-":"")}/>
                                                 );
                                             else return "";
                                         })
@@ -66,7 +74,7 @@ class _Auth extends Component {
                         {
                             loggedIn ? "" :
                                 <_ActionButton
-                                    text={optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "I am new to Thrubi" : "I already have a Thrubi account"}
+                                    text={optionLoginCreate === userOptions.optionLoginCreate.LOGIN ? "Create a new Thrubi account" : "I already have a Thrubi account"}
                                     action={switchOptionLoginCreate}
                                     buttonType="nav-link border-0 text-small text-primary"/>
                         }
@@ -88,41 +96,46 @@ class _Auth extends Component {
                                             <Fragment>
                                                 {
                                                     optionUserMenu !== userOptions.optionUserMenu.PAY ? "" :
-                                                        <div className="my-4">
-                                                            My payment method:
-                                                            <_RadioButtons columnSize="col-lg-12"
-                                                                       activeFilter={payChannel}
-                                                                       checkedFilter={payChannel}
-                                                                       action={setPayChannel}
-                                                                       elements={Object.keys(channels).map(key => {    //loop on individual channel types
-                                                                            if (Channel.channelIsForPay(channels[key])) return ({
-                                                                                key:key,
-                                                                                channel:key,
-                                                                                color:"btn-" + (Channel.channelIsOpen(channels[key]) ? "" : "outline-")+Channel.channelColor(key),
-                                                                                disabledFilter:(key === payChannel),
-                                                                                text:Channel.channelUserFriendlyName(key, (key === payChannel ? "USING" : (Channel.channelIsOpen(channels[key]) ? "USE" : "LINK")))
-                                                                            }); else return null;
-                                                                       }).filter(element=>element!==null)}/>
-                                                        </div>
+                                                        [
+                                                            {message:"My payment method:",          channel:payChannel,     setter:setPayChannel,},
+                                                            {message:"My inbound payment method:",  channel:receiveChannel, setter:setReceiveChannel,}
+                                                        ].map(o =>
+                                                            <div className="my-4">
+                                                                {o.message}
+                                                                <_RadioButtons columnSize="col-lg-12"
+                                                                           activeFilter={o.channel}
+                                                                           checkedFilter={o.channel}
+                                                                           action={o.setter}
+                                                                           elements={Object.keys(channels).map(key => {    //loop on individual channel types
+                                                                                if (Channel.channelIsForPay(channels[key])) return ({
+                                                                                    key:(key===o.channel?Channel.channelName.NOT_AVAILABLE:key),
+                                                                                    channel:key,
+                                                                                    color:"btn-"+(key===o.channel?"":"outline-")+Channel.channelColor(key),
+                                                                                    disabledFilter:(key===o.channel),
+                                                                                    text:Channel.channelUserFriendlyName(key,(key===o.channel?"USING":(Channel.channelIsOpen(channels[key])?"USE":"LINK"))),
+                                                                                }); else return null;
+                                                                           }).filter(element=>element!==null)}/>
+                                                            </div>
+                                                        )
                                                 }
                                                 <div className="my-4">
                                                     {
                                                         [
                                                             {
                                                                 mode:   "UPDATE",
-                                                                action: (key) => this.props["update"+Channel.channelAuthFunctionName(key)],
+                                                                action: key => this.authFunction("UPDATE",key),
                                                                 color:  "",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.MANAGE) && ((Channel.channelIsForLogin(channelMode) || (Channel.channelIsForPay(channelMode))) && (Channel.channelIsOpen(channelMode))))
                                                             },
                                                             {
                                                                 mode:   "ADD",
-                                                                action: (key) => this.props["add"+Channel.channelAuthFunctionName(key)],
+                                                                action: key => this.authFunction("ADD",key),
                                                                 color:  "outline-",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.ADD) && (!Channel.channelIsOpen(channelMode)))
                                                             },
                                                             {
                                                                 mode:   "DELETE",
-                                                                action: (key) => () => deleteChannel(key),
+                                                                action: key => () => deleteChannel(key),
                                                                 color:  "outline-",
                                                                 filter: (channelMode) => ((optionUserMenu === userOptions.optionUserMenu.MANAGE) && ((Channel.channelIsForLogin(channelMode) || (Channel.channelIsForPay(channelMode))) && (Channel.channelIsOpen(channelMode))))
                                                             }
@@ -133,7 +146,7 @@ class _Auth extends Component {
                                                                         if (actions.filter(channels[key])) return (
                                                                             <_ActionButton
                                                                                 channel={key}
-                                                                                text={Channel.channelUserFriendlyName(key, actions.mode)}
+                                                                                text={Channel.channelUserFriendlyName(key,actions.mode)}
                                                                                 action={actions.action(key)}
                                                                                 key={actions.mode + key}
                                                                                 buttonType={"btn btn-sm p-0 btn-" + actions.color}/>
@@ -154,7 +167,7 @@ class _Auth extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     busy:               state.session.busy.component.auth,
     ethAddress:         state.client.userAccess.ethAddress,
     optionLoginCreate:  state.client.user.optionLoginCreate,
@@ -163,9 +176,10 @@ const mapStateToProps = (state) => ({
     loggedIn:           state.client.userAccess.loggedIn,
     autoLogin:          state.client.userAccess.autoLogin,
     payChannel:         state.client.userAccess.payChannel,
+    receiveChannel:     state.client.userAccess.receiveChannel,
     channels:           state.client.userAccess.channels,
 });
 
-const Auth = connect(mapStateToProps,Object.assign({},auth,{switchOptionUserMenu}))(_Auth);
+const Auth = connect(mapStateToProps,Object.assign({},auth,{logAction,switchOptionUserMenu}))(_Auth);
 
 export default Auth;

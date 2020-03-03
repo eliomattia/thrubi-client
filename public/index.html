@@ -1,17 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="height: 100%;">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-158849523-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag("js", new Date());
+        gtag("config","UA-158849523-1");
+    </script>
     <meta charset="utf-8" />
+    <meta name="description" content="Thrubi enables wealthy individuals to transfer money directly and simultaneously
+        to everybody in their country who is also on Thrubi."/>
+    <meta name="keywords" content="thrubi,inequality,wealth,income,wealth inequality,income inequality,basic income,universal basic income,
+        ubi,andrew yang,elizabeth warren,bernie sanders,pete buttigieg,joe biden,mike bloomberg,amy klobuchar,tulsi gabbard,
+        donald trump,trump,trump economy,trump basic income"/>
     <link rel="shortcut icon" href="%PUBLIC_URL%/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <base href="%PUBLIC_URL%/">
     <title>Thrubi App</title>
   </head>
-  <body>
+  <body style="height: 100%;">
     <noscript>You need to enable JavaScript to run this app.</noscript>
+    <script async defer src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+    <script async defer src="https://c6.patreon.com/becomePatronButton.bundle.js" charSet="utf-8"></script>
     <script src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v5.0&appId=694691027687199" async defer crossorigin="anonymous"></script>
-    <div id="root"></div>
+    <div id="root" style="height: 100%;"></div>
     <div id="fb-root"></div>
   </body>
 </html>

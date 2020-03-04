@@ -1,4 +1,5 @@
 export const endpoint = {
+    GUEST_SUBMITSUGGESTION:                 "/guest/submitSuggestion",
     GUEST_SUBSCRIBENEWSLETTER:              "/guest/subscribeNewsletter",
     ACTIONS_LOG:                            "/actions/log",
     ACTIONS_AUTH:                           "/actions/auth",

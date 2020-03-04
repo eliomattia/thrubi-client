@@ -1,8 +1,10 @@
 import React,{Component,Fragment} from "react";
 import {connect} from "react-redux";
+import GuestSuggestion from "./GuestSuggestion";
 import _ActionButton from "./_ActionButton";
 import {toggleFaq} from "../actions/guest";
 import {loggableActionValue} from "../config/user";
+import {suggestionType} from "../config/guest";
 
 class _GuestFaq extends Component {
     visionText = () => (
@@ -55,20 +57,28 @@ class _GuestFaq extends Component {
                                     {
                                         actionValue:loggableActionValue.VISION_IDENTITY,
                                         buttonText:"How to certify my identity?",
-                                        text:"We are considering various partners for identity certification, from " +
-                                             "official government agencies to country-agnostic services such as Veriff.",
+                                        text:"We are considering various partners for identity certification, from "+
+                                            "official government agencies to country-agnostic services such as Veriff. "+
+                                            "Do you know a reliable identity certification entity in your country? Please " +
+                                            "let us know below. Here are the options we are currently investigating:",
+                                        list:["United States of America: login.gov/SSN","The Netherlands: iDIN/DigiD","Italy: SPID"],
+                                        suggestion:suggestionType.IDENTITY_CERTIFICATION,
                                     },
                                     {
                                         actionValue:loggableActionValue.VISION_INCOME_DISCLOSE,
                                         buttonText:"Should I disclose my income?",
                                         text:"Yes, Thrubi needs to be informed of your earnings in order to calculate " +
-                                             "how to distribute basic income to you and to others in your country.",
+                                             "how to distribute basic income to you and to others in your country. " +
+                                             "We will fetch and process your income information only if you explicitly " +
+                                             "allow us to.",
                                     },
                                     {
                                         actionValue:loggableActionValue.VISION_INCOME_VERIFY,
                                         buttonText:"How will Thrubi verify my income?",
                                         text:"We are working to collaborate with government entities in order to gather " +
-                                             "current and trustworthy information regarding your income.",
+                                             "current and trustworthy information regarding your income. Do you know which " +
+                                             "agency to cooperate with in your country? Please let us know below.",
+                                        suggestion:suggestionType.INCOME_VERIFICATION,
                                     },
                                     {
                                         actionValue:loggableActionValue.VISION_INCOME_FRAUD,
@@ -136,7 +146,7 @@ class _GuestFaq extends Component {
                                         actionValue:loggableActionValue.WEALTHY_BUSINESS_MODEL,
                                         buttonText:"How does Thrubi make money?",
                                         text:"We are currently working on our business model. The current possibilities are: 1) advertisements, " +
-                                             "2) a small fee on Thrubi Gold purchases, 3) donations. Let us know your suggestions: info@thrubi.com",
+                                             "2) a fee on Thrubi Gold purchases, 3) donations. Let us know your suggestions: info@thrubi.com",
                                     },
                                 ],
                                 style:"thrubiSilver",  image:"/jpg/hanauer.jpg",   bg:"wealthy",   color:"secondary",   header:"Wealthy individuals",   text:this.wealthyText(),},
@@ -220,8 +230,19 @@ class _GuestFaq extends Component {
                                                 <Fragment>
                                                     <_ActionButton text={a.buttonText} buttonType={"my-4 btn-outline-"+e.color} action={null} />
                                                     {
-                                                        !faqState[a.actionValue] ? "":
-                                                            <div className="p-0">{a.text}</div>
+                                                        !faqState[a.actionValue]?"":
+                                                            <Fragment>
+                                                                <div className="p-0">{a.text}</div>
+                                                                {
+                                                                    !a.list?"":
+                                                                        <ul>
+                                                                            {
+                                                                                a.list.map(l => <li>{l}</li>)
+                                                                            }
+                                                                        </ul>
+                                                                }
+                                                                {!a.suggestion?"":<GuestSuggestion transparent={true} type={a.suggestion} />}
+                                                            </Fragment>
                                                     }
                                                 </Fragment>)}
                                         </div>
@@ -232,7 +253,18 @@ class _GuestFaq extends Component {
                                                     <_ActionButton text={a.buttonText} buttonType={"my-4 btn-outline-"+e.color} action={() => {toggleFaq(a.actionValue)}} />
                                                     {
                                                         !faqState[a.actionValue] ? "":
-                                                            <div className="p-0">{a.text}</div>
+                                                            <Fragment>
+                                                                <div className="p-0">{a.text}</div>
+                                                                {
+                                                                    !a.list?"":
+                                                                        <ul>
+                                                                            {
+                                                                                a.list.map(l => <li>{l}</li>)
+                                                                            }
+                                                                        </ul>
+                                                                }
+                                                                {!a.suggestion?"":<GuestSuggestion transparent={false} type={a.suggestion} />}
+                                                            </Fragment>
                                                     }
                                                 </Fragment>)}
                                         </div>

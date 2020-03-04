@@ -39,7 +39,7 @@ class _Auth extends Component {
         const {busy,loggedIn,optionLoginCreate,optionKeyboardMode,optionUserMenu,payChannel,receiveChannel,channels} = this.props;
         const {switchOptionLoginCreate,switchOptionUserMenu,abandonKeyboard,setPayChannel,setReceiveChannel,deleteChannel,logout} = this.props;
 
-        return <div className="text-center small text-dark">
+        return <div className="text-center small">
             {
                 busy?"Auth module busy...":
                     <Fragment>

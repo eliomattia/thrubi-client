@@ -42,10 +42,10 @@ class Channel {
 
     static keyboardChannelMessage(optionKeyboardMode) {
         switch (optionKeyboardMode) {
-            case "LOGIN":   return "Sign in with username/password";
-            case "CREATE":  return "Create a new Thrubi account with username/password";
-            case "ADD":     return "Add username/password credentials to my account";
-            case "UPDATE":  return "Update my username/password credentials";
+            case "LOGIN":   return "Sign in";
+            case "CREATE":  return "Sign up";
+            case "ADD":     return "Add credentials to my account";
+            case "UPDATE":  return "Update my credentials";
             default:        return "";
         }
     }

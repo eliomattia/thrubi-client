@@ -11,16 +11,16 @@ class _GuestMenu extends Component {
         const {selected} = this.props;
         const {chooseGuestMenu} = this.props;
         return (
-            <div className="container-fluid m-0 bg-white">
+            <div className="container-fluid m-0 mb-2 bg-white">
                 <div className="row mr-lg-0 p-0">
                     <div className="col-md-6 p-0 m-0 pr-md-2 navbar-light">
                         <_ActionButton action={() => chooseGuestMenu(guestMenuOption.FAQ)}
-                                       buttonType={"btn-outline-primary"+(selected===guestMenuOption.FAQ?" active":"")}
+                                       buttonType={"btn-outline-primary"+(selected===guestMenuOption.FAQ?" active":"")+" py-3"}
                                        text="Learn more about Thrubi" />
                     </div>
                     <div className="col-md-6 p-0 m-0 pl-md-2 navbar-light">
                         <_ActionButton action={() => chooseGuestMenu(guestMenuOption.INFOGRAPHICS)}
-                                       buttonType={"btn-outline-success"+(selected===guestMenuOption.INFOGRAPHICS?" active":"")}
+                                       buttonType={"btn-outline-success"+(selected===guestMenuOption.INFOGRAPHICS?" active":"")+" py-3"}
                                        text="Thrubi infographics" />
                     </div>
                 </div>

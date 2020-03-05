@@ -22,7 +22,7 @@ class _GuestBanner extends Component {
                         A <span className="thrubiGradient">Thrubi</span> account gets you
                         a <span className="thrubiGradient">universal basic income.</span>
                     </p>
-                    <h4 className="m-2 px-2">
+                    <h4 className="m-2 px-2 text-secondary">
                         It is calculated based on your current earnings and funded by wealthy individuals.
                     </h4>
                     <h4 className="display-3 m-0 p-2">

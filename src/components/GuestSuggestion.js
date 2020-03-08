@@ -12,24 +12,34 @@ class _GuestSuggestion extends Component {
         let refs = {country:null,suggestionText:null};
         return (
             <div className="my-2 text-center">
-                <span><b>{"Your "+(type===suggestionType.IDENTITY_CERTIFICATION?"digital identity platform":
-                    type===suggestionType.INCOME_VERIFICATION?"official income authority"
-                        :"")+" suggestion"}</b></span>
-                <input id="country" ref={input => refs.country = input} type="text"
-                       className={"form-control form-control-sm rounded-0 my-2"+(transparent?" bg-transparent":"")}
-                       placeholder="Country"
-                       required/>
+                <span><b>{""+(
+                    type===suggestionType.FAQ_PROPOSAL?"Have another question?":
+                    type===suggestionType.IDENTITY_CERTIFICATION?"Your digital identity platform suggestion":
+                    type===suggestionType.INCOME_VERIFICATION?"Your official income authority suggestion":
+                        "")+""}</b></span>
+                {
+                    type===suggestionType.FAQ_PROPOSAL ? "" :
+                        <input id="country" ref={input => refs.country = input} type="text"
+                               className={"form-control form-control-sm rounded-0 my-2"+(transparent?" bg-transparent":"")}
+                               placeholder="Country"
+                               required/>
+                }
                 <input id="suggestionText" ref={input => refs.suggestionText = input} type="text"
                        className={"form-control form-control-sm rounded-0 my-2"+(transparent?" bg-transparent":"")}
-                       placeholder={type===suggestionType.IDENTITY_CERTIFICATION?"Suggested digital identity platform":
-                                    type===suggestionType.INCOME_VERIFICATION?"Suggested official income authority"
-                                    :"Your suggestion"}
+                       placeholder={
+                            type===suggestionType.FAQ_PROPOSAL?"Question I would like to see answered":
+                            type===suggestionType.IDENTITY_CERTIFICATION?"Suggested digital identity platform":
+                            type===suggestionType.INCOME_VERIFICATION?"Suggested official income authority":
+                                    "Your suggestion"}
                        required/>
-                <_ActionButton text="Here is my suggestion" action={() => {
-                    submitSuggestion(type,refs.country.value,refs.suggestionText.value);
-                    refs.country.value="";
-                    refs.suggestionText.value="";
-                }} buttonType={"btn-primary"+(transparent?" bg-transparent":"")} />
+                <_ActionButton text={
+                                   type===suggestionType.FAQ_PROPOSAL?"Submit":
+                                    "Here is my suggestion"}
+                        action={() => {
+                        submitSuggestion(type,refs.country&&refs.country.value,refs.suggestionText&&refs.suggestionText.value);
+                        if (refs.country&&refs.country.value) refs.country.value="";
+                        if (refs.suggestionText&&refs.suggestionText.value) refs.suggestionText.value="";
+                    }} buttonType={"btn-primary"+(transparent?" bg-transparent":"")} />
             </div>
         );
     }

@@ -146,7 +146,8 @@ class _GuestFaq extends Component {
                                         actionValue:loggableActionValue.WEALTHY_BUSINESS_MODEL,
                                         buttonText:"How does Thrubi make money?",
                                         text:"We are currently working on our business model. The current possibilities are: 1) advertisements, " +
-                                             "2) a fee on Thrubi Gold purchases, 3) donations. Let us know your suggestions: info@thrubi.com",
+                                             "2) a fee on Thrubi Gold purchases, 3) donations (e.g., via Patreon). Let us know your suggestions: " +
+                                             "info@thrubi.com",
                                     },
                                 ],
                                 style:"thrubiSilver",  image:"/jpg/hanauer.jpg",   bg:"wealthy",   color:"secondary",   header:"Wealthy individuals",   text:this.wealthyText(),},
@@ -206,7 +207,7 @@ class _GuestFaq extends Component {
                                              "mechanics \u2014 investment principles, as opposed to consumption, if applied at scale have the ability to " +
                                              "starve the entire system, as is seen during financial crises. Without going into the important moral " +
                                              "considerations of workers' rights and the consequences of owning entire sectors of a society, from the " +
-                                             "bare point of view of efficiency, it is not convenient to either the poor or the rich to have an economy " +
+                                             "bare point of view of efficiency, it is not convenient for either the poor or the rich to have an economy " +
                                              "swinging between periods of over-exploitation and periods of stagnation. Thrubi aims with its inner models " +
                                              "to preserve the benefit of growth while inhibiting the dangerous mechanics of starvation. It recreates an " +
                                              "optimal distribution that allows the poor to live a healthy life and contribute to a healthy society and " +
@@ -273,6 +274,7 @@ class _GuestFaq extends Component {
                             ))
                     }
                 </div>
+                <GuestSuggestion transparent={false} type={suggestionType.FAQ_PROPOSAL} />
             </div>
         );
     }

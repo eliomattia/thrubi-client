@@ -6,4 +6,5 @@ export const guestMenuOption = {
 export const suggestionType = {
     IDENTITY_CERTIFICATION: "IDENTITY_CERTIFICATION",
     INCOME_VERIFICATION:    "INCOME_VERIFICATION",
+    FAQ_PROPOSAL:           "FAQ_PROPOSAL",
 };

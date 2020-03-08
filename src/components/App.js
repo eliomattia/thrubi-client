@@ -30,7 +30,7 @@ class _App extends Component {
         return Promise.all([
             startGlobalStatsWorker(),
             fetchChannels(),
-            // enableBlockchain(),
+            enableBlockchain(),
         ]);
     };
 

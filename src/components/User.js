@@ -2,7 +2,8 @@ import React,{Component,Fragment} from "react";
 import {connect} from "react-redux";
 import MemberBar from "./MemberBar";
 import Auth from "./Auth";
-import Info from "./Info";
+import GuestFaq from "./GuestFaq";
+import Chart from "./Chart";
 import UserView from "./UserView";
 import UserActivation from "./UserActivation";
 import UserManageDetails from "./UserManageDetails";
@@ -17,10 +18,14 @@ import PopulationDelete from "./PopulationDelete";
 import PopulationTune from "./PopulationTune"
 import {close} from "../actions/user";
 import "./styles/User.scss";
+import GuestMenu from "./GuestMenu";
+import {guestMenuOption} from "../config/guest";
+import GuestInfographics from "./GuestInfographics";
+import UserActivationChecklist from "./UserActivationChecklist";
 
 class _User extends Component {
     render() {
-        const {busy,optionUserMenu,loggedIn,auth,identityCertified,isMember,member} = this.props;
+        const {busy,optionUserMenu,loggedIn,auth,identityCertified,isMember,member,guestOption} = this.props;
         const {close} = this.props;
 
         return(
@@ -42,56 +47,75 @@ class _User extends Component {
                             <div className="col-lg-9 navbar-light p-0">
                                 {
                                     !loggedIn ?
-                                        <Info />
+                                        <div className="">
+                                            <GuestMenu />
+                                            { guestOption!==guestMenuOption.FAQ ? "" : <GuestFaq /> }
+                                            { guestOption!==guestMenuOption.INFOGRAPHICS ? "" : <GuestInfographics /> }
+                                        </div>
                                         :
-                                        !isMember ?
-                                            <Fragment>
-                                                <PopulationSelect />
-                                                { !auth ? "" : <PopulationAdd /> }
-                                            </Fragment>
-                                            :
-                                            <div className="bg-light mr-2 ml-2 ml-lg-0">
-                                                <MemberBar />
-                                                {
-                                                    identityCertified<=0 ?
-                                                        <div>
-                                                            <UserIdentity />
-                                                        </div>
-                                                        :
-                                                        <Fragment>
-                                                            {
-                                                                !auth ?
-                                                                    <Fragment>
-                                                                        <div className="container-fluid row p-0 m-0">
-                                                                            <div className="col-lg-4 thrubiBlue navbar-light">
-                                                                                { (member.thrubiBlue || member.thrubiBlueNext || member.thrubiBlueEth
-                                                                                    || member.thrubiBlueAward || member.thrubiBlueAwardTotal || member.thrubiBlueClaimTotal)
-                                                                                    ? <ThrubiBlue /> : ""}
-                                                                            </div>
-                                                                            <div className="col-lg-4 thrubiSilver navbar-light">
-                                                                                { (member.thrubiSilver || member.thrubiSilverNext || member.thrubiSilverEth
-                                                                                    || member.thrubiSilverTransformTotal)
-                                                                                    ? <ThrubiSilver /> : ""}
-                                                                            </div>
-                                                                            <div className="col-lg-4 thrubiGold navbar-light">
-                                                                                { (member.thrubiGold)
-                                                                                    ? <ThrubiGold /> : ""}
-                                                                            </div>
-                                                                        </div>
-                                                                    </Fragment>
-                                                                    :
-                                                                    <Fragment>
-                                                                        <div className="col-lg-4 navbar-light">
-                                                                            <PopulationDelete/>
-                                                                        </div>
-                                                                        <div className="col-lg-4 navbar-light">
-                                                                            <PopulationTune />
-                                                                        </div>
-                                                                    </Fragment>
-                                                            }
-                                                        </Fragment>
-                                                }
+                                        <div>
+                                            <div className="container row">
+                                                <div className="col-lg-2" />
+                                                <div className="col-lg-8">
+                                                    <UserActivationChecklist />
+                                                </div>
+                                                <div className="col-lg-2" />
                                             </div>
+                                            {
+                                                !isMember?
+                                                    <Fragment>
+                                                        <PopulationSelect/>
+                                                        {!auth?"":<PopulationAdd/>}
+                                                    </Fragment>
+                                                    :
+                                                    <div className="bg-light mr-2 ml-2 ml-lg-0">
+                                                        <MemberBar/>
+                                                        {
+                                                            identityCertified<=0?
+                                                                <div>
+                                                                    <UserIdentity/>
+                                                                </div>
+                                                                :
+                                                                <Fragment>
+                                                                    {
+                                                                        !auth?
+                                                                            <Fragment>
+                                                                                <div
+                                                                                    className="container-fluid row p-0 m-0">
+                                                                                    <div
+                                                                                        className="col-lg-4 thrubiBlue navbar-light">
+                                                                                        {(member.thrubiBlue||member.thrubiBlueNext||member.thrubiBlueEth
+                                                                                            ||member.thrubiBlueAward||member.thrubiBlueAwardTotal||member.thrubiBlueClaimTotal)
+                                                                                            ?<ThrubiBlue/>:""}
+                                                                                    </div>
+                                                                                    <div
+                                                                                        className="col-lg-4 thrubiSilver navbar-light">
+                                                                                        {(member.thrubiSilver||member.thrubiSilverNext||member.thrubiSilverEth
+                                                                                            ||member.thrubiSilverTransformTotal)
+                                                                                            ?<ThrubiSilver/>:""}
+                                                                                    </div>
+                                                                                    <div
+                                                                                        className="col-lg-4 thrubiGold navbar-light">
+                                                                                        {(member.thrubiGold)
+                                                                                            ?<ThrubiGold/>:""}
+                                                                                    </div>
+                                                                                </div>
+                                                                            </Fragment>
+                                                                            :
+                                                                            <Fragment>
+                                                                                <div className="col-lg-4 navbar-light">
+                                                                                    <PopulationDelete/>
+                                                                                </div>
+                                                                                <div className="col-lg-4 navbar-light">
+                                                                                    <PopulationTune/>
+                                                                                </div>
+                                                                            </Fragment>
+                                                                    }
+                                                                </Fragment>
+                                                        }
+                                                    </div>
+                                            }
+                                        </div>
                                 }
                             </div>
                         </Fragment>
@@ -110,6 +134,7 @@ const mapStateToProps = state => ({
     isMember:           state.client.member.isMember,
     member:             state.client.member,
     identityCertified:  state.client.user.identityCertified,
+    guestOption:        state.client.guest.guestMenuOption,
 });
 
 const User = connect(mapStateToProps,{close})(_User);

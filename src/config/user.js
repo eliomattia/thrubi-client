@@ -3,6 +3,7 @@ import flareBook from "./flare";
 export const loggableActionType = {
     clickChannel:       "CLICK_CHANNEL",
     clickHomeButton:    "CLICK_HOME_BUTTON",
+    clickGuestMenu:     "CLICK_GUEST_MENU",
 };
 export const loggableActionValue = {
     VISION_IDENTITY:            "VISION_IDENTITY",

@@ -1,4 +1,5 @@
 export const endpoint = {
+    GUEST_SUBMITSUGGESTION:                 "/guest/submitSuggestion",
     GUEST_SUBSCRIBENEWSLETTER:              "/guest/subscribeNewsletter",
     ACTIONS_LOG:                            "/actions/log",
     ACTIONS_AUTH:                           "/actions/auth",
@@ -26,6 +27,7 @@ export const endpoint = {
     MEMBER_REQUEST_CLAIM:                   "/member/request/claim",
     MEMBER:                                 "/member",
     MEMBER_REQUEST_DECLAREINCOME:           "/member/request/declareIncome",
+    REF_FETCHREF:                           "/ref/fetchRef",
     STATS_NUSER:                            "/stats/nUser",
     STATS_NCOUNTRY:                         "/stats/nCountry",
     STATS_NCCY:                             "/stats/nCcy",

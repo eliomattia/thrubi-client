@@ -28,8 +28,8 @@ class _Transform extends Component {
                                             <Fragment>
                                                 <div className="small text-justify">
                                                     Blockchain transaction costs will be paid by you upon submitting the transaction.
-                                                    Final transformed $₮ will depend upon Ξ exchange rates and $₮ price when your transaction is accepted.
-                                                    Any excess Ξ that you transform will be credited on the account and used whenever $₮ becomes available.
+                                                    Final transformed ₮S will depend upon Ξ exchange rates and ₮S price when your transaction is accepted.
+                                                    Any excess Ξ that you transform will be credited on the account and used whenever ₮S becomes available.
                                                 </div>
                                                 <div className="text-secondary container">
                                                     {/*<_CcyRow text="Your Ξ balance"
@@ -51,7 +51,7 @@ class _Transform extends Component {
                                                     <_CcyRow text="You can transform"
                                                              bold={false}
                                                              value={(this.state.transformEthValue*exrate)*(1-thrubiFees)*(!thrubiPriceSilver?0:(1/thrubiPriceSilver))}
-                                                             ccySymbol="$₮" />
+                                                             ccySymbol="₮S" />
                                                 </div>
                                                 <input id="transformEth" ref={input => this.transformEthRef = input} type="text" className="form-control form-control-sm rounded-0"
                                                            placeholder={this.transformEthValue} required

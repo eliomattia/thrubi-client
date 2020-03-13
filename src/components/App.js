@@ -8,7 +8,7 @@ import {enableBlockchain} from "../actions/blockchain_ethereum";
 import {startGlobalStatsWorker,stopGlobalStatsWorker} from "../actions/workers/globalStats";
 import {fetchChannels,sendRedirect} from "../actions/auth";
 import "./styles/App.scss";
-import Guest from "./Guest";
+import GuestBanner from "./GuestBanner";
 
 
 class _App extends Component {
@@ -30,7 +30,7 @@ class _App extends Component {
         return Promise.all([
             startGlobalStatsWorker(),
             fetchChannels(),
-            enableBlockchain(),
+            // enableBlockchain(),
         ]);
     };
 
@@ -43,7 +43,7 @@ class _App extends Component {
                     <div className="mainView">
                         {
                             loggedIn ? "" :
-                                <Guest />
+                                <GuestBanner />
                         }
                         {
                             !busy ? <User /> :

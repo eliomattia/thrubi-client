@@ -3,7 +3,6 @@ import {connect} from "react-redux";
 import MemberBar from "./MemberBar";
 import Auth from "./Auth";
 import GuestFaq from "./GuestFaq";
-import Chart from "./Chart";
 import UserView from "./UserView";
 import UserActivation from "./UserActivation";
 import UserManageDetails from "./UserManageDetails";

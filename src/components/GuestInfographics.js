@@ -19,7 +19,7 @@ class _GuestInfographics extends Component {
                         !countryId
                             ? <PopulationSelect refList={true}/>
                             :
-                                <div className="col-lg-12 p-0">
+                                <div className="col-lg-12 p-0 px-4 px-lg-0 pr-lg-3">
                                     <_ActionButton action={deselectPopulation} text="Choose another country" noMargin="p-2" buttonType=" btn-primary" />
                                     <div className="my-3">
                                         Thrubi uses the income distribution shown here to build models to calculate individual Universal Basic Income.

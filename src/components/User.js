@@ -63,8 +63,8 @@ class _User extends Component {
                                             {
                                                 !isMember?
                                                     <Fragment>
-                                                        <PopulationSelect/>
-                                                        {!auth?"":<PopulationAdd/>}
+                                                        <PopulationSelect refList={false} />
+                                                        {!auth?"":<PopulationAdd />}
                                                     </Fragment>
                                                     :
                                                     <div className="bg-light mr-2 ml-2 ml-lg-0">
@@ -72,7 +72,7 @@ class _User extends Component {
                                                         {
                                                             identityCertified<=0?
                                                                 <div>
-                                                                    <UserIdentity/>
+                                                                    <UserIdentity />
                                                                 </div>
                                                                 :
                                                                 <Fragment>
@@ -85,28 +85,28 @@ class _User extends Component {
                                                                                         className="col-lg-4 thrubiBlue navbar-light">
                                                                                         {(member.thrubiBlue||member.thrubiBlueNext||member.thrubiBlueEth
                                                                                             ||member.thrubiBlueAward||member.thrubiBlueAwardTotal||member.thrubiBlueClaimTotal)
-                                                                                            ?<ThrubiBlue/>:""}
+                                                                                            ?<ThrubiBlue />:""}
                                                                                     </div>
                                                                                     <div
                                                                                         className="col-lg-4 thrubiSilver navbar-light">
                                                                                         {(member.thrubiSilver||member.thrubiSilverNext||member.thrubiSilverEth
                                                                                             ||member.thrubiSilverTransformTotal)
-                                                                                            ?<ThrubiSilver/>:""}
+                                                                                            ?<ThrubiSilver />:""}
                                                                                     </div>
                                                                                     <div
                                                                                         className="col-lg-4 thrubiGold navbar-light">
                                                                                         {(member.thrubiGold)
-                                                                                            ?<ThrubiGold/>:""}
+                                                                                            ?<ThrubiGold />:""}
                                                                                     </div>
                                                                                 </div>
                                                                             </Fragment>
                                                                             :
                                                                             <Fragment>
                                                                                 <div className="col-lg-4 navbar-light">
-                                                                                    <PopulationDelete/>
+                                                                                    <PopulationDelete />
                                                                                 </div>
                                                                                 <div className="col-lg-4 navbar-light">
-                                                                                    <PopulationTune/>
+                                                                                    <PopulationTune />
                                                                                 </div>
                                                                             </Fragment>
                                                                     }

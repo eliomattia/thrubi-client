@@ -10,7 +10,7 @@ class _Chart extends Component {
     componentDidMount() {
         const {d3plot} = this.props;
         d3plot(this.svgChart);
-        window.addEventListener("resize", () => d3plot(this.svgChart));
+        window.addEventListener("resize",() => d3plot(this.svgChart));
     }
 
     componentDidUpdate() {
@@ -32,7 +32,6 @@ class _Chart extends Component {
 }
 
 const mapStateToProps = state => ({
-    //refRaw:   state.client.ref.raw,
 });
 
 const Chart = connect(mapStateToProps,{d3plot})(_Chart);

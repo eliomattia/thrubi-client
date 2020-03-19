@@ -8,21 +8,33 @@ import actionType, {busyPayload} from "../reducers/config/actionTypes";
 import {endpoint} from "../config/server";
 import {INTERVAL_POPULATION_WORKER} from "../env/workers";
 
-export const fetchPopulations = () => async (dispatch,getState) => {
+export const fetchPopulations = (userId,refList) => async (dispatch,getState) => {
     let populations;
-    return Promise.resolve()
-        .then   (()             => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}))
-        .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_FORUSER,null)))
-        .then   (p              => populations=p)
-        .then   (()             => populations.forEach(population => {if (population.isMember) {
-            dispatch(selectPopulation(population));
-            dispatch(startPopulationWorker());
-            dispatch(startMemberWorker());
-            dispatch(startMarketWorker());
-        }}))
-        .then   (()             => dispatch({type:actionType.RECEIVE_POPULATIONS,payload:{populations}}))
-        .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
-        .finally(()         => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}));
+    // userId is not used for now, the assumption is a user can only become member of one population for the time being (no world population, no multi-country)
+    if (refList) {
+        return Promise.resolve()
+            .then   (()             => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}))
+            .then   (()             => dispatch(processRequest(requestType.GET,endpoint.REF_LIST,null)))
+            .then   (p              => populations=p)
+            .then   (()             => dispatch({type:actionType.RECEIVE_POPULATIONS,payload:{populations}}))
+            .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
+            .finally(()         => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}));
+    } else {
+        return Promise.resolve()
+            .then   (()             => dispatch({type:actionType.SET_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}))
+            .then   (()             => dispatch(processRequest(requestType.GET,endpoint.POPULATION_FORUSER,null)))
+            .then   (p              => populations=p)
+            // the following .then is never executed, since populations are selected when user is not yet member (REVIEW when activating multi-country!)
+            .then   (()             => populations.forEach(population => {if (population.isMember) {
+                dispatch(selectPopulation(population));
+                dispatch(startPopulationWorker());
+                dispatch(startMemberWorker());
+                dispatch(startMarketWorker());
+            }}))
+            .then   (()             => dispatch({type:actionType.RECEIVE_POPULATIONS,payload:{populations}}))
+            .catch  (error          => dispatch(emitFlare(flareBook.flareType.ERROR,flareBook.flareType.ERR_GENERIC_USERMENU)))
+            .finally(()         => dispatch({type:actionType.SET_NOT_BUSY,payload:busyPayload.BUSY_ACTION_POPULATIONS}));
+    }
 };
 
 export const selectPopulation = population => async (dispatch,getState) => {

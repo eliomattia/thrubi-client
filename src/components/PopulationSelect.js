@@ -16,13 +16,14 @@ class _PopulationSelect extends Component {
     };
 
     reload() {
+        const {refList} = this.props;
         const {userId,populationsBusy,populationsNotAvailable} = this.props;
         const {fetchPopulations} = this.props;
-        if ((!populationsBusy)&&(populationsNotAvailable)) fetchPopulations(userId);
+        if ((!populationsBusy)&&(populationsNotAvailable)) fetchPopulations(userId,refList);
     }
 
     render() {
-        const {busy,populationsBusy,populationsNotAvailable,populationId} = this.props;
+        const {busy,populationsBusy,populationsNotAvailable,populationId,refList} = this.props;
         const {createMember,changeFilter} = this.props;
         let countryFilterXs,countryFilterLg;
 
@@ -40,7 +41,10 @@ class _PopulationSelect extends Component {
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
                                                placeholder="Search by country or currency"/>
                                         <Populations />
-                                        <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
+                                        {
+                                            refList ? "" :
+                                                <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
+                                        }
                                     </div>
                                     <a className="nav-link text-primary text-center" href="mailto:info@thrubi.com">Not found? Let us know: info@thrubi.com</a>
                                 </div>
@@ -54,7 +58,10 @@ class _PopulationSelect extends Component {
                                                type="text" className="form-control form-control-sm rounded-0 my-3 p-3"
                                                placeholder="Search by country or currency"/>
                                         <Populations />
-                                        <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
+                                        {
+                                            refList ? "" :
+                                                <_ActionButton action={createMember} payload={populationId} disabled={!populationId} text="Confirm" noMargin="p-2" buttonType=" btn-primary" />
+                                        }
                                     </div>
                                     <a className="nav-link text-primary text-center" href="mailto:info@thrubi.com">Not found? Let us know: info@thrubi.com</a>
                                 </div>

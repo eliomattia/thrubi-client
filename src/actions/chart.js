@@ -15,10 +15,13 @@ export const d3plot = svgChart => async (dispatch,getState) => {
         thrubiGoldChart:    "#947a25",
     };
 
-    const ref = await dispatch(processRequest(requestType.GET,endpoint.REF_FETCHREF,{}));
+    const populationId = getState().client.population.id;
+    const ccyId = getState().client.population.ccyId;
+    const ccySymbol = getState().client.population.ccySymbol;
+    const ref = await dispatch(processRequest(requestType.GET,endpoint.REF_FETCH+"/"+populationId,{}));
 
-    const xAxisLabel = "Income in $";
-    const yAxisLabel = "# who earn $ (or more)";
+    const xAxisLabel = "Income in "+ccyId+" "+ccySymbol;
+    const yAxisLabel = "# who earn "+ccyId+" "+ccySymbol+" (or more)";
     const circleRadius = 2;
 
     const vRatio = 0.7;
@@ -67,6 +70,7 @@ export const d3plot = svgChart => async (dispatch,getState) => {
 
     // x axis
     const xAxis = axisBottom(xScale)
+        .tickFormat(d => format(".2s")(d).replace("G","B"))
         .tickSize(innerHeight)
         .tickPadding(10)
         .ticks(xTicks);
@@ -141,7 +145,7 @@ export const d3plot = svgChart => async (dispatch,getState) => {
             .attr("x",() => (xScale(xValue(d))+((xScale(xValue(d))>(width/2))?margin.right:-margin.left)))
             .attr("y",() => (yScale(yValue(d))-15))
             .attr("fill",bootstrapColors.thrubiBlueChart)
-            .text(() => (format(".2s")(yValue(d)).replace("G","B")+" people earn $"+format(".2s")(xValue(d)).replace("G","B")+"+"));  // Value of the text
+            .text(() => (format(".2s")(yValue(d)).replace("G","B")+" people "+(xValue(d)>=0?"earn":"have a debt of up to")+" "+ccySymbol+format(".2s")(xValue(d)>=0?xValue(d):-xValue(d)).replace("G","B")+(xValue(d)>=0?"+":" or an income")));  // Value of the text
     }
 
     function handleMouseOut(d,i) {

@@ -274,7 +274,11 @@ class _GuestFaq extends Component {
                             ))
                     }
                 </div>
-                <GuestSuggestion transparent={false} type={suggestionType.FAQ_PROPOSAL} />
+                <div className="row">
+                    <div className="col-lg-12 p-0 px-4 px-lg-0 pr-lg-3">
+                        <GuestSuggestion transparent={false} type={suggestionType.FAQ_PROPOSAL} />
+                    </div>
+                </div>
             </div>
         );
     }

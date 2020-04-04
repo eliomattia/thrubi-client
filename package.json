@@ -8,7 +8,6 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "lite-server",
     "test": "react-scripts test",
     "start": "set HTTPS=true&&react-scripts start",
     "build": "react-scripts build",
@@ -19,38 +18,8 @@
   "author": "Elio Mattia",
   "license": "GNU GPL v3.0",
   "dependencies": {
-    "axios": "^0.19.2",
-    "bootstrap-react": "^0.3.1",
-    "d3-array": "^2.4.0",
-    "d3-axis": "^1.0.12",
-    "d3-format": "^1.4.3",
-    "d3-scale": "^3.2.1",
-    "d3-selection": "^1.4.1",
-    "node-sass": "^4.13.1",
-    "react": "^16.8.6",
-    "react-bootstrap": "^1.0.0-beta.16",
-    "react-dom": "^16.8.6",
-    "react-redux": "^7.1.0",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.3.1",
-    "redux": "^4.0.4",
-    "redux-logger": "^3.0.6",
-    "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.3.0",
-    "request": "^2.88.0",
-    "web3": "^1.0.0-beta.55"
   },
   "devDependencies": {
-    "bootstrap": "^4.4.1",
-    "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
-    "chai-bignumber": "^2.0.2",
-    "gh-pages": "^2.2.0",
-    "lite-server": "^2.3.0",
-    "nodemon": "^1.17.3",
-    "truffle": "5.0.2",
-    "truffle-contract": "3.0.6"
   },
   "eslintConfig": {
     "extends": "react-app",

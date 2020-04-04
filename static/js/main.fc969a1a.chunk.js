@@ -1,0 +1,2 @@
+(this["webpackJsonpthrubi-client"]=this["webpackJsonpthrubi-client"]||[]).push([[0],[function(t,i,n){t.exports=n(1)},function(t,i){console.log("Redirecting to https://www.thrubi.org")}],[[0,1]]]);
+//# sourceMappingURL=main.fc969a1a.chunk.js.map
